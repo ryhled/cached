@@ -13,7 +13,6 @@
 		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>Provides in-memory caching support for Cached.</PackageDescription>
 		<Language>$(Language)</Language>
-		<PackageVersion>$(CachedInMemoryVersion)</PackageVersion>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageTags>netcore;caching;cache;threadsafe;in-memory;csharp</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -23,6 +22,12 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup>

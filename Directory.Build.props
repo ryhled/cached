@@ -1,8 +1,5 @@
 <Project>
 	<PropertyGroup>
-		<CachedVersion>0.0.1-alpha</CachedVersion>
-		<CachedInMemoryVersion>0.0.1-alpha</CachedInMemoryVersion>
-		<CachedNetVersion>0.0.1-alpha</CachedNetVersion>
 		<Authors>Daniel Ryhle</Authors>
 		<PackageProjectUrlBase>https://www.nuget.org/packages/</PackageProjectUrlBase>
 		<RepositoryUrl>https://github.com/ryhled/cached</RepositoryUrl>

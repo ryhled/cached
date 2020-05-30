@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
 	</PropertyGroup>
@@ -13,7 +13,6 @@
 		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>Cached.Net - .Net Core 2.1+ integration with Cached.</PackageDescription>
 		<Language>$(Language)</Language>
-		<PackageVersion>$(CachedNetVersion)</PackageVersion>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageTags>netcore;caching;cache;threadsafe;csharp</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -23,6 +22,12 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup>
