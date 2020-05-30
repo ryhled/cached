@@ -1,0 +1,105 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+      - master
+  tags:
+    include:
+    - v*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  disable.coverage.autogenerate: 'true'
+
+steps:
+
+- script: |
+    export githubTag=$(git describe --abbrev=0 --tags)
+    echo "##vso[task.setvariable variable=githubTag]$githubTag"
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+<<<<<<< HEAD
+  displayName: Set github release tag
+=======
+  displayName: Set tag to env variable githubTag
+>>>>>>> 4487a1d... Update azure-pipelines.yml for Azure Pipelines
+  failOnStderr: true
+
+- task: UseDotNet@2
+  displayName: 'Install .Net Core 2.2 SDK'
+  inputs:
+    version: '2.2.x'
+    packageType: 'sdk'
+
+- task: UseDotNet@2
+  displayName: 'Install .Net Core 3.1 SDK'
+  inputs:
+    version: '3.1.x'
+    packageType: 'sdk'
+
+- task: UseDotNet@2
+  displayName: 'Install .Net 5 SDK'
+  inputs:
+    version: '5.0.x'
+    packageType: 'sdk'
+    performMultiLevelLookup: true
+    includePreviewVersions: true
+    
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: 'Build solution in $(buildConfiguration) mode'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run tests'
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    projects: 'tests/**/*.csproj'
+    nobuild: true
+    testRunTitle: 'Running tests for solution'
+
+- task: GitHubRelease@1
+  displayName: Create github pre-release
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  inputs:
+    gitHubConnection: 'ryhled/cached'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    tagPattern: 'v\d+\.\d+\.\d+-(alpha|beta|preview)\d*'
+    isPreRelease: true
+    changeLogCompareToRelease: 'lastNonDraftRelease'
+    changeLogType: 'commitBased'
+
+- task: GitHubRelease@1
+  displayName: Create github release
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  inputs:
+    gitHubConnection: 'ryhled/cached'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    tagPattern: 'v\d+\.\d+\.\d+'
+    isPreRelease: false
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
+
+- script: |
+    dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.5.8
+    reportgenerator -reports:$(Build.SourcesDirectory)/tests/**/coverage.*.cobertura.xml -tag:$(Build.BuildNumber) -targetdir:$(Build.SourcesDirectory)/CoverageResults -reporttypes:'HtmlInline_AzurePipelines_Dark;Cobertura'
+  displayName: Create code coverage report
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
+    reportDirectory: '$(Build.SourcesDirectory)'
+    pathToSources: '$(Build.SourcesDirectory)'
