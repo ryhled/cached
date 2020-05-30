@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+		<PackageId>Cached.Net</PackageId>
+		<Title>Cached.Net - .Net Core 2.1+ integration with Cached.</Title>
+		<Authors>$(Authors)</Authors>
+		<Owners>$(Authors)</Owners>
+		<Company>$(Company)</Company>
+		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
+		<PackageDescription>Cached.Net - .Net Core 2.1+ integration with Cached.</PackageDescription>
+		<Language>$(Language)</Language>
+		<PackageVersion>$(CachedNetVersion)</PackageVersion>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageTags>netcore;caching;cache;threadsafe;csharp</PackageTags>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageProjectUrl>$(PackageProjectUrlBase)Cached</PackageProjectUrl>
+		<RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
+		<None Include="..\..\icon.png" Pack="true" PackagePath="" />
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Cached.Tests</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Cached\Cached.csproj" />
+	</ItemGroup>
+</Project>

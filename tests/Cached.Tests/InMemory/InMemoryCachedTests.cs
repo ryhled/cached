@@ -1,0 +1,70 @@
+﻿namespace Cached.Tests.InMemory
+{
+    using System;
+    using System.Threading.Tasks;
+    using Cached.InMemory;
+    using Moq;
+    using Xunit;
+
+    public sealed class InMemoryCachedTests
+    {
+        public sealed class Constructor
+        {
+            public sealed class WillThrowException
+            {
+                [Fact]
+                public void If_memory_cacher_argument_is_null()
+                {
+                    Assert.Throws<ArgumentNullException>(() =>
+                        new InMemoryCached<object, object>(
+                            null,
+                            o => "",
+                            Task.FromResult));
+                }
+
+                [Fact]
+                public void If_memory_fetch_func_is_null()
+                {
+                    Assert.Throws<ArgumentNullException>(() =>
+                        new InMemoryCached<object, object>(
+                            new Mock<IInMemoryCacher>().Object,
+                            o => "",
+                            null));
+                }
+
+                [Fact]
+                public void If_memory_key_func_is_null()
+                {
+                    Assert.Throws<ArgumentNullException>(() =>
+                        new InMemoryCached<object, object>(
+                            new Mock<IInMemoryCacher>().Object,
+                            null,
+                            Task.FromResult));
+                }
+            }
+        }
+
+        public sealed class GetOrFetchAsyncMethod
+        {
+            [Fact]
+            public async Task Will_fetch_data_using_memory_cacher_and_argument()
+            {
+                // Arrange
+                var cacherMock = new Mock<IInMemoryCacher>();
+                cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<Task<string>>>()))
+                    .Returns((string key, Func<Task<string>> fetch) => Task.FromResult(fetch().Result + key));
+
+                var memoryCached = new InMemoryCached<string, int>(
+                    cacherMock.Object,
+                    arg => "key_" + arg,
+                    arg => Task.FromResult("fetch_" + arg));
+
+                // Act
+                var response = await memoryCached.GetOrFetchAsync(22);
+
+                // Assert
+                Assert.Equal("fetch_22key_22", response);
+            }
+        }
+    }
+}

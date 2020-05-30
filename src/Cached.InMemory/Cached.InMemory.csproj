@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+		<PackageId>Cached.InMemory</PackageId>
+		<Title>Cached.InMemory - InMemory caching support for Cached.</Title>
+		<Authors>$(Authors)</Authors>
+		<Owners>$(Authors)</Owners>
+		<Company>$(Company)</Company>
+		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
+		<PackageDescription>Provides in-memory caching support for Cached.</PackageDescription>
+		<Language>$(Language)</Language>
+		<PackageVersion>$(CachedInMemoryVersion)</PackageVersion>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageTags>netcore;caching;cache;threadsafe;in-memory;csharp</PackageTags>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageProjectUrl>$(PackageProjectUrlBase)Cached.InMemory</PackageProjectUrl>
+		<RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Cached\Cached.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.4" />
+	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
+		<None Include="..\..\icon.png" Pack="true" PackagePath="" />
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Cached.Tests</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+</Project>
