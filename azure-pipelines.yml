@@ -7,6 +7,7 @@ trigger:
   branches:
     include:
       - master
+      - ci-cd-test
   tags:
     include:
     - v*
@@ -24,11 +25,7 @@ steps:
     export githubTag=$(git describe --abbrev=0 --tags)
     echo "##vso[task.setvariable variable=githubTag]$githubTag"
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-<<<<<<< HEAD
   displayName: Set github release tag
-=======
-  displayName: Set tag to env variable githubTag
->>>>>>> 4487a1d... Update azure-pipelines.yml for Azure Pipelines
   failOnStderr: true
 
 - task: UseDotNet@2
