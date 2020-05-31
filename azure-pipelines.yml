@@ -48,7 +48,7 @@ steps:
     performMultiLevelLookup: true
     includePreviewVersions: true
     
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build --configuration $(buildConfiguration) /p:Version=$(githubTag)
   displayName: 'Build solution in $(buildConfiguration) mode'
 
 - task: CopyFiles@2
