@@ -23,7 +23,7 @@ steps:
 
 - script: |
     export GitHubTag=$(git describe --abbrev=0 --tags)
-    echo "##vso[task.setvariable variable=GitHubTag]${$GitHubTag:-'0.0.0-noop'}"
+    echo "##vso[task.setvariable variable=GitHubTag]$GitHubTag"
     echo "Release tag set to: $GitHubTag" 1>&3
   # condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   displayName: Parse github release tag
