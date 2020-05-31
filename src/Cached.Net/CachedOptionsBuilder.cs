@@ -17,14 +17,14 @@
             where TFrom : class
             where TTo : class, TFrom, ICachedService
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(provider => serviceFactory(provider)));
+            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(serviceFactory));
         }
 
         public void AddTransientService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
             where TFrom : class
             where TTo : class, TFrom, ICachedService
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(provider => serviceFactory(provider)));
+            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(serviceFactory));
         }
 
         internal void Build(IServiceCollection services)
@@ -40,9 +40,7 @@
                     "Cached configuration was empty. At least one cache option must be set.");
             }
 
-            CachedSettings globalSettings = GlobalSettings ?? new CachedSettings();
-
-            _serviceDescriptors.ForEach(d => services.TryAdd(d));
+            _serviceDescriptors.ForEach(services.TryAdd);
         }
     }
 }

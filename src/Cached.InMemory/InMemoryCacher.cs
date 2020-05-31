@@ -20,7 +20,7 @@
             Func<DateTimeOffset> nowFactory)
             : base(cacherLock)
         {
-            _settings = settings ?? throw new ArgumentNullException(nameof(memoryCache));
+            _settings = settings;
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             _nowFactory = nowFactory ?? throw new ArgumentNullException(nameof(nowFactory));
         }
@@ -73,6 +73,12 @@
             string key,
             T data)
         {
+            if (_settings == null)
+            {
+                _memoryCache.Set(key, data);
+                return Task.CompletedTask;
+            }
+
             var opts = new MemoryCacheEntryOptions
             {
                 AbsoluteExpiration = _nowFactory().Add(_settings.AbsoluteExpiration),
