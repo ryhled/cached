@@ -23,7 +23,7 @@ steps:
 
 - script: |
     export GitHubTag=$(git describe --abbrev=0 --tags)
-    echo "Release tag set to: $GitHubTag"
+    echo "Release tag set to: $(GitHubTag)"
   # condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   displayName: Parse github release tag
   failOnStderr: true
