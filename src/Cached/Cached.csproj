@@ -13,7 +13,6 @@
 		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>Unobtrusive, thread and storm safe, caching library</PackageDescription>
 		<Language>$(Language)</Language>
-		<PackageVersion>$(CachedVersion)</PackageVersion>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageTags>netcore;caching;cache;threadsafe;csharp</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
