@@ -74,17 +74,34 @@ namespace Cached.Tests.InMemory
             }
         }
 
-        public sealed class NewMethod
+        public sealed class DefaultMethod
         {
-            public sealed class Throws
+            public sealed class CreatesInstance
             {
                 [Fact]
-                public void If_Cache_Argument_Is_Null()
+                public void With_Empty_Constructor()
                 {
-                    Assert.Throws<ArgumentNullException>(() => InMemoryCacher.New(null, new CachedSettings()));
+                    //Arrange, Act
+                    InMemoryCacher result = InMemoryCacher.Default();
+
+                    //Assert
+                    Assert.NotNull(result);
+                }
+
+                [Fact]
+                public void With_Settings_Argument_Constructor()
+                {
+                    //Arrange, Act
+                    InMemoryCacher result = InMemoryCacher.Default(new CachedSettings());
+
+                    //Assert
+                    Assert.NotNull(result);
                 }
             }
+        }
 
+        public sealed class NewMethod
+        {
             public sealed class CreatesInstance
             {
                 [Fact]

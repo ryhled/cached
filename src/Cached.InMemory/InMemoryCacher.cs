@@ -12,6 +12,7 @@
         private readonly IMemoryCache _memoryCache;
         private readonly Func<DateTimeOffset> _nowFactory;
         private readonly CachedSettings _settings;
+        private static readonly Lazy<IMemoryCache> DefaultInstance = new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
 
         internal InMemoryCacher(
             IMemoryCache memoryCache,
@@ -26,11 +27,19 @@
         }
 
         /// <summary>
+        /// Creates a default InMemoryCacher instance, using a globally shared, long lived, MemoryCache instance.
+        /// </summary>
+        /// <param name="settings">(Optional) Customized Cached settings.</param>
+        /// <returns>A new InMemoryCacher instance.</returns>
+        public static InMemoryCacher Default(CachedSettings settings = null)
+            => New(DefaultInstance.Value, settings);
+
+        /// <summary>
         ///     Create a new MemoryCacher instance.
         /// </summary>
         /// <param name="memoryCacher">The underlying MemoryCacher instance to be used.</param>
         /// <param name="settings">(Optional) Customized Cached settings.</param>
-        /// <returns></returns>
+        /// <returns>A new InMemoryCacher instance.</returns>
         public static InMemoryCacher New(IMemoryCache memoryCacher, CachedSettings settings = default)
         {
             return new InMemoryCacher(

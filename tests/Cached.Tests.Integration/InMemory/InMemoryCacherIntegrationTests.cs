@@ -27,7 +27,7 @@
         private readonly IInMemoryCacher _inMemoryCacher;
 
         [Fact]
-        public async Task InMemoryCacher_will_fetch_async_correctly()
+        public async Task Will_Fetch_Async_Function_Correctly()
         {
             // Arrange, Act
             var result = await _inMemoryCacher.GetOrFetchAsync("a", async () =>
@@ -41,7 +41,7 @@
         }
 
         [Fact]
-        public async Task InMemoryCacher_will_fetch_or_cache_based_on_key()
+        public async Task Will_Fetch_Or_Cache_Based_On_Key()
         {
             // Arrange, Act
             var result1 = await _inMemoryCacher.GetOrFetchAsync("a", () => Task.FromResult("first_fetch"));
@@ -54,6 +54,23 @@
             Assert.Equal("second_fetch", result2);
             Assert.Equal("first_fetch", result3);
             Assert.Equal("second_fetch", result4);
+        }
+
+        [Fact]
+        public async Task Default_InMemoryCacher_Instances_Share_Cache()
+        {
+            // Arrange
+            InMemoryCacher cacher1 = InMemoryCacher.Default();
+            InMemoryCacher cacher2 = InMemoryCacher.Default();
+
+            // Act
+            var result1 = await cacher1.GetOrFetchAsync("name", () => Task.FromResult("sven"));
+            var result2 = await cacher2.GetOrFetchAsync("name", () => Task.FromResult("oscar"));
+
+            // Assert
+            Assert.NotEqual(cacher1, cacher2);
+            Assert.Equal("sven", result1);
+            Assert.Equal("sven", result2);
         }
     }
 }
