@@ -67,7 +67,7 @@
                     var globalSettings = new CachedSettings(TimeSpan.FromDays(3));
                     var options = new CachedOptionsBuilder {GlobalSettings = globalSettings};
                     var serviceCollection = new ServiceCollection();
-                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
+                    options.AddSingletonService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
 
                     // Act
                     options.Build(serviceCollection);
