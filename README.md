@@ -27,7 +27,7 @@ nuget install cached.inmemory
 
 ```
 
-## Examples
+## Examples (Nuget packages will be available once first release is completed)
 
 ### In-Memory - Minimal
 
