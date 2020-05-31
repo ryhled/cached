@@ -51,12 +51,12 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build solution in $(buildConfiguration) mode'
 
-- task: CopyFiles@2
+- task: PublishBuildArtifacts@1
   inputs:
-    Contents: '**/*.*nupkg'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    OverWrite: true
-    flattenFolders: true
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Cached_Build_Artifact'
+    publishLocation: 'Container'
+    FileCopyOptions: 
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
@@ -66,14 +66,6 @@ steps:
     projects: 'tests/**/*.csproj'
     nobuild: true
     testRunTitle: 'Running tests for solution'
-
-- task: NuGetCommand@2
-  inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Nuget.org - Cached'
-    includeSymbols: true
 
 - task: GitHubRelease@1
   displayName: Create github pre-release
