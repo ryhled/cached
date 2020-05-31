@@ -26,6 +26,12 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+		
+	<PropertyGroup>
 		<GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	</PropertyGroup>
