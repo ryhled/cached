@@ -88,6 +88,13 @@ steps:
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
 
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget.org - Cached'
+
 - script: |
     dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.5.8
     reportgenerator -reports:$(Build.SourcesDirectory)/tests/**/coverage.*.cobertura.xml -tag:$(Build.BuildNumber) -targetdir:$(Build.SourcesDirectory)/CoverageResults -reporttypes:'HtmlInline_AzurePipelines_Dark;Cobertura'
