@@ -22,17 +22,12 @@ variables:
 steps:
 
 - script: |
-    export VAR1="v1.1.1"
-    echo "Tag: ${VAR1#?}"
-  failOnStderr: true
-
-- script: |
     export GitHubTag=$(git describe --abbrev=0 --tags)
     export ReleaseVersion=${GitHubTag#?}
     echo "##vso[task.setvariable variable=ReleaseVersion]$ReleaseVersion"
     echo "ReleaseVersion set to: $ReleaseVersion"
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  displayName: Parse github release tag
+  displayName: Parse release version
   failOnStderr: true
 
 - task: UseDotNet@2
@@ -57,7 +52,7 @@ steps:
     
 - script: dotnet build --configuration $(buildConfiguration) -p:Version=$(ReleaseVersion)
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  displayName: 'Build solution with version ($(buildConfiguration))'
+  displayName: 'Build versioned solution ($(buildConfiguration))'
 
 - script: dotnet build --configuration $(buildConfiguration)
   condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
