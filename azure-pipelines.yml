@@ -7,7 +7,7 @@ trigger:
   branches:
     include:
       - master
-      - ci-cd-test
+      - azure*
   tags:
     include:
     - v*
@@ -22,10 +22,11 @@ variables:
 steps:
 
 - script: |
-    export githubTag=$(git describe --abbrev=0 --tags)
-    echo "##vso[task.setvariable variable=githubTag]$githubTag"
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  displayName: Set github release tag
+    export GitHubTag=$(git describe --abbrev=0 --tags)
+    echo "##vso[task.setvariable variable=GitHubTag]${$GitHubTag:-'0.0.0-noop'}"
+    echo "Release tag set to: $GitHubTag" 1>&3
+  # condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+  displayName: Parse github release tag
   failOnStderr: true
 
 - task: UseDotNet@2
@@ -48,8 +49,24 @@ steps:
     performMultiLevelLookup: true
     includePreviewVersions: true
     
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build --configuration $(buildConfiguration) -p:Version=$(githubTag)
   displayName: 'Build solution in $(buildConfiguration) mode'
+
+- task: CopyFiles@2
+  displayName: 'Copy packages to staging'
+  inputs:
+    CleanTargetFolder: true
+    Contents: '**/*.*nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Create packages artifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Cached_Packages_Artifact'
+    publishLocation: 'Container'
+    FileCopyOptions: 
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
@@ -59,34 +76,6 @@ steps:
     projects: 'tests/**/*.csproj'
     nobuild: true
     testRunTitle: 'Running tests for solution'
-
-- task: GitHubRelease@1
-  displayName: Create github pre-release
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  inputs:
-    gitHubConnection: 'ryhled/cached'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    tagPattern: 'v\d+\.\d+\.\d+-(alpha|beta|preview)\d*'
-    isPreRelease: true
-    changeLogCompareToRelease: 'lastNonDraftRelease'
-    changeLogType: 'commitBased'
-
-- task: GitHubRelease@1
-  displayName: Create github release
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  inputs:
-    gitHubConnection: 'ryhled/cached'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    tagPattern: 'v\d+\.\d+\.\d+'
-    isPreRelease: false
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
 
 - script: |
     dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.5.8
