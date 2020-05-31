@@ -52,11 +52,11 @@ steps:
   displayName: 'Build solution in $(buildConfiguration) mode'
 
 - task: CopyFiles@2
-  displayName: 'Copy nuget packages to staging'
   inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**/*.*nupkg'
-    TargetFolder: 
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    OverWrite: true
+    flattenFolders: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
