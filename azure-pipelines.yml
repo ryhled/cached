@@ -51,10 +51,19 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build solution in $(buildConfiguration) mode'
 
+- task: CopyFiles@2
+  displayName: 'Copy packages to staging'
+  inputs:
+    Contents: '**/*.*nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    OverWrite: true
+    flattenFolders: true
+
 - task: PublishBuildArtifacts@1
+  displayName: 'Create packages artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Cached_Build_Artifact'
+    ArtifactName: 'Cached_Packages_Artifact'
     publishLocation: 'Container'
     FileCopyOptions: 
 
