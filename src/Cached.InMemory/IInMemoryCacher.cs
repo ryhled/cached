@@ -1,6 +1,8 @@
 ﻿namespace Cached.InMemory
 {
-    /// <inheritdoc />
+    using System;
+
+    /// <inheritdoc cref="ICacher" />
     public interface IInMemoryCacher : ICacher
     {
     }

@@ -14,7 +14,7 @@
             var options = new MemoryCacheOptions();
             _memoryCache = new MemoryCache(options);
             IInMemoryCacher inMemoryCacher =
-                InMemoryCacher.New(new CachedSettings(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)), _memoryCache);
+                InMemoryCacher.New(_memoryCache, new CachedSettings(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)));
             _inMemoryCached = new InMemoryCached<string, int>(inMemoryCacher, i => i + "_key", async i =>
             {
                 await Task.Delay(10);

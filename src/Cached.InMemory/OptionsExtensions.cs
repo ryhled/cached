@@ -7,7 +7,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    ///     Provides the cachedconfigurator with an InMemory service instance.
+    ///     Provides the CachedConfigurator with an InMemory service instance.
     /// </summary>
     public static class OptionsExtensions
     {
@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="options">The configurator object used during application startup.</param>
         /// <param name="settings">(Optional) Service specific settings (which overrides the global settings).</param>
-        /// <returns>A new cachedservice instance.</returns>
+        /// <returns>A new cached service instance.</returns>
         public static void AddInMemoryCaching(this ICachedOptions options, CachedSettings settings = null)
         {
             if (options == null)
@@ -25,8 +25,7 @@
             }
 
             options.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
-                provider => InMemoryCacher.New(settings ?? options.GlobalSettings,
-                    provider.GetService<IMemoryCache>()));
+                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), settings ?? options.GlobalSettings));
         }
 
         /// <summary>
@@ -34,7 +33,7 @@
         /// </summary>
         /// <typeparam name="TResponse">The type of data we want to query for.</typeparam>
         /// <typeparam name="TParam">The type of object we want to query from.</typeparam>
-        /// <param name="options">The Cached optionsbuilder, responsible for putting everything together.</param>
+        /// <param name="options">The Cached OptionsBuilder, responsible for putting everything together.</param>
         /// <param name="keyFactory">A function that specifies how to construct the cache key out of the passed parameter.</param>
         /// <param name="fetchFactory">A function which specifies how to fetch the data if it does not exist in cache.</param>
         public static void AddInMemoryCachedFunction<TResponse, TParam>(

@@ -26,26 +26,24 @@
         }
 
         /// <summary>
-        ///     Creates a new memory cacher instance.
+        ///     Create a new MemoryCacher instance.
         /// </summary>
-        /// <param name="memoryCache">(Optional) The memoryCache instance to be used with the cacher.</param>
+        /// <param name="memoryCacher">The underlying MemoryCacher instance to be used.</param>
         /// <param name="settings">(Optional) Customized Cached settings.</param>
-        /// <returns>A new memoryCacher instance.</returns>
-        public static InMemoryCacher New(
-            CachedSettings settings = default,
-            IMemoryCache memoryCache = default)
+        /// <returns></returns>
+        public static InMemoryCacher New(IMemoryCache memoryCacher, CachedSettings settings = default)
         {
             return new InMemoryCacher(
-                memoryCache ?? new MemoryCache(new MemoryCacheOptions()),
+                memoryCacher ?? throw new ArgumentNullException(nameof(memoryCacher)),
                 new SemaphoreSlimLock(),
                 settings ?? new CachedSettings(),
                 () => DateTimeOffset.UtcNow);
         }
 
         /// <summary>
-        ///     <para>Tries to get data from memory cache.</para>
+        ///     <para>Tries to get data from the underlying MemoryCache.</para>
         ///     <para>
-        ///         Since MemoryCache itself is threadsafe, thus we do no need to lock reads.
+        ///         Since MemoryCache itself is thread-safe, we do not need to lock read operations.
         ///         <see href="https://docs.microsoft.com/en-us/dotnet/api/system.runtime.caching.memorycache">
         ///             MemoryCache
         ///             Documentation

@@ -13,8 +13,9 @@
         {
             var options = new MemoryCacheOptions();
             _memoryCache = new MemoryCache(options);
-            _inMemoryCacher = InMemoryCacher.New(new CachedSettings(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)),
-                _memoryCache);
+            _inMemoryCacher = InMemoryCacher.New(
+                _memoryCache, 
+                new CachedSettings(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)));
         }
 
         public void Dispose()
