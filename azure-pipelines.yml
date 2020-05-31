@@ -62,6 +62,7 @@ steps:
     displayName: "Copy packages to staging"
     inputs:
       CleanTargetFolder: true
+      flattenFolders: true
       Contents: "**/*.*nupkg"
       TargetFolder: "$(Build.ArtifactStagingDirectory)"
       OverWrite: true
