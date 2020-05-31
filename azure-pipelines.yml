@@ -7,96 +7,91 @@ trigger:
   branches:
     include:
       - master
-      - ci-cd-test
   tags:
     include:
-    - v*
+      - v*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
-  buildConfiguration: 'Release'
-  disable.coverage.autogenerate: 'true'
+  buildConfiguration: "Release"
+  disable.coverage.autogenerate: "true"
 
 steps:
+  - script: |
+      export GitHubTag=$(git describe --abbrev=0 --tags)
+      export ReleaseVersion=${GitHubTag#?}
+      echo "##vso[task.setvariable variable=ReleaseVersion]$ReleaseVersion"
+      echo "ReleaseVersion set to: $ReleaseVersion"
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    displayName: Parse release version
+    failOnStderr: true
 
-- script: |
-    export githubTag=$(git describe --abbrev=0 --tags)
-    echo "##vso[task.setvariable variable=githubTag]$githubTag"
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  displayName: Set github release tag
-  failOnStderr: true
+  - task: UseDotNet@2
+    displayName: "Install .Net Core 2.2 SDK"
+    inputs:
+      version: "2.2.x"
+      packageType: "sdk"
 
-- task: UseDotNet@2
-  displayName: 'Install .Net Core 2.2 SDK'
-  inputs:
-    version: '2.2.x'
-    packageType: 'sdk'
+  - task: UseDotNet@2
+    displayName: "Install .Net Core 3.1 SDK"
+    inputs:
+      version: "3.1.x"
+      packageType: "sdk"
 
-- task: UseDotNet@2
-  displayName: 'Install .Net Core 3.1 SDK'
-  inputs:
-    version: '3.1.x'
-    packageType: 'sdk'
+  - task: UseDotNet@2
+    displayName: "Install .Net 5 SDK"
+    inputs:
+      version: "5.0.x"
+      packageType: "sdk"
+      performMultiLevelLookup: true
+      includePreviewVersions: true
 
-- task: UseDotNet@2
-  displayName: 'Install .Net 5 SDK'
-  inputs:
-    version: '5.0.x'
-    packageType: 'sdk'
-    performMultiLevelLookup: true
-    includePreviewVersions: true
-    
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'Build solution in $(buildConfiguration) mode'
+  - script: dotnet build --configuration $(buildConfiguration) -p:Version=$(ReleaseVersion)
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    displayName: "Build versioned solution ($(buildConfiguration))"
 
-- task: DotNetCoreCLI@2
-  displayName: 'Run tests'
-  inputs:
-    command: 'test'
-    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-    projects: 'tests/**/*.csproj'
-    nobuild: true
-    testRunTitle: 'Running tests for solution'
+  - script: dotnet build --configuration $(buildConfiguration)
+    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    displayName: "Build solution ($(buildConfiguration))"
 
-- task: GitHubRelease@1
-  displayName: Create github pre-release
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  inputs:
-    gitHubConnection: 'ryhled/cached'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    tagPattern: 'v\d+\.\d+\.\d+-(alpha|beta|preview)\d*'
-    isPreRelease: true
-    changeLogCompareToRelease: 'lastNonDraftRelease'
-    changeLogType: 'commitBased'
+  - task: CopyFiles@2
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    displayName: "Copy packages to staging"
+    inputs:
+      CleanTargetFolder: true
+      Contents: "**/*.*nupkg"
+      TargetFolder: "$(Build.ArtifactStagingDirectory)"
+      OverWrite: true
 
-- task: GitHubRelease@1
-  displayName: Create github release
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-  inputs:
-    gitHubConnection: 'ryhled/cached'
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    tagPattern: 'v\d+\.\d+\.\d+'
-    isPreRelease: false
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
+  - task: PublishBuildArtifacts@1
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    displayName: "Create packages artifact"
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "Cached_Packages_Artifact"
+      publishLocation: "Container"
+      FileCopyOptions:
 
-- script: |
-    dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.5.8
-    reportgenerator -reports:$(Build.SourcesDirectory)/tests/**/coverage.*.cobertura.xml -tag:$(Build.BuildNumber) -targetdir:$(Build.SourcesDirectory)/CoverageResults -reporttypes:'HtmlInline_AzurePipelines_Dark;Cobertura'
-  displayName: Create code coverage report
+  - task: DotNetCoreCLI@2
+    displayName: "Run tests"
+    inputs:
+      command: "test"
+      arguments: "--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura"
+      projects: "tests/**/*.csproj"
+      nobuild: true
+      testRunTitle: "Running tests for solution"
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage'
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml'
-    reportDirectory: '$(Build.SourcesDirectory)'
-    pathToSources: '$(Build.SourcesDirectory)'
+  - script: |
+      dotnet tool install -g dotnet-reportgenerator-globaltool --version 4.5.8
+      reportgenerator -reports:$(Build.SourcesDirectory)/tests/**/coverage.*.cobertura.xml -tag:$(Build.BuildNumber) -targetdir:$(Build.SourcesDirectory)/CoverageResults -reporttypes:'HtmlInline_AzurePipelines_Dark;Cobertura'
+    displayName: Create code coverage report
+
+  - task: PublishCodeCoverageResults@1
+    displayName: "Publish code coverage"
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: "$(Build.SourcesDirectory)/CoverageResults/Cobertura.xml"
+      reportDirectory: "$(Build.SourcesDirectory)"
+      pathToSources: "$(Build.SourcesDirectory)"
