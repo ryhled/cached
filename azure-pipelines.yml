@@ -22,9 +22,10 @@ variables:
 steps:
 
 - script: |
-    export GitHubTag=${$(git describe --abbrev=0 --tags):-´0.0.0´}
-    echo "Release tag set to: $GitHubTag"
-  # condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    export GitHubTag=$(git describe --abbrev=0 --tags)
+    echo "##vso[task.setvariable variable=ReleaseTag]$GitHubTag"
+    echo "ReleaseTag set to: $GitHubTag"
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   displayName: Parse github release tag
   failOnStderr: true
 
