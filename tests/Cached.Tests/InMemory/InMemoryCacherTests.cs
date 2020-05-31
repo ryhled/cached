@@ -28,6 +28,28 @@ namespace Cached.Tests.InMemory
                 "dd/MM/yyyy HH.mm.ss zzz", CultureInfo.InvariantCulture);
 
             [Fact]
+            public async Task Will_rely_on_memory_cache_config_if_no_settings_provided()
+            {
+                // Arrange
+                var lockMock = new Mock<ILock>();
+                var memoryCacheMock = new Mock<IMemoryCache>();
+                ICacheEntry entryResult = default;
+                memoryCacheMock.Setup(m => m.CreateEntry(It.IsAny<string>()))
+                    .Returns((string key) =>
+                    {
+                        entryResult = new FakeMemoryCacheEntry(key);
+                        return entryResult;
+                    });
+                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, null, _fakeNowFactory);
+
+                // Act
+                await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
+
+                // Assert
+                // TODO: Assert that no memory cache options are set for cache entry.
+            }
+
+            [Fact]
             public async Task Will_use_provided_settings_when_specified()
             {
                 // Arrange
@@ -50,29 +72,6 @@ namespace Cached.Tests.InMemory
                 Assert.Equal(_fakeNowFactory().Add(settings.AbsoluteExpiration), entryResult.AbsoluteExpiration.Value);
                 Assert.Equal(settings.SlidingExpiration, entryResult.SlidingExpiration.Value);
             }
-
-            [Fact]
-            public async Task Will_rely_on_memory_cache_config_if_no_settings_provided()
-            {
-                // Arrange
-                var lockMock = new Mock<ILock>();
-                var memoryCacheMock = new Mock<IMemoryCache>();
-                ICacheEntry entryResult = default;
-                memoryCacheMock.Setup(m => m.CreateEntry(It.IsAny<string>()))
-                    .Returns((string key) =>
-                    {
-                        entryResult = new FakeMemoryCacheEntry(key);
-                        return entryResult;
-                    });
-                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, null, _fakeNowFactory);
-
-                // Act
-                await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
-
-                // Assert
-                // TODO: Assert that no memory cache options are set for cache entry.
-
-            }
         }
 
         public sealed class NewMethod
@@ -89,20 +88,20 @@ namespace Cached.Tests.InMemory
             public sealed class CreatesInstance
             {
                 [Fact]
-                public void When_Cache_Argument_Is_Set()
+                public void When_Cache_Argument_And_Settings_Are_Set()
                 {
                     // Arrange, Act
-                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object);
+                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object, new CachedSettings());
 
                     // Assert
                     Assert.NotNull(result);
                 }
 
                 [Fact]
-                public void When_Cache_Argument_And_Settings_Are_Set()
+                public void When_Cache_Argument_Is_Set()
                 {
                     // Arrange, Act
-                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object, new CachedSettings());
+                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object);
 
                     // Assert
                     Assert.NotNull(result);

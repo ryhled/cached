@@ -25,7 +25,8 @@
             }
 
             options.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
-                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), settings ?? options.GlobalSettings));
+                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(),
+                    settings ?? options.GlobalSettings));
         }
 
         /// <summary>

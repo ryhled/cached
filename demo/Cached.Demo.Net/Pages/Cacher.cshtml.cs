@@ -1,4 +1,4 @@
-namespace Cached.Demo.NetCore31.Pages
+namespace Cached.Demo.Net.Pages
 {
     using System;
     using System.Diagnostics;
@@ -8,11 +8,11 @@ namespace Cached.Demo.NetCore31.Pages
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
-    public class IndexModel : PageModel
+    public class CacherModel : PageModel
     {
         private readonly IInMemoryCacher _cached;
 
-        public IndexModel(IInMemoryCacher cached)
+        public CacherModel(IInMemoryCacher cached)
         {
             _cached = cached;
         }

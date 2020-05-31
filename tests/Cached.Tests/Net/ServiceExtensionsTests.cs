@@ -1,7 +1,6 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
-    using System.Linq;
     using Cached.Net;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
@@ -14,15 +13,16 @@
             public sealed class Throws
             {
                 [Fact]
-                public void If_Services_Argument_Is_Null()
+                public void If_No_CacheService_Is_Configured()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((IServiceCollection)null).AddCached(options => { }));
+                    Assert.Throws<InvalidOperationException>(() =>
+                        new Mock<IServiceCollection>().Object.AddCached(options => { }));
                 }
 
                 [Fact]
-                public void If_No_CacheService_Is_Configured()
+                public void If_Services_Argument_Is_Null()
                 {
-                    Assert.Throws<InvalidOperationException>(() => (new Mock<IServiceCollection>().Object).AddCached(options => { }));
+                    Assert.Throws<ArgumentNullException>(() => ((IServiceCollection) null).AddCached(options => { }));
                 }
             }
 
@@ -35,7 +35,8 @@
                     var services = new ServiceCollection();
 
                     // Act
-                    services.AddCached(options => options.AddTransientService<ITestCacher, TestCacher>(provider => new TestCacher()));
+                    services.AddCached(options =>
+                        options.AddTransientService<ITestCacher, TestCacher>(provider => new TestCacher()));
 
                     // Assert
                     Assert.True(services.Count == 1);
@@ -44,7 +45,6 @@
 
             private interface ITestCacher
             {
-                
             }
 
             private class TestCacher : ICachedService, ITestCacher

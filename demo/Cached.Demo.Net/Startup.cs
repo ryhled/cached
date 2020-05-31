@@ -17,13 +17,13 @@ namespace Cached.Demo.Net
             services.AddCached(options =>
             {
                 options.GlobalSettings =
-                    new CachedSettings(TimeSpan.FromMilliseconds(5), TimeSpan.FromMilliseconds(10));
+                    new CachedSettings(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(20));
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, string>(param =>
                         param,
                     async (_, arg) =>
                     {
-                        await Task.Delay(1);
+                        await Task.Delay(500);
                         return DateTime.Now + $" [cached function for: {arg}]";
                     });
             });
