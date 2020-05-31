@@ -6,8 +6,8 @@
 trigger:
   branches:
     include:
-      - master
-      - ci-cd-test
+      - aster
+      - azure*
   tags:
     include:
     - v*
@@ -50,6 +50,12 @@ steps:
     
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build solution in $(buildConfiguration) mode'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'Nuget_Build_Artifact'
+    publishLocation: 'pipeline'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
