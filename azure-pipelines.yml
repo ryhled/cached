@@ -22,7 +22,6 @@ variables:
 steps:
 
 - script: |
-    export GitHubTag=$(git describe --abbrev=0 --tags)
     export VAR1="v1.1.1"
     echo "Tag: ${VAR1#?}"
   failOnStderr: true
