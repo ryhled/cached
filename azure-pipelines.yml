@@ -63,6 +63,7 @@ steps:
   displayName: 'Build solution ($(buildConfiguration))'
 
 - task: CopyFiles@2
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   displayName: 'Copy packages to staging'
   inputs:
     CleanTargetFolder: true
@@ -71,6 +72,7 @@ steps:
     OverWrite: true
 
 - task: PublishBuildArtifacts@1
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
   displayName: 'Create packages artifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
