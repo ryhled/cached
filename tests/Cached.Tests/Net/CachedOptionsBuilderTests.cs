@@ -1,6 +1,7 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
+    using System.Linq;
     using Cached.Net;
     using Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -40,8 +41,7 @@
                 }
             }
 
-            public sealed class
-                BuildsCorrectly // TODO: Extract descriptors from the servicecollectionmock and ensure that what goes in actually comes out.
+            public sealed class BuildsCorrectly
             {
                 [Fact]
                 public void Configurator_only_add_identical_service_once()
@@ -58,6 +58,7 @@
 
                     // Assert
                     Assert.Single(serviceCollection);
+                    Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
                 }
 
                 [Fact]
@@ -75,6 +76,7 @@
                     // Assert
                     Assert.Single(serviceCollection);
                     Assert.Equal(globalSettings, options.GlobalSettings);
+                    Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
                 }
 
                 [Fact]
@@ -90,6 +92,7 @@
 
                     // Assert
                     Assert.Single(serviceCollection);
+                    Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
                 }
             }
         }
