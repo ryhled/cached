@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    /// <inheritdoc />
+    /// <inheritdoc cref="ICached{TResponse, TParam}" />
     public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>, ICachedService
     {
         private readonly Func<TParam, Task<TResponse>> _fetchFactory;

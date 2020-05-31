@@ -8,7 +8,7 @@
     public interface ICachedOptions
     {
         /// <summary>
-        ///     Specifiy global settings to be used for all Cached services.
+        ///     Specify global settings to be used for all Cached services.
         ///     (Service specific settings override global settings).
         /// </summary>
         CachedSettings GlobalSettings { get; set; }
@@ -18,7 +18,7 @@
         /// </summary>
         /// <typeparam name="TFrom">The type of object to be used for injection.</typeparam>
         /// <typeparam name="TTo">The type of the concrete object meant to fill the injection.</typeparam>
-        /// <param name="serviceFactory">The servicefactory that ultimately creates the instance.</param>
+        /// <param name="serviceFactory">The ServiceFactory that ultimately creates the instance.</param>
         void AddSingletonService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
             where TFrom : class
             where TTo : class, TFrom, ICachedService;
@@ -28,7 +28,7 @@
         /// </summary>
         /// <typeparam name="TFrom">The type of object to be used for injection.</typeparam>
         /// <typeparam name="TTo">The type of the concrete object meant to fill the injection.</typeparam>
-        /// <param name="serviceFactory">The servicefactory that ultimately creates the instance.</param>
+        /// <param name="serviceFactory">The ServiceFactory that ultimately creates the instance.</param>
         void AddTransientService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
             where TFrom : class
             where TTo : class, TFrom, ICachedService;
