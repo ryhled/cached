@@ -22,7 +22,7 @@ variables:
 steps:
 
 - script: |
-    export VAR§=${'v1.1.1'}
+    export VAR1="v1.1.1"
     echo "Tag: ${VAR1#?}"
   failOnStderr: true
 
