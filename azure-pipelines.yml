@@ -51,12 +51,12 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build solution in $(buildConfiguration) mode'
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Public nuget packages'
+- task: CopyFiles@2
+  displayName: 'Copy nuget packages to staging'
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'Nuget_Build_Artifact'
-    publishLocation: 'pipeline'
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**/*.*nupkg'
+    TargetFolder: 
 
 - task: DotNetCoreCLI@2
   displayName: 'Run tests'
@@ -70,7 +70,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!**/*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget.org - Cached'
     includeSymbols: true
