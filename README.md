@@ -5,7 +5,8 @@
 ![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/ryhled/cached/3/master)
 ![GitHub issues](https://img.shields.io/github/issues/ryhled/cached)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ryhled/cached)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ryhled/cached/blob/master/LICENSE.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ryhled/cached/blob/master/LICENSE.md?label=license)
+![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ryhled/cached?include_prereleases&label=latest%20release)
 
 The light-weight, stampede safe, unobtrusive C# / .NET Core cache library.
 
@@ -22,17 +23,17 @@ Cached provides multiple nuget packages. Below is what you need to use InMemory 
 
 ```
 
-nuget install cached.net
-nuget install cached.inmemory
+nuget install Cached.Net
+nuget install Cached.InMemory
 
 ```
 
-## Examples (Nuget packages will be available once first release is completed)
+## Examples
 
 ### In-Memory - Minimal
 
 ```
-var cacher = MemoryCacher.New();
+var cacher = MemoryCacher.Default();
 var value = await cacher.GetOrFetchAsync("cached_value", async () => { ... });
 ```
 
