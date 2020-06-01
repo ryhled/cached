@@ -203,7 +203,7 @@ namespace Cached.Tests.InMemory
                     cachedData = "John";
                     if (hasHitOnce)
                     {
-                        return key.EndsWith("some-name");
+                        return key.EndsWith("some-name-key");
                     }
 
                     hasHitOnce = true;
@@ -220,7 +220,7 @@ namespace Cached.Tests.InMemory
                     .Returns(new TryGetValueReturns(TryGetValueFakeCallback));
 
                 // Act
-                var value = await NewInMemoryCacher().GetOrFetchAsync("some-name", FakeFetchFactory);
+                var value = await NewInMemoryCacher().GetOrFetchAsync("some-name-key", FakeFetchFactory);
 
                 // Assert
                 Assert.Equal("John", value);
