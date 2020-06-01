@@ -17,7 +17,8 @@
         /// <param name="builder">The configurator object used during application startup.</param>
         /// <param name="options">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
-        public static void AddInMemoryCaching(this ICachedConfigurationBuilder builder, MemoryCacheEntryOptions options = null)
+        public static void AddInMemoryCaching(this ICachedConfigurationBuilder builder,
+            MemoryCacheEntryOptions options = null)
         {
             if (builder == null)
             {

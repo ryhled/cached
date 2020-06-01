@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Caching;
 
-    /// <inheritdoc cref="ICached{TResponse, TParam}" />
+    /// <inheritdoc cref="ICached{TResponse,TParam}" />
     public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>, ICachedService
     {
         private readonly Func<TParam, Task<TResponse>> _fetchFactory;

@@ -2,7 +2,6 @@ namespace Cached.Tests.InMemory
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Globalization;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Locking;
@@ -57,7 +56,7 @@ namespace Cached.Tests.InMemory
                         entryResult = new FakeMemoryCacheEntry(key);
                         return entryResult;
                     });
-                var options = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60) };
+                var options = new MemoryCacheEntryOptions {AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)};
                 var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, options);
 
                 // Act
@@ -153,7 +152,8 @@ namespace Cached.Tests.InMemory
 
             private InMemoryCacher NewInMemoryCacher()
             {
-                return new InMemoryCacher(_memoryCacheMock.Object, _cacherLockMock.Object, new MemoryCacheEntryOptions());
+                return new InMemoryCacher(_memoryCacheMock.Object, _cacherLockMock.Object,
+                    new MemoryCacheEntryOptions());
             }
 
             [Fact]

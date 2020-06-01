@@ -59,7 +59,8 @@
                     Assert.Single(serviceCollection);
                     Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
 
-                    var fetchedObject = (TestClass)serviceCollection.First().ImplementationFactory(new Mock<IServiceProvider>().Object);
+                    var fetchedObject = (TestClass) serviceCollection.First()
+                        .ImplementationFactory(new Mock<IServiceProvider>().Object);
                     Assert.Equal("abc123", fetchedObject.MyProperty);
                 }
 

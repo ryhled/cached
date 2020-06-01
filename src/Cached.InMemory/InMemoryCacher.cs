@@ -9,9 +9,11 @@
     /// <inheritdoc cref="IInMemoryCacher" />
     public sealed class InMemoryCacher : Cacher<InMemoryCacher>, IInMemoryCacher, ICachedService
     {
+        private static readonly Lazy<IMemoryCache> DefaultInstance =
+            new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
+
         private readonly IMemoryCache _memoryCache;
         private readonly MemoryCacheEntryOptions _options;
-        private static readonly Lazy<IMemoryCache> DefaultInstance = new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
 
         internal InMemoryCacher(
             IMemoryCache memoryCache,
@@ -24,12 +26,14 @@
         }
 
         /// <summary>
-        /// Creates a default InMemoryCacher instance, using a globally shared, long lived, MemoryCache instance.
+        ///     Creates a default InMemoryCacher instance, using a globally shared, long lived, MemoryCache instance.
         /// </summary>
         /// <param name="options">(Optional) Customized Cached settings.</param>
         /// <returns>A new InMemoryCacher instance.</returns>
         public static InMemoryCacher Default(MemoryCacheEntryOptions options = null)
-            => New(DefaultInstance.Value, options);
+        {
+            return New(DefaultInstance.Value, options);
+        }
 
         /// <summary>
         ///     Create a new MemoryCacher instance.

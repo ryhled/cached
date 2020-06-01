@@ -21,15 +21,15 @@
                 }
 
                 [Fact]
-                public void If_Services_Argument_Is_Null()
-                {
-                    Assert.Throws<ArgumentNullException>(() => ((IServiceCollection) null).AddCached(options => { }));
-                }
-
-                [Fact]
                 public void If_Option_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() => new Mock<IServiceCollection>().Object.AddCached(null));
+                }
+
+                [Fact]
+                public void If_Services_Argument_Is_Null()
+                {
+                    Assert.Throws<ArgumentNullException>(() => ((IServiceCollection) null).AddCached(options => { }));
                 }
             }
 

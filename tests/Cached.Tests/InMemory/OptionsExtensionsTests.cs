@@ -17,7 +17,8 @@
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null).AddInMemoryCaching());
+                    Assert.Throws<ArgumentNullException>(
+                        () => ((ICachedConfigurationBuilder) null).AddInMemoryCaching());
                 }
             }
 

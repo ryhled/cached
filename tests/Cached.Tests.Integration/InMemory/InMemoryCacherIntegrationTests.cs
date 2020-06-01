@@ -14,7 +14,7 @@
             _memoryCache = new MemoryCache(options);
             _inMemoryCacher = InMemoryCacher.New(
                 _memoryCache,
-                new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });
+                new MemoryCacheEntryOptions {AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)});
         }
 
         public void Dispose()
@@ -24,6 +24,23 @@
 
         private readonly IMemoryCache _memoryCache;
         private readonly IInMemoryCacher _inMemoryCacher;
+
+        [Fact]
+        public async Task Default_InMemoryCacher_Instances_Share_Cache()
+        {
+            // Arrange
+            InMemoryCacher cacher1 = InMemoryCacher.Default();
+            InMemoryCacher cacher2 = InMemoryCacher.Default();
+
+            // Act
+            var result1 = await cacher1.GetOrFetchAsync("name", () => Task.FromResult("sven"));
+            var result2 = await cacher2.GetOrFetchAsync("name", () => Task.FromResult("oscar"));
+
+            // Assert
+            Assert.NotEqual(cacher1, cacher2);
+            Assert.Equal("sven", result1);
+            Assert.Equal("sven", result2);
+        }
 
         [Fact]
         public async Task Will_Fetch_Async_Function_Correctly()
@@ -53,23 +70,6 @@
             Assert.Equal("second_fetch", result2);
             Assert.Equal("first_fetch", result3);
             Assert.Equal("second_fetch", result4);
-        }
-
-        [Fact]
-        public async Task Default_InMemoryCacher_Instances_Share_Cache()
-        {
-            // Arrange
-            InMemoryCacher cacher1 = InMemoryCacher.Default();
-            InMemoryCacher cacher2 = InMemoryCacher.Default();
-
-            // Act
-            var result1 = await cacher1.GetOrFetchAsync("name", () => Task.FromResult("sven"));
-            var result2 = await cacher2.GetOrFetchAsync("name", () => Task.FromResult("oscar"));
-
-            // Assert
-            Assert.NotEqual(cacher1, cacher2);
-            Assert.Equal("sven", result1);
-            Assert.Equal("sven", result2);
         }
     }
 }
