@@ -8,12 +8,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ryhled/cached/blob/master/LICENSE.md?label=license)
 ![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ryhled/cached?include_prereleases&label=latest%20release)
 
-The light-weight, stampede safe, unobtrusive C# / .NET Core cache library.
+The light-weight, stampede safe, unobtrusive C# / .NET Core cache library. Aim is to be as thin as possible and to use underlying providers (instead of building own complex frameworks and reinventing the wheel).
 
 #### Features
 
 - Does automatic fetch / recaching on cache miss.
-- Prevents cache stampedes. Calls to populate cache are done only once.
+- Cache stampede prevention (in-process). Calls to populate cache are done only once.
 - Selective locking, only the key being fetched is locked during cache repopulation.
 - Flexibility. For example: inject as service, or inject call directly as an 'ICached<>' instance.
 
@@ -27,19 +27,23 @@ nuget install Cached.Net
 nuget install Cached.InMemory
 
 ```
-
 ## Examples
 
-### In-Memory - Minimal
+### Minimal in-memory implementation
 
+##### 1. Install nuget package
+```
+nuget install Cached.InMemory
+```
+##### 2. Add below code to your console application (for example)
 ```
 var cacher = MemoryCacher.Default();
 var value = await cacher.GetOrFetchAsync("cached_value", async () => { ... });
 ```
 
-### In-Memory - Dependency Injection
+### In-memory provider used in Net Core application
 
-#### Startup.cs
+##### 1. Add Cached support in Startup.cs.
 
 ```
 public void ConfigureServices(IServiceCollection services)
@@ -48,7 +52,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-#### RazorPage
+##### 2. Inject and use cacher in your razor page.
 
 ```
 private readonly IMemoryCacher _cacher;
@@ -64,10 +68,12 @@ public async Task OnGet()
 }
 ```
 
+More examples and information can be found in the [Wiki](https://github.com/ryhled/cached/wiki).
+
 ## Future plans
 
-- Add support for more cache providers.
-- Add support for cache warmup.
+* Add support for distributed caching (IDistributedCache) and optimal probabalistic stampede prevention.
+* Add support for cache warmup.
 
 ## Owner(s)
 
