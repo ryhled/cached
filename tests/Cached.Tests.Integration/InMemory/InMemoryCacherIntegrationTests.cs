@@ -1,9 +1,13 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
     using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Microsoft.Extensions.Caching.Memory;
+    using Moq;
     using Xunit;
 
     public sealed class InMemoryCacherIntegrationTests : IDisposable
@@ -70,6 +74,40 @@
             Assert.Equal("second_fetch", result2);
             Assert.Equal("first_fetch", result3);
             Assert.Equal("second_fetch", result4);
+        }
+
+        [Fact]
+        public async Task Only_Does_Fetch_Once_During_Stampede()
+        {
+            // Arrange
+            var fetchCounter = 0;
+            var callCounter = 0;
+            const int taskCount = 100; // the number of clients trying to access same cache entry simultaneously.
+
+            async Task<int> FetchTask()
+            {
+                await Task.Delay(50);
+                return Interlocked.Increment(ref fetchCounter);
+            }
+
+            async Task StampedeTask()
+            {
+                var result = await _inMemoryCacher.GetOrFetchAsync("Only_Fetch_Once_During_Stampede_Key", FetchTask);
+                Assert.Equal(1, result);
+                Interlocked.Increment(ref callCounter);
+            }
+
+            // Act
+            Parallel.For(0, taskCount, async nr => await StampedeTask());
+
+            while (callCounter < taskCount)
+            {
+                await Task.Delay(10);
+            }
+
+            // Assert
+            Assert.Equal(1, fetchCounter);
+            Assert.Equal(taskCount, callCounter);
         }
     }
 }

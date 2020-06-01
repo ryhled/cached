@@ -2,6 +2,7 @@ namespace Cached.Tests.InMemory
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Threading;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Locking;
