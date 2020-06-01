@@ -2,7 +2,6 @@ namespace Cached.Tests.InMemory
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Threading;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Locking;
@@ -162,16 +161,15 @@ namespace Cached.Tests.InMemory
             {
                 // Arrange
                 InMemoryCacher memoryCacher = NewInMemoryCacher();
-                const string ageKey = "age";
 
                 // Act
-                var value = await memoryCacher.GetOrFetchAsync(ageKey, () => Task.FromResult(23));
+                var value = await memoryCacher.GetOrFetchAsync("age-key", () => Task.FromResult(23));
 
                 // Assert
                 Assert.Equal(23, value);
-                Assert.Equal(23, _fakeCache[GetInternalKey(ageKey, typeof(int))].Value);
+                Assert.Equal(23, _fakeCache[GetInternalKey("age-key", typeof(int))].Value);
                 _cacherLockMock.Verify(c => c.LockAsync(It.IsAny<object>()), Times.Once);
-                _cacherLockMock.Verify(c => c.LockAsync(GetInternalKey(ageKey, typeof(int))), Times.Once);
+                _cacherLockMock.Verify(c => c.LockAsync(GetInternalKey("age-key", typeof(int))), Times.Once);
                 _memoryCacheMock.Verify(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<object>.IsAny),
                     Times.Exactly(2));
             }
@@ -180,18 +178,55 @@ namespace Cached.Tests.InMemory
             public async Task Gets_Cached_Data_Without_Using_Fetch_Factory()
             {
                 // Arrange
-                const string nameKey = "name";
-                var internalName = GetInternalKey(nameKey, typeof(string));
+                var internalName = GetInternalKey("some-name-key", typeof(string));
                 InMemoryCacher memoryCacher = NewInMemoryCacher();
                 _fakeCache[internalName] = new FakeMemoryCacheEntry(internalName) {Value = "John"};
 
                 // Act
-                var value = await memoryCacher.GetOrFetchAsync(nameKey, () => Task.FromResult("George"));
+                var value = await memoryCacher.GetOrFetchAsync("some-name-key", () => Task.FromResult("George"));
 
                 // Assert
                 Assert.Equal("John", value);
                 _cacherLockMock.Verify(c => c.LockAsync(It.IsAny<object>()), Times.Never);
                 _memoryCacheMock.Verify(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<object>.IsAny), Times.Once);
+            }
+
+            [Fact]
+            public async Task Do_Not_Hit_Fetch_Even_If_Cache_Missed_In_Case_Other_Request_Ran_Fetch_First()
+            {
+                // Arrange
+                var fetchCounter = 0;
+                var hasHitOnce = false;
+
+                bool TryGetValueFakeCallback(string key, out object cachedData)
+                {
+                    cachedData = "John";
+                    if (hasHitOnce)
+                    {
+                        return key.EndsWith("some-name");
+                    }
+
+                    hasHitOnce = true;
+                    return false;
+                }
+
+                Task<string> FakeFetchFactory()
+                {
+                    fetchCounter++;
+                    return Task.FromResult(string.Empty);
+                }
+
+                _memoryCacheMock.Setup(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<object>.IsAny))
+                    .Returns(new TryGetValueReturns(TryGetValueFakeCallback));
+
+                // Act
+                var value = await NewInMemoryCacher().GetOrFetchAsync("some-name", FakeFetchFactory);
+
+                // Assert
+                Assert.Equal("John", value);
+                Assert.Equal(0, fetchCounter);
+                _cacherLockMock.Verify(c => c.LockAsync(It.IsAny<object>()), Times.Once);
+                _memoryCacheMock.Verify(m => m.TryGetValue(It.IsAny<string>(), out It.Ref<object>.IsAny), Times.Exactly(2));
             }
         }
     }
