@@ -50,7 +50,7 @@
 
         public sealed class AddInMemoryCachedFunctionMethod
         {
-            public sealed class Throws_Exception
+            public sealed class Throws
             {
                 [Fact]
                 public void When_FetchFactory_Argument_Is_Null()

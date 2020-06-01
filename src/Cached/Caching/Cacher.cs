@@ -5,7 +5,7 @@
     using Locking;
 
     /// <inheritdoc />
-    public abstract class Cacher<TCatcher> : ICacher
+    public abstract class Cacher : ICacher
     {
         private readonly ILock _cacherLock;
 
@@ -19,7 +19,7 @@
             string key,
             Func<Task<TResponse>> fetchFactory)
         {
-            var prefixedCacheKey = $"{typeof(TCatcher).Name}_{typeof(TResponse).FullName}_{key}";
+            var prefixedCacheKey = $"{nameof(Cacher)}|{typeof(TResponse).FullName}|{key}";
 
             if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
             {

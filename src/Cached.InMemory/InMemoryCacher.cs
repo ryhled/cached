@@ -7,7 +7,7 @@
     using Microsoft.Extensions.Caching.Memory;
 
     /// <inheritdoc cref="IInMemoryCacher" />
-    public sealed class InMemoryCacher : Cacher<InMemoryCacher>, IInMemoryCacher
+    public sealed class InMemoryCacher : Cacher, IInMemoryCacher
     {
         private static readonly Lazy<IMemoryCache> DefaultInstance =
             new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));

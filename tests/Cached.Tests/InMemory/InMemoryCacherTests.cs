@@ -5,6 +5,7 @@ namespace Cached.Tests.InMemory
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Locking;
+    using Caching;
     using Locking;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
@@ -14,7 +15,7 @@ namespace Cached.Tests.InMemory
     {
         private static string GetInternalKey(string key, Type valueType)
         {
-            return $"{nameof(InMemoryCacher)}_{valueType.FullName}_{key}";
+            return $"{nameof(Cacher)}|{valueType.FullName}|{key}";
         }
 
         private delegate bool TryGetValueReturns(string key, out object cachedData);
