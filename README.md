@@ -8,13 +8,16 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ryhled/cached/blob/master/LICENSE.md?label=license)
 ![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ryhled/cached?include_prereleases&label=latest%20release)
 
-The light-weight, stampede safe, unobtrusive C# / .NET Core cache library. Aim is to be as thin as possible and to use underlying providers (instead of building own complex frameworks and reinventing the wheel).
+The light-weight, stampede safe, unobtrusive C# / .NET Core cache library. 
+
+The aim is to be an 'as thin as possible' wrapper of the official providers, such as MemoryCache and DistributedCache (not reinventing the wheel). But at the same time provide ease of use and cache stampede safety / prevention amongst other things.
 
 #### Features
 
-- Does automatic fetch / recaching on cache miss.
-- Cache stampede prevention (in-process). Calls to populate cache are done only once.
-- Selective locking, only the key being fetched is locked during cache repopulation.
+- Uses the official cache providers under the hood (configuration is done the same way you are used to).
+- Does lazy fetch / repopulation of data on cache miss.
+- Cache stampede safe (in-process). Calls to populate cache are done only once.
+- Selective write locking, only the key being repopulated is locked.
 - Flexibility. For example: inject as service, or inject call directly as an 'ICached<>' instance.
 
 ## Prerequisites
@@ -29,21 +32,16 @@ nuget install Cached.InMemory
 ```
 ## Examples
 
-### Minimal in-memory implementation
+#### - (InMemory) Minimal (suitable for example console applications)
 
-##### 1. Install nuget package
-```
-nuget install Cached.InMemory
-```
-##### 2. Add below code to your console application (for example)
 ```
 var cacher = MemoryCacher.Default();
 var value = await cacher.GetOrFetchAsync("cached_value", async () => { ... });
 ```
 
-### In-memory provider used in Net Core application
+#### - (InMemory) Net Core application
 
-##### 1. Add Cached support in Startup.cs.
+Startup.cs
 
 ```
 public void ConfigureServices(IServiceCollection services)
@@ -52,7 +50,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-##### 2. Inject and use cacher in your razor page.
+Razor page
 
 ```
 private readonly IMemoryCacher _cacher;
