@@ -1,13 +1,10 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
     using System;
-    using System.Diagnostics;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Microsoft.Extensions.Caching.Memory;
-    using Moq;
     using Xunit;
 
     public sealed class InMemoryCacherIntegrationTests : IDisposable

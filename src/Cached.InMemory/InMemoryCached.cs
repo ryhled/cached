@@ -5,7 +5,7 @@
     using Caching;
 
     /// <inheritdoc cref="ICached{TResponse,TParam}" />
-    public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>, ICachedService
+    public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>
     {
         private readonly Func<TParam, Task<TResponse>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;

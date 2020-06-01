@@ -25,7 +25,7 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
+            builder.AddCacher<IInMemoryCacher, InMemoryCacher>(
                 provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), options));
         }
 
@@ -57,7 +57,7 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.AddTransientService<ICached<TResponse, TParam>, InMemoryCached<TResponse, TParam>>(provider =>
+            options.AddCached<ICached<TResponse, TParam>, InMemoryCached<TResponse, TParam>, TResponse, TParam>(provider =>
                 new InMemoryCached<TResponse, TParam>(
                     provider.GetService<IInMemoryCacher>(),
                     keyFactory,

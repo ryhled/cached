@@ -1,6 +1,7 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
+    using System.Threading.Tasks;
     using Cached.Net;
     using Caching;
     using Microsoft.Extensions.DependencyInjection;
@@ -43,19 +44,19 @@
 
                     // Act
                     services.AddCached(options =>
-                        options.AddTransientService<ITestCacher, TestCacher>(provider => new TestCacher()));
+                        options.AddCacher<ICacher, TestCacher>(provider => new TestCacher()));
 
                     // Assert
                     Assert.True(services.Count == 1);
                 }
             }
 
-            private interface ITestCacher
+            private class TestCacher :  ICacher
             {
-            }
-
-            private class TestCacher : ICachedService, ITestCacher
-            {
+                public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<Task<TResponse>> fetchFactory)
+                {
+                    throw new NotImplementedException();
+                }
             }
         }
     }

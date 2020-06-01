@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
     using Cached.Net;
     using Caching;
     using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +13,14 @@
     {
         public sealed class BuildMethod
         {
-            public class TestClass : ICachedService
+            public class TestClass : ICached<string, string>
             {
                 public string MyProperty { get; set; }
+
+                public Task<string> GetOrFetchAsync(string arg)
+                {
+                    return Task.FromResult(string.Empty);
+                }
             }
 
             public sealed class ThrowsException
@@ -49,8 +55,8 @@
                     // Arrange
                     var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
-                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
-                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "cde321"});
+                    options.AddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "abc123"});
+                    options.AddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "cde321"});
 
                     // Act
                     options.Build(serviceCollection);
@@ -70,7 +76,7 @@
                     // Arrange
                     var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
-                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
+                    options.AddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "abc123"});
 
                     // Act
                     options.Build(serviceCollection);

@@ -11,18 +11,18 @@
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();
 
-        public void AddSingletonService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
+        public void AddCacher<TFrom, TTo>(Func<IServiceProvider, TTo> cacherFactory)
             where TFrom : class
-            where TTo : class, TFrom, ICachedService
+            where TTo : class, TFrom, ICacher
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(serviceFactory));
+            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(cacherFactory));
         }
 
-        public void AddTransientService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
+        public void AddCached<TFrom, TTo, TResponse, TParam>(Func<IServiceProvider, TTo> cachedFactory)
             where TFrom : class
-            where TTo : class, TFrom, ICachedService
+            where TTo : class, TFrom, ICached<TResponse, TParam>
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(serviceFactory));
+            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(cachedFactory));
         }
 
         internal void Build(IServiceCollection services)
