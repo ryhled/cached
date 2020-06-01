@@ -25,6 +25,12 @@
                 {
                     Assert.Throws<ArgumentNullException>(() => ((IServiceCollection) null).AddCached(options => { }));
                 }
+
+                [Fact]
+                public void If_Option_Argument_Is_Null()
+                {
+                    Assert.Throws<ArgumentNullException>(() => new Mock<IServiceCollection>().Object.AddCached(null));
+                }
             }
 
             public sealed class AddsCachedAndService

@@ -15,6 +15,11 @@
         /// <param name="options">Options for configuring cached.</param>
         public static void AddCached(this IServiceCollection services, Action<ICachedConfigurationBuilder> options)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
