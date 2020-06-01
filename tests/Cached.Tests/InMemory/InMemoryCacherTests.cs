@@ -69,7 +69,9 @@ namespace Cached.Tests.InMemory
                 await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
 
                 // Assert
+                // ReSharper disable once PossibleInvalidOperationException
                 Assert.Equal(_fakeNowFactory().Add(settings.AbsoluteExpiration), entryResult.AbsoluteExpiration.Value);
+                // ReSharper disable once PossibleInvalidOperationException
                 Assert.Equal(settings.SlidingExpiration, entryResult.SlidingExpiration.Value);
             }
         }
