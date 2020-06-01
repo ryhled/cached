@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Configuration;
+    using Caching;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -14,19 +14,18 @@
         /// <summary>
         ///     Creates a new CachedService object for use with the cached configurator.
         /// </summary>
-        /// <param name="options">The configurator object used during application startup.</param>
-        /// <param name="settings">(Optional) Service specific settings (which overrides the global settings).</param>
+        /// <param name="builder">The configurator object used during application startup.</param>
+        /// <param name="options">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
-        public static void AddInMemoryCaching(this ICachedOptions options, CachedSettings settings = null)
+        public static void AddInMemoryCaching(this ICachedConfigurationBuilder builder, MemoryCacheEntryOptions options = null)
         {
-            if (options == null)
+            if (builder == null)
             {
-                throw new ArgumentNullException(nameof(options));
+                throw new ArgumentNullException(nameof(builder));
             }
 
-            options.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
-                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(),
-                    settings ?? options.GlobalSettings));
+            builder.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
+                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), options));
         }
 
         /// <summary>
@@ -38,7 +37,7 @@
         /// <param name="keyFactory">A function that specifies how to construct the cache key out of the passed parameter.</param>
         /// <param name="fetchFactory">A function which specifies how to fetch the data if it does not exist in cache.</param>
         public static void AddInMemoryCachedFunction<TResponse, TParam>(
-            this ICachedOptions options,
+            this ICachedConfigurationBuilder options,
             Func<TParam, string> keyFactory,
             Func<IServiceProvider, TParam, Task<TResponse>> fetchFactory)
         {

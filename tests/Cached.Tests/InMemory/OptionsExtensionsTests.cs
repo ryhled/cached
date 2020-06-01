@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Net;
-    using Configuration;
+    using Caching;
     using Moq;
     using Xunit;
 
@@ -17,7 +17,7 @@
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((ICachedOptions) null).AddInMemoryCaching());
+                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null).AddInMemoryCaching());
                 }
             }
 
@@ -28,7 +28,7 @@
                 {
                     // Arrange
                     Func<IServiceProvider, InMemoryCacher> createdFactory = null;
-                    var optionsMock = new Mock<ICachedOptions>();
+                    var optionsMock = new Mock<ICachedConfigurationBuilder>();
                     optionsMock.Setup(o =>
                             o.AddSingletonService<IInMemoryCacher, InMemoryCacher>(
                                 It.IsAny<Func<IServiceProvider, InMemoryCacher>>()))
@@ -54,21 +54,21 @@
                 [Fact]
                 public void When_FetchFactory_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new CachedOptionsBuilder()
+                    Assert.Throws<ArgumentNullException>(() => new CachedConfigurationBuilder()
                         .AddInMemoryCachedFunction<string, string>(p => p, null));
                 }
 
                 [Fact]
                 public void When_KeyFactory_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new CachedOptionsBuilder()
+                    Assert.Throws<ArgumentNullException>(() => new CachedConfigurationBuilder()
                         .AddInMemoryCachedFunction<string, string>(null, (_, __) => Task.FromResult("")));
                 }
 
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((ICachedOptions) null)
+                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null)
                         .AddInMemoryCachedFunction<string, string>(p => p, (_, __) => Task.FromResult("")));
                 }
             }
@@ -80,7 +80,7 @@
                 {
                     // Arrange
                     Func<IServiceProvider, InMemoryCached<string, string>> createdFactory = null;
-                    var optionsMock = new Mock<ICachedOptions>();
+                    var optionsMock = new Mock<ICachedConfigurationBuilder>();
                     optionsMock.Setup(o =>
                             o.AddTransientService<ICached<string, string>, InMemoryCached<string, string>>(
                                 It.IsAny<Func<IServiceProvider, InMemoryCached<string, string>>>()))

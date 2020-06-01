@@ -1,4 +1,4 @@
-﻿namespace Cached
+﻿namespace Cached.Caching
 {
     using System.Threading.Tasks;
 

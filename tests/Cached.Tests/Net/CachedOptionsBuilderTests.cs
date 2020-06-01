@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Cached.Net;
-    using Configuration;
+    using Caching;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Xunit;
@@ -24,7 +24,7 @@
                 {
                     // Arrange
                     var serviceCollectionMock = new Mock<IServiceCollection>();
-                    var config = new CachedOptionsBuilder();
+                    var config = new CachedConfigurationBuilder();
 
                     // Act, Assert
                     Assert.Throws<InvalidOperationException>(() => config.Build(serviceCollectionMock.Object));
@@ -34,7 +34,7 @@
                 public void When_no_service_collection_is_null()
                 {
                     // Arrange
-                    var config = new CachedOptionsBuilder();
+                    var config = new CachedConfigurationBuilder();
 
                     // Act, Assert
                     Assert.Throws<ArgumentNullException>(() => config.Build(null));
@@ -44,14 +44,13 @@
             public sealed class BuildsCorrectly
             {
                 [Fact]
-                public void Configurator_only_add_identical_service_once()
+                public void When_Configuring_Singleton_Service()
                 {
                     // Arrange
-                    var globalSettings = new CachedSettings(TimeSpan.FromDays(3));
-                    var options = new CachedOptionsBuilder {GlobalSettings = globalSettings};
+                    var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
                     options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
-                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
+                    options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "cde321"});
 
                     // Act
                     options.Build(serviceCollection);
@@ -59,31 +58,16 @@
                     // Assert
                     Assert.Single(serviceCollection);
                     Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
+
+                    var fetchedObject = (TestClass)serviceCollection.First().ImplementationFactory(new Mock<IServiceProvider>().Object);
+                    Assert.Equal("abc123", fetchedObject.MyProperty);
                 }
 
                 [Fact]
-                public void When_global_configuration_is_provided()
+                public void When_Configuring_Transient_Service()
                 {
                     // Arrange
-                    var globalSettings = new CachedSettings(TimeSpan.FromDays(3));
-                    var options = new CachedOptionsBuilder {GlobalSettings = globalSettings};
-                    var serviceCollection = new ServiceCollection();
-                    options.AddSingletonService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
-
-                    // Act
-                    options.Build(serviceCollection);
-
-                    // Assert
-                    Assert.Single(serviceCollection);
-                    Assert.Equal(globalSettings, options.GlobalSettings);
-                    Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
-                }
-
-                [Fact]
-                public void When_no_settings_are_provided()
-                {
-                    // Arrange
-                    var options = new CachedOptionsBuilder();
+                    var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
                     options.AddTransientService<TestClass, TestClass>(_ => new TestClass {MyProperty = "abc123"});
 

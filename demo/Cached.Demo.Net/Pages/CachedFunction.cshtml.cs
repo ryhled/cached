@@ -2,6 +2,7 @@ namespace Cached.Demo.Net.Pages
 {
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Caching;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
 

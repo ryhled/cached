@@ -6,7 +6,6 @@ namespace Cached.Tests.InMemory
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Cached.Locking;
-    using Configuration;
     using Locking;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
@@ -23,10 +22,6 @@ namespace Cached.Tests.InMemory
 
         public sealed class Constructor
         {
-            private readonly Func<DateTimeOffset> _fakeNowFactory = () => DateTimeOffset.ParseExact(
-                "02/11/2020 09.21.00 +01:00",
-                "dd/MM/yyyy HH.mm.ss zzz", CultureInfo.InvariantCulture);
-
             [Fact]
             public async Task Will_rely_on_memory_cache_config_if_no_settings_provided()
             {
@@ -40,7 +35,7 @@ namespace Cached.Tests.InMemory
                         entryResult = new FakeMemoryCacheEntry(key);
                         return entryResult;
                     });
-                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, null, _fakeNowFactory);
+                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, null);
 
                 // Act
                 await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
@@ -50,7 +45,7 @@ namespace Cached.Tests.InMemory
             }
 
             [Fact]
-            public async Task Will_use_provided_settings_when_specified()
+            public async Task Will_use_provided_options_when_specified()
             {
                 // Arrange
                 var lockMock = new Mock<ILock>();
@@ -62,17 +57,14 @@ namespace Cached.Tests.InMemory
                         entryResult = new FakeMemoryCacheEntry(key);
                         return entryResult;
                     });
-                var settings = new CachedSettings(TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(160));
-                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, settings, _fakeNowFactory);
+                var options = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60) };
+                var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, options);
 
                 // Act
                 await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
 
                 // Assert
-                // ReSharper disable once PossibleInvalidOperationException
-                Assert.Equal(_fakeNowFactory().Add(settings.AbsoluteExpiration), entryResult.AbsoluteExpiration.Value);
-                // ReSharper disable once PossibleInvalidOperationException
-                Assert.Equal(settings.SlidingExpiration, entryResult.SlidingExpiration.Value);
+                Assert.Equal(options.AbsoluteExpirationRelativeToNow, entryResult.AbsoluteExpirationRelativeToNow);
             }
         }
 
@@ -94,7 +86,7 @@ namespace Cached.Tests.InMemory
                 public void With_Settings_Argument_Constructor()
                 {
                     //Arrange, Act
-                    InMemoryCacher result = InMemoryCacher.Default(new CachedSettings());
+                    InMemoryCacher result = InMemoryCacher.Default(new MemoryCacheEntryOptions());
 
                     //Assert
                     Assert.NotNull(result);
@@ -110,7 +102,7 @@ namespace Cached.Tests.InMemory
                 public void When_Cache_Argument_And_Settings_Are_Set()
                 {
                     // Arrange, Act
-                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object, new CachedSettings());
+                    var result = InMemoryCacher.New(new Mock<IMemoryCache>().Object, new MemoryCacheEntryOptions());
 
                     // Assert
                     Assert.NotNull(result);
@@ -158,16 +150,14 @@ namespace Cached.Tests.InMemory
             private readonly ConcurrentDictionary<string, FakeMemoryCacheEntry> _fakeCache;
             private readonly Mock<IMemoryCache> _memoryCacheMock;
             private readonly Mock<ILock> _cacherLockMock;
-            private readonly Func<DateTimeOffset> _fakeNowFactory = () => DateTimeOffset.UtcNow;
 
             private InMemoryCacher NewInMemoryCacher()
             {
-                return new InMemoryCacher(_memoryCacheMock.Object, _cacherLockMock.Object, new CachedSettings(),
-                    _fakeNowFactory);
+                return new InMemoryCacher(_memoryCacheMock.Object, _cacherLockMock.Object, new MemoryCacheEntryOptions());
             }
 
             [Fact]
-            public async Task Adds_missing_data_to_cache_using_the_fetch_function()
+            public async Task Adds_Missing_Data_To_Cache_Using_The_Fetch_Factory()
             {
                 // Arrange
                 InMemoryCacher memoryCacher = NewInMemoryCacher();
@@ -186,7 +176,7 @@ namespace Cached.Tests.InMemory
             }
 
             [Fact]
-            public async Task Gets_cached_data_without_fetching_data_from_function()
+            public async Task Gets_Cached_Data_Without_Using_Fetch_Factory()
             {
                 // Arrange
                 const string nameKey = "name";

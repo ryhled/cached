@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Configuration;
+    using Caching;
     using Locking;
     using Microsoft.Extensions.Caching.Memory;
 
@@ -10,43 +10,39 @@
     public sealed class InMemoryCacher : Cacher<InMemoryCacher>, IInMemoryCacher, ICachedService
     {
         private readonly IMemoryCache _memoryCache;
-        private readonly Func<DateTimeOffset> _nowFactory;
-        private readonly CachedSettings _settings;
+        private readonly MemoryCacheEntryOptions _options;
         private static readonly Lazy<IMemoryCache> DefaultInstance = new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
 
         internal InMemoryCacher(
             IMemoryCache memoryCache,
             ILock cacherLock,
-            CachedSettings settings,
-            Func<DateTimeOffset> nowFactory)
+            MemoryCacheEntryOptions options)
             : base(cacherLock)
         {
-            _settings = settings;
+            _options = options;
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
-            _nowFactory = nowFactory ?? throw new ArgumentNullException(nameof(nowFactory));
         }
 
         /// <summary>
         /// Creates a default InMemoryCacher instance, using a globally shared, long lived, MemoryCache instance.
         /// </summary>
-        /// <param name="settings">(Optional) Customized Cached settings.</param>
+        /// <param name="options">(Optional) Customized Cached settings.</param>
         /// <returns>A new InMemoryCacher instance.</returns>
-        public static InMemoryCacher Default(CachedSettings settings = null)
-            => New(DefaultInstance.Value, settings);
+        public static InMemoryCacher Default(MemoryCacheEntryOptions options = null)
+            => New(DefaultInstance.Value, options);
 
         /// <summary>
         ///     Create a new MemoryCacher instance.
         /// </summary>
         /// <param name="memoryCacher">The underlying MemoryCacher instance to be used.</param>
-        /// <param name="settings">(Optional) Customized Cached settings.</param>
+        /// <param name="options">(Optional) Customized Cached options.</param>
         /// <returns>A new InMemoryCacher instance.</returns>
-        public static InMemoryCacher New(IMemoryCache memoryCacher, CachedSettings settings = default)
+        public static InMemoryCacher New(IMemoryCache memoryCacher, MemoryCacheEntryOptions options = null)
         {
             return new InMemoryCacher(
                 memoryCacher ?? throw new ArgumentNullException(nameof(memoryCacher)),
                 new SemaphoreSlimLock(),
-                settings ?? new CachedSettings(),
-                () => DateTimeOffset.UtcNow);
+                options);
         }
 
         /// <summary>
@@ -82,19 +78,7 @@
             string key,
             T data)
         {
-            if (_settings == null)
-            {
-                _memoryCache.Set(key, data);
-                return Task.CompletedTask;
-            }
-
-            var opts = new MemoryCacheEntryOptions
-            {
-                AbsoluteExpiration = _nowFactory().Add(_settings.AbsoluteExpiration),
-                SlidingExpiration = _settings.SlidingExpiration
-            };
-
-            _memoryCache.Set(key, data, opts);
+            _memoryCache.Set(key, data, _options);
             return Task.CompletedTask;
         }
     }

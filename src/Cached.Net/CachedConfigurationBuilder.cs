@@ -2,16 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using Configuration;
+    using Caching;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
-    internal sealed class CachedOptionsBuilder : ICachedOptions
+    internal sealed class CachedConfigurationBuilder : ICachedConfigurationBuilder
     {
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();
-
-        public CachedSettings GlobalSettings { get; set; }
 
         public void AddSingletonService<TFrom, TTo>(Func<IServiceProvider, TTo> serviceFactory)
             where TFrom : class

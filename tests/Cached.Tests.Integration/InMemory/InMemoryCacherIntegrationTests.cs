@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using Cached.InMemory;
-    using Configuration;
     using Microsoft.Extensions.Caching.Memory;
     using Xunit;
 
@@ -15,7 +14,7 @@
             _memoryCache = new MemoryCache(options);
             _inMemoryCacher = InMemoryCacher.New(
                 _memoryCache,
-                new CachedSettings(TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2)));
+                new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });
         }
 
         public void Dispose()

@@ -1,18 +1,13 @@
-﻿namespace Cached.Configuration
+﻿namespace Cached
 {
     using System;
+    using Caching;
 
     /// <summary>
     ///     Configures cached for net core, and net 5+, integration.
     /// </summary>
-    public interface ICachedOptions
+    public interface ICachedConfigurationBuilder
     {
-        /// <summary>
-        ///     Specify global settings to be used for all Cached services.
-        ///     (Service specific settings override global settings).
-        /// </summary>
-        CachedSettings GlobalSettings { get; set; }
-
         /// <summary>
         ///     Adds a cached service in singleton scope.
         /// </summary>

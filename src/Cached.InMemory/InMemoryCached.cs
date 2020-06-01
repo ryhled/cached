@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Caching;
 
     /// <inheritdoc cref="ICached{TResponse, TParam}" />
     public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>, ICachedService

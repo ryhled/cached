@@ -2,6 +2,7 @@
 {
     using System;
     using Cached.Net;
+    using Caching;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Xunit;

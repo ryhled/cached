@@ -3,7 +3,6 @@ namespace Cached.Demo.Net
     using System;
     using System.Threading.Tasks;
     using Cached.Net;
-    using Configuration;
     using InMemory;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -16,8 +15,6 @@ namespace Cached.Demo.Net
         {
             services.AddCached(options =>
             {
-                options.GlobalSettings =
-                    new CachedSettings(TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(20));
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, string>(param =>
                         param,
