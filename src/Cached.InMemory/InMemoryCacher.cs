@@ -45,7 +45,7 @@
         {
             return new InMemoryCacher(
                 memoryCacher ?? throw new ArgumentNullException(nameof(memoryCacher)),
-                new SemaphoreSlimLock(),
+                new KeyBasedLock(),
                 options);
         }
 

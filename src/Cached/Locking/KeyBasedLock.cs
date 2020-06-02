@@ -5,7 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    internal sealed class SemaphoreSlimLock : ILock
+    internal sealed class KeyBasedLock : ILock
     {
         private static readonly Dictionary<object, Reservable<SemaphoreSlim>> Reserved
             = new Dictionary<object, Reservable<SemaphoreSlim>>();

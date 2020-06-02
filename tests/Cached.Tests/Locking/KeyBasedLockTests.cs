@@ -9,23 +9,23 @@
     using Cached.Locking;
     using Xunit;
 
-    public sealed class SemaphoreSlimLockTests
+    public sealed class KeyBasedLockTests
     {
         public sealed class LockAsyncMethod
         {
             public LockAsyncMethod()
             {
-                _cacherLock = new SemaphoreSlimLock();
+                _cacherLock = new KeyBasedLock();
 
                 // Not pretty but keeping this field protected from external tampering is critical.
                 // At the same time it needs to be checked that internal state functions correctly.
                 // Suggestions for alternative design?
-                _activeLocks = (Dictionary<object, Reservable<SemaphoreSlim>>) typeof(SemaphoreSlimLock)
+                _activeLocks = (Dictionary<object, Reservable<SemaphoreSlim>>) typeof(KeyBasedLock)
                     .GetField("Reserved", BindingFlags.Static | BindingFlags.NonPublic)
                     ?.GetValue(this);
             }
 
-            private readonly SemaphoreSlimLock _cacherLock;
+            private readonly KeyBasedLock _cacherLock;
             private readonly Dictionary<object, Reservable<SemaphoreSlim>> _activeLocks;
 
             public class WillThrowException
@@ -34,11 +34,11 @@
                 public async Task When_key_is_null()
                 {
                     await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                        await new SemaphoreSlimLock().LockAsync(null));
+                        await new KeyBasedLock().LockAsync(null));
                 }
             }
 
-            private async Task TestAction(SemaphoreSlimLock lck, string key, int delay, ICollection<int> callback)
+            private async Task TestAction(KeyBasedLock lck, string key, int delay, ICollection<int> callback)
             {
                 int count;
                 using (await lck.LockAsync(key))
