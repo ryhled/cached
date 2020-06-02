@@ -7,7 +7,7 @@
     /// <inheritdoc cref="ICached{TResponse,TParam}" />
     public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>
     {
-        private readonly Func<TParam, Task<TResponse>> _fetchFactory;
+        private readonly Func<string, TParam, Task<TResponse>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;
         private readonly IInMemoryCacher _memoryCacher;
 
@@ -20,7 +20,7 @@
         public InMemoryCached(
             IInMemoryCacher memoryCacher,
             Func<TParam, string> keyFactory,
-            Func<TParam, Task<TResponse>> fetchFactory)
+            Func<string, TParam, Task<TResponse>> fetchFactory)
         {
             _memoryCacher = memoryCacher ?? throw new ArgumentNullException(nameof(memoryCacher));
             _fetchFactory = fetchFactory ?? throw new ArgumentNullException(nameof(fetchFactory));
@@ -30,7 +30,7 @@
         /// <inheritdoc />
         public async Task<TResponse> GetOrFetchAsync(TParam arg)
         {
-            return await _memoryCacher.GetOrFetchAsync(_keyFactory(arg), () => _fetchFactory(arg));
+            return await _memoryCacher.GetOrFetchAsync(_keyFactory(arg), key => _fetchFactory(key, arg));
         }
     }
 }

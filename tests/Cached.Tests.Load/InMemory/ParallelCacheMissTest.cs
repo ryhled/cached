@@ -27,7 +27,7 @@
                 hits, 
                 i =>
                 {
-                    var result = cacher.GetOrFetchAsync("RunAllMissTest" + i, () => RunAllMissTestTask(i)).Result;
+                    var result = cacher.GetOrFetchAsync("RunAllMissTest" + i, _ => RunAllMissTestTask(i)).Result;
                     Interlocked.Add(ref _runAllMissTestAdder, result);
                 });
             watch.Stop();

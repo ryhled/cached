@@ -17,6 +17,6 @@
         /// <param name="key">The cache key</param>
         /// <param name="fetchFactory">The factory function to use for fetching new data</param>
         /// <returns>The data that corresponds to the provided cache key</returns>
-        Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<Task<TResponse>> fetchFactory);
+        Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<string, Task<TResponse>> fetchFactory);
     }
 }

@@ -18,8 +18,8 @@
                     Assert.Throws<ArgumentNullException>(() =>
                         new InMemoryCached<object, object>(
                             null,
-                            o => "",
-                            Task.FromResult));
+                            o => "", 
+                            (s, o) => Task.FromResult(o)));
                 }
 
                 [Fact]
@@ -39,7 +39,7 @@
                         new InMemoryCached<object, object>(
                             new Mock<IInMemoryCacher>().Object,
                             null,
-                            Task.FromResult));
+                            (key, arg) => Task.FromResult(arg)));
                 }
             }
         }
@@ -51,13 +51,13 @@
             {
                 // Arrange
                 var cacherMock = new Mock<IInMemoryCacher>();
-                cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<Task<string>>>()))
-                    .Returns((string key, Func<Task<string>> fetch) => Task.FromResult(fetch().Result + key));
+                cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
+                    .Returns((string key, Func<string, Task<string>> fetch) => Task.FromResult(fetch(key).Result + key));
 
                 var memoryCached = new InMemoryCached<string, int>(
                     cacherMock.Object,
                     arg => "key_" + arg,
-                    arg => Task.FromResult("fetch_" + arg));
+                    (key, arg) => Task.FromResult("fetch_" + arg));
 
                 // Act
                 var response = await memoryCached.GetOrFetchAsync(22);

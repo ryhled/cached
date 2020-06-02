@@ -17,7 +17,7 @@
         /// <inheritdoc />
         public async Task<TResponse> GetOrFetchAsync<TResponse>(
             string key,
-            Func<Task<TResponse>> fetchFactory)
+            Func<string, Task<TResponse>> fetchFactory)
         {
             var prefixedCacheKey = $"{nameof(Cacher)}|{typeof(TResponse).FullName}|{key}";
 
@@ -31,7 +31,7 @@
 
         private async Task<TResponse> FetchAndAddToCache<TResponse>(
             string key,
-            Func<Task<TResponse>> fetchFactory)
+            Func<string, Task<TResponse>> fetchFactory)
         {
             using (await _cacherLock.LockAsync(key).ConfigureAwait(false))
             {
@@ -40,7 +40,7 @@
                     return cachedData;
                 }
 
-                TResponse data = await fetchFactory().ConfigureAwait(false);
+                TResponse data = await fetchFactory(key).ConfigureAwait(false);
                 await WriteToCache(key, data).ConfigureAwait(false);
                 return data;
             }

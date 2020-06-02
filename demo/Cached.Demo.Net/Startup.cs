@@ -18,7 +18,7 @@ namespace Cached.Demo.Net
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, string>(param =>
                         param,
-                    async (_, arg) =>
+                    async (provider, key, arg) =>
                     {
                         await Task.Delay(500);
                         return DateTime.Now + $" [cached function for: {arg}]";

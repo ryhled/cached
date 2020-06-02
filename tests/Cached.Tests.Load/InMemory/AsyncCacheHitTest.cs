@@ -20,7 +20,7 @@
 
             for(var i = 0; i < hits; ++i)
             {
-                tasks.Add(cacher.GetOrFetchAsync("RunAsyncCacheHitTest", async () => await FetchTask()));
+                tasks.Add(cacher.GetOrFetchAsync("RunAsyncCacheHitTest", async _ => await FetchTask()));
             }
 
             var watch = Stopwatch.StartNew();

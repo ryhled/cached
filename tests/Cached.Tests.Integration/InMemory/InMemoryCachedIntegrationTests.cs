@@ -16,11 +16,11 @@
             IInMemoryCacher inMemoryCacher =
                 InMemoryCacher.New(_memoryCache,
                     new MemoryCacheEntryOptions {AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)});
-            _inMemoryCached = new InMemoryCached<string, int>(inMemoryCacher, i => i + "_key", async i =>
+            _inMemoryCached = new InMemoryCached<string, int>(inMemoryCacher, i => i + "_key", async (key, arg) =>
             {
                 await Task.Delay(10);
                 ++_hitCounter;
-                return i + "_" + _hitCounter + "_fetch";
+                return arg + "_" + _hitCounter + "_fetch";
             });
         }
 

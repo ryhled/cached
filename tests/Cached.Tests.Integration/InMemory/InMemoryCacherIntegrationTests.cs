@@ -34,8 +34,8 @@
             InMemoryCacher cacher2 = InMemoryCacher.Default();
 
             // Act
-            var result1 = await cacher1.GetOrFetchAsync("name", () => Task.FromResult("sven"));
-            var result2 = await cacher2.GetOrFetchAsync("name", () => Task.FromResult("oscar"));
+            var result1 = await cacher1.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
+            var result2 = await cacher2.GetOrFetchAsync("name", _ => Task.FromResult("oscar"));
 
             // Assert
             Assert.NotEqual(cacher1, cacher2);
@@ -47,7 +47,7 @@
         public async Task Will_Fetch_Async_Function_Correctly()
         {
             // Arrange, Act
-            var result = await _inMemoryCacher.GetOrFetchAsync("a", async () =>
+            var result = await _inMemoryCacher.GetOrFetchAsync("a", async _ =>
             {
                 await Task.Delay(1);
                 return "fetch";
@@ -61,10 +61,10 @@
         public async Task Will_Fetch_Or_Cache_Based_On_Key()
         {
             // Arrange, Act
-            var result1 = await _inMemoryCacher.GetOrFetchAsync("a", () => Task.FromResult("first_fetch"));
-            var result2 = await _inMemoryCacher.GetOrFetchAsync("aa", () => Task.FromResult("second_fetch"));
-            var result3 = await _inMemoryCacher.GetOrFetchAsync("a", () => Task.FromResult("third_fetch"));
-            var result4 = await _inMemoryCacher.GetOrFetchAsync("aa", () => Task.FromResult("fourth_fetch"));
+            var result1 = await _inMemoryCacher.GetOrFetchAsync("a", _ => Task.FromResult("first_fetch"));
+            var result2 = await _inMemoryCacher.GetOrFetchAsync("aa", _ => Task.FromResult("second_fetch"));
+            var result3 = await _inMemoryCacher.GetOrFetchAsync("a", _ => Task.FromResult("third_fetch"));
+            var result4 = await _inMemoryCacher.GetOrFetchAsync("aa", _ => Task.FromResult("fourth_fetch"));
 
             // Assert
             Assert.Equal("first_fetch", result1);
@@ -81,7 +81,7 @@
             var callCounter = 0;
             const int taskCount = 100; // the number of clients trying to access same cache entry simultaneously.
 
-            async Task<int> FetchTask()
+            async Task<int> FetchTask(string key)
             {
                 await Task.Delay(50);
                 return Interlocked.Increment(ref fetchCounter);

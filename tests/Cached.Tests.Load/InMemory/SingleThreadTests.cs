@@ -19,7 +19,7 @@
             var allMissTest = Stopwatch.StartNew();
             for (var i = 0; i < iterations; ++i)
             {
-                allMissValues.Add(cacher.GetOrFetchAsync("RunSingleThreadTests1_" + i, () => Task.FromResult(i)).Result);
+                allMissValues.Add(cacher.GetOrFetchAsync("RunSingleThreadTests1_" + i, _ => Task.FromResult(i)).Result);
             }
             allMissTest.Stop();
 
@@ -36,7 +36,7 @@
             var allHitTest = Stopwatch.StartNew();
             for (var i = 0; i < iterations; ++i)
             {
-                allHitValues.Add(cacher.GetOrFetchAsync("RunSingleThreadTests_Hit", () => Task.FromResult(i)).Result);
+                allHitValues.Add(cacher.GetOrFetchAsync("RunSingleThreadTests_Hit", _ => Task.FromResult(i)).Result);
             }
             allHitTest.Stop();
 

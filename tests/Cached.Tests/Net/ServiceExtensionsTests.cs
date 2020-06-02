@@ -53,7 +53,7 @@
 
             private class TestCacher :  ICacher
             {
-                public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<Task<TResponse>> fetchFactory)
+                public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<string, Task<TResponse>> fetchFactory)
                 {
                     throw new NotImplementedException();
                 }

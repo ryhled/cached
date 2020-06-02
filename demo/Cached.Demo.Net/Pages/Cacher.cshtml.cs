@@ -24,7 +24,7 @@ namespace Cached.Demo.Net.Pages
         {
             var watch = Stopwatch.StartNew();
 
-            CachedValue = await _cached.GetOrFetchAsync(key, () => GetSlowDateTime(key));
+            CachedValue = await _cached.GetOrFetchAsync(key, _ => GetSlowDateTime(key));
 
             watch.Stop();
             TimeConsumed = watch.ElapsedMilliseconds + " ms";

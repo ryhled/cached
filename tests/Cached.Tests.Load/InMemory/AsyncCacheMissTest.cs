@@ -27,7 +27,7 @@
 
             for(var i = 0; i < hits; ++i)
             {
-                tasks.Add(cacher.GetOrFetchAsync("RunAsyncCacheMissTest" + i, () => FetchTask(i)));
+                tasks.Add(cacher.GetOrFetchAsync("RunAsyncCacheMissTest" + i, _ => FetchTask(i)));
             }
 
             var watch = Stopwatch.StartNew();

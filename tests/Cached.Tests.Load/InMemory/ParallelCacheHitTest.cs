@@ -40,6 +40,6 @@
         ///     Since we are hitting same cache key this is thread safe.
         ///     This means no need to interlock, they are sun sequentially.
         /// </summary>
-        private static Task<int> RunAllHitTestTask() => Task.FromResult(++_runAllHitTestCounter);
+        private static Task<int> RunAllHitTestTask(string key) => Task.FromResult(++_runAllHitTestCounter);
     }
 }

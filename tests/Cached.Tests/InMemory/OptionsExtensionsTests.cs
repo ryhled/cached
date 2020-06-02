@@ -63,14 +63,14 @@
                 public void When_KeyFactory_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() => new CachedConfigurationBuilder()
-                        .AddInMemoryCachedFunction<string, string>(null, (_, __) => Task.FromResult("")));
+                        .AddInMemoryCachedFunction<string, string>(null, (_, __, ___) => Task.FromResult("")));
                 }
 
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null)
-                        .AddInMemoryCachedFunction<string, string>(p => p, (_, __) => Task.FromResult("")));
+                        .AddInMemoryCachedFunction<string, string>(p => p, (_, __, ___) => Task.FromResult("")));
                 }
             }
 
@@ -90,7 +90,7 @@
 
                     // Act
                     optionsMock.Object.AddInMemoryCachedFunction<string, string>(arg => arg,
-                        (_, __) => Task.FromResult("abc123"));
+                        (_, __, ___) => Task.FromResult("abc123"));
 
                     // Assert
                     optionsMock.Verify(

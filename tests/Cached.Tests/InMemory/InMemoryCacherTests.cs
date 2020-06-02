@@ -38,7 +38,7 @@ namespace Cached.Tests.InMemory
                 var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, null);
 
                 // Act
-                await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
+                await cacher.GetOrFetchAsync("", _ => Task.FromResult(""));
 
                 // Assert
                 // TODO: Assert that no memory cache options are set for cache entry.
@@ -61,7 +61,7 @@ namespace Cached.Tests.InMemory
                 var cacher = new InMemoryCacher(memoryCacheMock.Object, lockMock.Object, options);
 
                 // Act
-                await cacher.GetOrFetchAsync("", () => Task.FromResult(""));
+                await cacher.GetOrFetchAsync("", _ => Task.FromResult(""));
 
                 // Assert
                 Assert.Equal(options.AbsoluteExpirationRelativeToNow, entryResult.AbsoluteExpirationRelativeToNow);
@@ -164,7 +164,7 @@ namespace Cached.Tests.InMemory
                 InMemoryCacher memoryCacher = NewInMemoryCacher();
 
                 // Act
-                var value = await memoryCacher.GetOrFetchAsync("age-key", () => Task.FromResult(23));
+                var value = await memoryCacher.GetOrFetchAsync("age-key", _ => Task.FromResult(23));
 
                 // Assert
                 Assert.Equal(23, value);
@@ -184,7 +184,7 @@ namespace Cached.Tests.InMemory
                 _fakeCache[internalName] = new FakeMemoryCacheEntry(internalName) {Value = "John"};
 
                 // Act
-                var value = await memoryCacher.GetOrFetchAsync("some-name-key", () => Task.FromResult("George"));
+                var value = await memoryCacher.GetOrFetchAsync("some-name-key", _ => Task.FromResult("George"));
 
                 // Assert
                 Assert.Equal("John", value);
@@ -211,7 +211,7 @@ namespace Cached.Tests.InMemory
                     return false;
                 }
 
-                Task<string> FakeFetchFactory()
+                Task<string> FakeFetchFactory(string key)
                 {
                     fetchCounter++;
                     return Task.FromResult(string.Empty);

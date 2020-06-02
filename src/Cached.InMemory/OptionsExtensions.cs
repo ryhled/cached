@@ -40,7 +40,7 @@
         public static void AddInMemoryCachedFunction<TResponse, TParam>(
             this ICachedConfigurationBuilder options,
             Func<TParam, string> keyFactory,
-            Func<IServiceProvider, TParam, Task<TResponse>> fetchFactory)
+            Func<IServiceProvider, string, TParam, Task<TResponse>> fetchFactory)
         {
             if (options == null)
             {
@@ -61,7 +61,7 @@
                 new InMemoryCached<TResponse, TParam>(
                     provider.GetService<IInMemoryCacher>(),
                     keyFactory,
-                    param => fetchFactory.Invoke(provider, param)));
+                    (key, arg) => fetchFactory.Invoke(provider, key, arg)));
         }
     }
 }
