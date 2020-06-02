@@ -167,7 +167,7 @@ namespace Cached.Tests.InMemory
                 var result = await memoryCacher.GetOrFetchAsync("abc123", Task.FromResult);
 
                 // Assert
-                Assert.Equal("abc123", result);
+                Assert.Equal(GetInternalKey("abc123", typeof(string)), result);
             }
 
             [Fact]
