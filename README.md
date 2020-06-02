@@ -65,7 +65,7 @@ public async Task OnGet()
 }
 ```
 
-More examples and information can be found in the [Wiki](https://github.com/ryhled/cached/wiki) and in the [demo](https://github.com/ryhled/cached/tree/master/demo/) section.
+More examples and information can be found in the **[wiki](https://github.com/ryhled/cached/wiki)** and in the **[demo](https://github.com/ryhled/cached/tree/master/demo/)** section.
 
 
 ## Future plans
