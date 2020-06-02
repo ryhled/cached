@@ -20,26 +20,25 @@ The aim is to be an 'as thin as possible' wrapper of the official providers, suc
 - Selective write locking, only the key being repopulated is locked.
 - Flexibility. For example: inject as service, or inject call directly as an 'ICached<>' instance.
 
-## Prerequisites
+## Getting started
 
-Cached provides multiple nuget packages. Below is what you need to use InMemory caching with asp.net core.
+To show the absolute most basic implementation, suitable for a console app for example, this is what is required:
 
+1. Add the nuget package for InMemory caching.
 ```
-
-nuget install Cached.Net
 nuget install Cached.InMemory
-
 ```
-## Examples
 
-#### - (InMemory) Minimal (suitable for example console applications)
+2. Create a default instance and fetch data.
 
 ```
 var cacher = MemoryCacher.Default();
-var value = await cacher.GetOrFetchAsync("cached_value", async () => { ... });
+var value = await cacher.GetOrFetchAsync("key", () => service.GetData("key"));
 ```
 
-#### - (InMemory) Net Core application
+The 'service.GetData' calls is where you place your asynchronous service that fetches the actual data (may it be from database, REST/SOAP service or which ever).
+
+### Adding cached to a net core application
 
 Startup.cs
 
@@ -66,7 +65,8 @@ public async Task OnGet()
 }
 ```
 
-More examples and information can be found in the [Wiki](https://github.com/ryhled/cached/wiki).
+More examples and information can be found in the [Wiki](https://github.com/ryhled/cached/wiki) and in the [demo](https://github.com/ryhled/cached/tree/master/demo/) section.
+
 
 ## Future plans
 
