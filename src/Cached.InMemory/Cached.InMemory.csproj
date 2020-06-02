@@ -10,11 +10,11 @@
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
-		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
-		<PackageDescription>Provides in-memory (wrapping MemoryCache) caching support for Cached, the easy and concurrency safe caching library for Net Core / Net 5.</PackageDescription>
+		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
+		<PackageDescription>Provides in-memory, wrapping MemoryCache, caching support for Cached, the easy and concurrency safe cache library for Net Core / Net 5.</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
-		<PackageTags>netcore;caching;cache;concurrency-safe;csharp;net5;inmemory</PackageTags>
+		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;IMemoryCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageProjectUrl>$(PackageProjectUrlBase)Cached.InMemory</PackageProjectUrl>
