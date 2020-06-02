@@ -47,6 +47,26 @@
         public sealed class GetOrFetchAsyncMethod
         {
             [Fact]
+            public async Task Will_pass_the_key_that_was_provided()
+            {
+                // Arrange
+                var cacherMock = new Mock<IInMemoryCacher>();
+                cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
+                    .Returns((string key, Func<string, Task<string>> fetch) => Task.FromResult(key));
+
+                var memoryCached = new InMemoryCached<string, int>(
+                    cacherMock.Object,
+                    arg => arg.ToString(),
+                    (key, arg) => Task.FromResult(key));
+
+                // Act
+                var response = await memoryCached.GetOrFetchAsync(22);
+
+                // Assert
+                Assert.Equal("22", response);
+            }
+
+            [Fact]
             public async Task Will_fetch_data_using_memory_cacher_and_argument()
             {
                 // Arrange

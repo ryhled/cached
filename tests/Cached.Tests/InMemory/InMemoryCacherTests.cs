@@ -158,6 +158,19 @@ namespace Cached.Tests.InMemory
             }
 
             [Fact]
+            public async Task Will_pass_the_same_key_that_was_provided()
+            {
+                // Arrange
+                InMemoryCacher memoryCacher = NewInMemoryCacher();
+
+                // Act
+                var result = await memoryCacher.GetOrFetchAsync("abc123", Task.FromResult);
+
+                // Assert
+                Assert.Equal("abc123", result);
+            }
+
+            [Fact]
             public async Task Adds_Missing_Data_To_Cache_Using_The_Fetch_Factory()
             {
                 // Arrange
