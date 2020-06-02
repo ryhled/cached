@@ -6,15 +6,15 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
 		<PackageId>Cached.InMemory</PackageId>
-		<Title>Cached.InMemory - InMemory caching support for Cached.</Title>
+		<Title>Cached.InMemory</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
-		<PackageDescription>Provides in-memory caching support for Cached.</PackageDescription>
+		<PackageDescription>Provides in-memory (wrapping MemoryCache) caching support for Cached, the easy and concurrency safe caching library for Net Core / Net 5.</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
-		<PackageTags>netcore;caching;cache;threadsafe;in-memory;csharp</PackageTags>
+		<PackageTags>netcore;caching;cache;concurrency-safe;csharp;net5;inmemory</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageProjectUrl>$(PackageProjectUrlBase)Cached.InMemory</PackageProjectUrl>

@@ -6,15 +6,15 @@
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
 		<PackageId>Cached</PackageId>
-		<Title>Cached - Caching made simple</Title>
+		<Title>Cached</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright 2020 - $(CurrentYear) Daniel Ryhle</Copyright>
-		<PackageDescription>Unobtrusive, thread and storm safe, caching library</PackageDescription>
+		<PackageDescription>The light-weight, stampede / concurrency safe, unobtrusive C# / Net Core / Net 5 cache library.</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
-		<PackageTags>netcore;caching;cache;threadsafe;csharp</PackageTags>
+		<PackageTags>netcore;caching;cache;concurrency-safe;csharp;net5;inmemory</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageProjectUrl>$(PackageProjectUrlBase)Cached</PackageProjectUrl>
