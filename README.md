@@ -33,7 +33,7 @@ nuget install Cached.InMemory
 
 ```
 var cacher = MemoryCacher.Default();
-var value = await cacher.GetOrFetchAsync("key", () => service.GetData("key"));
+var value = await cacher.GetOrFetchAsync("key", key => service.GetData(key));
 ```
 
 The 'service.GetData' calls is where you place your asynchronous service that fetches the actual data (may it be from database, REST/SOAP service or which ever).
@@ -61,7 +61,7 @@ public IndexModel(IMemoryCacher cacher)
 
 public async Task OnGet()
 {
-    var value = await _cacher.GetOrFetchAsync("key", async () => { ... });
+    var value = await _cacher.GetOrFetchAsync("key", async key => { ... });
 }
 ```
 
