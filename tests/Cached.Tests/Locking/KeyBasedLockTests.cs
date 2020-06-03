@@ -13,22 +13,12 @@
     {
         public sealed class LockAsyncMethod
         {
-            public LockAsyncMethod()
-            {
-                _cacherLock = new KeyBasedLock();
+            internal static Dictionary<object, Reservable<SemaphoreSlim>> GetReflectedLockList(KeyBasedLock lck) 
+                => (Dictionary<object, Reservable<SemaphoreSlim>>)typeof(KeyBasedLock)
+                .GetField("Reserved", BindingFlags.Static | BindingFlags.NonPublic)
+                ?.GetValue(lck);
 
-                // Not pretty but keeping this field protected from external tampering is critical.
-                // At the same time it needs to be checked that internal state functions correctly.
-                // Suggestions for alternative design?
-                _activeLocks = (Dictionary<object, Reservable<SemaphoreSlim>>) typeof(KeyBasedLock)
-                    .GetField("Reserved", BindingFlags.Static | BindingFlags.NonPublic)
-                    ?.GetValue(this);
-            }
-
-            private readonly KeyBasedLock _cacherLock;
-            private readonly Dictionary<object, Reservable<SemaphoreSlim>> _activeLocks;
-
-            public class WillThrowException
+            public sealed class Throws
             {
                 [Fact]
                 public async Task When_key_is_null()
@@ -36,83 +26,87 @@
                     await Assert.ThrowsAsync<ArgumentNullException>(async () =>
                         await new KeyBasedLock().LockAsync(null));
                 }
-            }
 
-            private async Task TestAction(KeyBasedLock lck, string key, int delay, ICollection<int> callback)
-            {
-                int count;
-                using (await lck.LockAsync(key))
+                [Fact]
+                public async Task If_internal_lock_is_missing__during_disposal()
                 {
-                    count = _activeLocks.First(active => active.Key.Equals(key)).Value.Reservations;
-                    await Task.Delay(delay);
+                    // Arrange
+                    var keyBasedLock = new KeyBasedLock();                    
+                    
+                    // Act, Assert
+                    await Assert.ThrowsAsync<InvalidOperationException>(async () =>
+                    {
+                        using (await keyBasedLock.LockAsync("test_lock_missing"))
+                        {
+                            GetReflectedLockList(keyBasedLock).Remove("test_lock_missing");
+                        }
+                    });
                 }
-
-                callback.Add(count);
             }
 
             [Fact]
-            public async Task Creates_unique_locks_for_each_key_and_dispose_them_after_use()
+            public async Task Creates_separate_locks_based_on_key_and_dispose_them_correctly()
             {
                 // Arrange
-                var beforeUsingCount = _activeLocks.Count;
-                var testKey = "locktest_unique_1";
-                Func<string, bool> keyExists = key => _activeLocks.Any(l => l.Key.Equals(key));
+                var keyBasedLock = new KeyBasedLock();
+                const string testKey = "test_lock_by_key";
+                bool KeyExists(string key) => GetReflectedLockList(keyBasedLock)
+                    .Any(l => l.Key.Equals(key));
+                SemaphoreSlim GetByKey(string key) => GetReflectedLockList(keyBasedLock)
+                    .First(l => l.Key.Equals(key)).Value.Value;
+                SemaphoreSlim lck1;
+                SemaphoreSlim lck2;
 
                 // Act, Assert
-                using (await _cacherLock.LockAsync(testKey))
+                using (await keyBasedLock.LockAsync(testKey))
                 {
-                    Assert.True(keyExists(testKey));
-                    using (await _cacherLock.LockAsync(testKey + "_2"))
+                    Assert.True(KeyExists(testKey));
+                    lck1 = GetByKey(testKey);
+                    using (await keyBasedLock.LockAsync(testKey + "_2"))
                     {
-                        Assert.True(keyExists(testKey));
-                        Assert.True(keyExists(testKey + "_2"));
-                        using (await _cacherLock.LockAsync(testKey + "_3"))
-                        {
-                            Assert.True(keyExists(testKey));
-                            Assert.True(keyExists(testKey + "_2"));
-                            Assert.True(keyExists(testKey + "_3"));
-                        }
-
-                        Assert.True(keyExists(testKey));
-                        Assert.True(keyExists(testKey + "_2"));
-                        Assert.False(keyExists(testKey + "_3"));
+                        Assert.True(KeyExists(testKey));
+                        Assert.True(KeyExists(testKey + "_2"));
+                        lck2 = GetByKey(testKey + "_2");
                     }
-
-                    Assert.True(keyExists(testKey));
-                    Assert.False(keyExists(testKey + "_2"));
+                    Assert.True(KeyExists(testKey));
+                    Assert.False(KeyExists(testKey + "_2"));
                 }
-
-                Assert.False(keyExists(testKey));
+                Assert.False(KeyExists(testKey));
+                Assert.True(lck1.CurrentCount == 1);
+                Assert.True(lck2.CurrentCount == 1);
             }
 
             [Fact]
-            public async Task Tracks_lock_reservations_and_removes_lock_only_when_it_is_fully_released()
+            public async Task Reuse_same_lock_for_all_queued_tasks_with_same_key()
             {
                 // Arrange
-                var callLog = new List<int>();
-                var tasks = new List<Task>();
-                for (var i = 1; i <= 5; i++)
-                {
-                    tasks.Add(TestAction(_cacherLock, "key", 10, callLog));
-                }
-
-                var maxretries = 5;
-                while (_activeLocks.Count > 0 && maxretries > 0)
-                {
-                    await Task.Delay(5);
-                    ++maxretries;
-                }
+                var keyBasedLock = new KeyBasedLock();
+                var tasks = Enumerable.Repeat(LockTestTask(keyBasedLock), 10);
 
                 // Act
-                await Task.WhenAll(tasks);
+                var result = await Task.WhenAll(tasks);
 
                 // Assert
-                Assert.Equal(1, callLog[0]);
-                Assert.Equal(4, callLog[1]);
-                Assert.Equal(3, callLog[2]);
-                Assert.Equal(2, callLog[3]);
-                Assert.Equal(1, callLog[4]);
-                Assert.Empty(_activeLocks);
+                Assert.Equal(10, result.Length);
+                Assert.True(result.All(l => l != null));
+                Assert.True(result.All(l => l.Equals(result[0])));
+                Assert.DoesNotContain(GetReflectedLockList(keyBasedLock), l => l.Key.Equals("test_lock_stack"));
+            }
+
+            private async Task<SemaphoreSlim> LockTestTask(KeyBasedLock keyBasedLock)
+            {
+                SemaphoreSlim lck;
+                using (await keyBasedLock.LockAsync("test_lock_stack"))
+                {
+                    lck = GetReflectedLockList(keyBasedLock)
+                        .FirstOrDefault(l => l.Key.Equals("test_lock_stack"))
+                        .Value
+                        .Value;
+
+                    await Task.Delay(10);
+                }
+
+                return lck;
             }
         }
     }
