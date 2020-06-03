@@ -26,7 +26,7 @@
             public sealed class ThrowsException
             {
                 [Fact]
-                public void When_no_configurations_are_provided()
+                public void When_No_Configurations_Are_Provided()
                 {
                     // Arrange
                     var serviceCollectionMock = new Mock<IServiceCollection>();
@@ -37,7 +37,7 @@
                 }
 
                 [Fact]
-                public void When_no_service_collection_is_null()
+                public void When_No_Service_Collection_Is_Null()
                 {
                     // Arrange
                     var config = new CachedConfigurationBuilder();

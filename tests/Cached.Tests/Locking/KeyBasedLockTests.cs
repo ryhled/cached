@@ -21,14 +21,14 @@
             public sealed class Throws
             {
                 [Fact]
-                public async Task When_key_is_null()
+                public async Task When_Key_Is_Null()
                 {
                     await Assert.ThrowsAsync<ArgumentNullException>(async () =>
                         await new KeyBasedLock().LockAsync(null));
                 }
 
                 [Fact]
-                public async Task If_internal_lock_is_missing__during_disposal()
+                public async Task If_Internal_Lock_Is_Missing_During_Disposal()
                 {
                     // Arrange
                     var keyBasedLock = new KeyBasedLock();                    
@@ -45,7 +45,7 @@
             }
 
             [Fact]
-            public async Task Creates_separate_locks_based_on_key_and_dispose_them_correctly()
+            public async Task Creates_Separate_Locks_Based_On_Key_And_Dispose_Them_Correctly()
             {
                 // Arrange
                 var keyBasedLock = new KeyBasedLock();
@@ -77,7 +77,7 @@
             }
 
             [Fact]
-            public async Task Reuse_same_lock_for_all_queued_tasks_with_same_key()
+            public async Task Reuse_Same_Lock_For_All_Queued_Tasks_With_Same_Key()
             {
                 // Arrange
                 var keyBasedLock = new KeyBasedLock();
@@ -93,7 +93,7 @@
                 Assert.DoesNotContain(GetReflectedLockList(keyBasedLock), l => l.Key.Equals("test_lock_stack"));
             }
 
-            private async Task<SemaphoreSlim> LockTestTask(KeyBasedLock keyBasedLock)
+            private static async Task<SemaphoreSlim> LockTestTask(KeyBasedLock keyBasedLock)
             {
                 SemaphoreSlim lck;
                 using (await keyBasedLock.LockAsync("test_lock_stack"))

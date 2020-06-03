@@ -11,7 +11,7 @@
             public class WillThrowException
             {
                 [Fact]
-                public void When_argument_is_null()
+                public void When_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() => new Reservable<object>(null));
                 }
@@ -21,7 +21,7 @@
         public class ReserveMethod
         {
             [Fact]
-            public void Will_increase_reservations_by_one()
+            public void Will_Increase_Reservation_By_One()
             {
                 // Arrange
                 var item = new Reservable<object>(new object());
@@ -45,7 +45,7 @@
             public class Throws
             {
                 [Fact]
-                public void When_releasing_an_already_released_object()
+                public void When_Releasing_An_Already_Released_Object()
                 {
                     // Arrange
                     var reserved = new Reservable<int>(1);
@@ -56,7 +56,7 @@
             }
 
             [Fact]
-            public void Releases_correctly_and_return_true_if_fully_released()
+            public void Releases_Correctly_And_Return_True_If_Fully_Released()
             {
                 // Arrange
                 var item = new Reservable<object>(new object());

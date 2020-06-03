@@ -23,7 +23,7 @@ namespace Cached.Tests.InMemory
         public sealed class Constructor
         {
             [Fact]
-            public async Task Will_rely_on_memory_cache_config_if_no_settings_provided()
+            public async Task Relies_On_MemoryCache_Config_If_No_Settings_Are_Provided()
             {
                 // Arrange
                 var lockMock = new Mock<ILock>();
@@ -45,7 +45,7 @@ namespace Cached.Tests.InMemory
             }
 
             [Fact]
-            public async Task Will_use_provided_options_when_specified()
+            public async Task Will_Use_Provided_Options_When_Specified()
             {
                 // Arrange
                 var lockMock = new Mock<ILock>();
@@ -158,7 +158,7 @@ namespace Cached.Tests.InMemory
             }
 
             [Fact]
-            public async Task Will_pass_the_same_key_that_was_provided()
+            public async Task Will_Pass_The_Same_Key_That_Was_Provided()
             {
                 // Arrange
                 InMemoryCacher memoryCacher = NewInMemoryCacher();

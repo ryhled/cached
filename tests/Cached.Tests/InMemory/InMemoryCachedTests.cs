@@ -13,7 +13,7 @@
             public sealed class WillThrowException
             {
                 [Fact]
-                public void If_memory_cacher_argument_is_null()
+                public void If_Memory_Cacher_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new InMemoryCached<object, object>(
@@ -23,7 +23,7 @@
                 }
 
                 [Fact]
-                public void If_memory_fetch_func_is_null()
+                public void If_Memory_Fetch_Func_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new InMemoryCached<object, object>(
@@ -33,7 +33,7 @@
                 }
 
                 [Fact]
-                public void If_memory_key_func_is_null()
+                public void If_Memory_Key_Func_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new InMemoryCached<object, object>(
@@ -47,7 +47,7 @@
         public sealed class GetOrFetchAsyncMethod
         {
             [Fact]
-            public async Task Will_pass_the_key_that_was_provided()
+            public async Task Will_Pass_The_Key_That_Was_Provided()
             {
                 // Arrange
                 var cacherMock = new Mock<IInMemoryCacher>();
@@ -67,7 +67,7 @@
             }
 
             [Fact]
-            public async Task Will_fetch_data_using_memory_cacher_and_argument()
+            public async Task Will_Fetch_Data_Using_MemoryCacher_And_Argument()
             {
                 // Arrange
                 var cacherMock = new Mock<IInMemoryCacher>();

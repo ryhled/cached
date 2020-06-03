@@ -34,7 +34,7 @@
         private int _hitCounter;
 
         [Fact]
-        public async Task InMemoryCached_will_fetch_or_cache_based_on_key()
+        public async Task InMemoryCached_Will_Fetch_Or_Cache_Based_On_Key()
         {
             // Arrange, Act
             var result1 = await _inMemoryCached.GetOrFetchAsync(1);
