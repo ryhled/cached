@@ -1,47 +1,36 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-		<PackageId>Cached.InMemory</PackageId>
-		<Title>Cached.InMemory</Title>
+		<PackageId>Cached</PackageId>
+		<Title>Cached</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Provides in-memory, wrapping MemoryCache, caching support for Cached, the easy and concurrency safe cache library for Net Core / Net 5.
+			Fast, easy, unobtrusive, light-weight, stampede-safe and concurrency-safe netcore cache library.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
-		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;IMemoryCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
+		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;DistributedCache;IDistributedCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<PackageProjectUrl>$(PackageProjectUrlBase)Cached.InMemory</PackageProjectUrl>
+		<PackageProjectUrl>$(PackageProjectUrlBase)Cached</PackageProjectUrl>
 		<RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>
-
 	<PropertyGroup>
 		<GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Cached\Cached.csproj" />
-	  <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.4" />
-	  <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.4" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
@@ -53,4 +42,5 @@
 			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
+
 </Project>

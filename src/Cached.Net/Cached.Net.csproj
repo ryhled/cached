@@ -11,7 +11,9 @@
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
-		<PackageDescription>Integrates Net Core and Net 5 with Cached, the easy and concurrency safe cache library.</PackageDescription>
+		<PackageDescription>
+			Integrates Net Core and Net 5 with Cached, the fast, easy, and concurrency safe cache library.
+		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;IMemoryCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
