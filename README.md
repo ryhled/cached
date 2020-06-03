@@ -10,15 +10,15 @@
 
 The light-weight, fast, concurrency-safe and unobtrusive cache library for Net Core / Net 5. 
 
-#### What does Cached give me?
+#### What is Cached?
 
 The goal of Cached is to be a **fast**, thin, wrapper around existing, official, cache libraries (Like MemoryCache and DistributedCache).
 
 Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use. Looking forward, the plan is to also implement distributed locking mitigation for distributed caching.
 
-#### Why should i use Cached?
+#### Why use i use Cached?
 
-- Wrap your method and Cached caches it for you automatically, without risk of cache stampedes.
+- Wraps your method and Cached caches it for you automatically, without risk of cache stampedes.
 - It does not prevent, or hide, official cache provider configuration, standard methods still applies.
 - Cached only applies locking as it is required to prevent stampedes (no global locks). 
 - Cached offers flexibility and ease-of-use.
