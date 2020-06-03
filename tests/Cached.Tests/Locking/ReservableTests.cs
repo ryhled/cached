@@ -40,9 +40,9 @@
             }
         }
 
-        public class ReleaseMethod
+        public class TryReleaseMethod
         {
-            public class WillThrowException
+            public class Throws
             {
                 [Fact]
                 public void When_releasing_an_already_released_object()
@@ -56,7 +56,7 @@
             }
 
             [Fact]
-            public void Will_return_true_only_when_fully_released()
+            public void Releases_correctly_and_return_true_if_fully_released()
             {
                 // Arrange
                 var item = new Reservable<object>(new object());
