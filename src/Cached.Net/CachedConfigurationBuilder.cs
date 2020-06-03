@@ -13,7 +13,7 @@
 
         public void AddCacher<TFrom, TTo>(Func<IServiceProvider, TTo> cacherFactory)
             where TFrom : class
-            where TTo : class, TFrom, ICacher
+            where TTo : class, TFrom
         {
             _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(cacherFactory));
         }

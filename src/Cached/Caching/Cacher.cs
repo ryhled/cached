@@ -1,17 +1,20 @@
-﻿namespace Cached.Caching
+﻿using System;
+
+namespace Cached.Caching
 {
-    using System;
     using System.Threading.Tasks;
     using Locking;
 
     /// <inheritdoc />
-    public abstract class Cacher : ICacher
+    public class Cacher<TProvider> : ICacher<TProvider> where TProvider: ICacheProvider
     {
         private readonly ILock _cacherLock;
+        private readonly TProvider _cacheProvider;
 
-        internal Cacher(ILock cacheLock)
+        internal Cacher(ILock cacheLock, TProvider cacheProvider)
         {
             _cacherLock = cacheLock ?? throw new ArgumentNullException(nameof(cacheLock));
+            _cacheProvider = cacheProvider != null ? cacheProvider : throw new ArgumentNullException(nameof(cacheProvider));
         }
 
         /// <inheritdoc />
@@ -19,54 +22,31 @@
             string key,
             Func<string, Task<TResponse>> fetchFactory)
         {
-            var prefixedCacheKey = $"{nameof(Cacher)}|{typeof(TResponse).FullName}|{key}";
+            var prefixedCacheKey = $"{nameof(Cacher<TProvider>)}|{typeof(TResponse).FullName}|{key}";
 
-            if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
+            if (await _cacheProvider.TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
             {
                 return cachedData;
             }
 
-            return await FetchAndAddToCache(prefixedCacheKey, key, fetchFactory).ConfigureAwait(false);
+            return await FetchAndAddToCache(prefixedCacheKey, () => fetchFactory(key)).ConfigureAwait(false);
         }
 
         private async Task<TResponse> FetchAndAddToCache<TResponse>(
             string prefixedCacheKey,
-            string sourceKey,
-            Func<string, Task<TResponse>> fetchFactory)
+            Func<Task<TResponse>> fetchFactory)
         {
             using (await _cacherLock.LockAsync(prefixedCacheKey).ConfigureAwait(false))
             {
-                if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
+                if (await _cacheProvider.TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
                 {
                     return cachedData;
                 }
 
-                TResponse data = await fetchFactory(sourceKey).ConfigureAwait(false);
-                await WriteToCache(prefixedCacheKey, data).ConfigureAwait(false);
+                TResponse data = await fetchFactory().ConfigureAwait(false);
+                await _cacheProvider.WriteToCache(prefixedCacheKey, data).ConfigureAwait(false);
                 return data;
             }
         }
-
-        /// <summary>
-        ///     Writes data to cache, using the provided key as cache identifier.
-        /// </summary>
-        /// <typeparam name="T">The type of data requested.</typeparam>
-        /// <param name="key">The cache key that will represent the data.</param>
-        /// <param name="data">The data that needs to be put in cache.</param>
-        /// <returns></returns>
-        protected abstract Task WriteToCache<T>(string key, T data);
-
-        /// <summary>
-        ///     <para>    Try to retrieve data from cache.</para>
-        ///     <para>
-        ///         Implementations of this method needs to be thread-safe.
-        ///         Normally cache libraries are by default, but otherwise locking might be needed.
-        ///     </para>
-        /// </summary>
-        /// <typeparam name="T">The type of data requested.</typeparam>
-        /// <param name="key">The cache key that represents the data.</param>
-        /// <param name="cachedItem">The data retrieved from the cache.</param>
-        /// <returns>A boolean, representing if the data was found, or not.</returns>
-        protected abstract Task<bool> TryGetFromCache<T>(string key, out T cachedItem);
     }
 }

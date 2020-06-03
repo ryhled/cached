@@ -6,10 +6,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Cached.InMemory;
+    using Caching;
 
     public static class SingleThreadTests
     {
-        public static void RunSingleThreadTests(this InMemoryCacher cacher, int iterations)
+        public static void RunSingleThreadTests(this Cacher<InMemory> cacher, int iterations)
         {
             // Sequential miss test
             Console.WriteLine(Environment.NewLine);

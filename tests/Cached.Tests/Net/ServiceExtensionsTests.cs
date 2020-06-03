@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Cached.InMemory;
     using Cached.Net;
     using Caching;
     using Microsoft.Extensions.DependencyInjection;
@@ -44,14 +45,14 @@
 
                     // Act
                     services.AddCached(options =>
-                        options.AddCacher<ICacher, TestCacher>(provider => new TestCacher()));
+                        options.AddCacher<ICacher<InMemory>, TestCacher>(provider => new TestCacher()));
 
                     // Assert
                     Assert.True(services.Count == 1);
                 }
             }
 
-            private class TestCacher :  ICacher
+            private class TestCacher : ICacher<InMemory>
             {
                 public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<string, Task<TResponse>> fetchFactory)
                 {

@@ -4,11 +4,12 @@
     using System.Diagnostics;
     using System.Threading;
     using System.Threading.Tasks;
+    using Cached.InMemory;
     using Caching;
 
     public static class ParallelCacheMissTest
     {
-        public static void RunParallelCacheMissTest(this ICacher cacher, int hits)
+        public static void RunParallelCacheMissTest(this ICacher<InMemory> cacher, int hits)
         {
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine($"[PARALLEL MISS TEST] Running {hits} cache misses in parallel on different keys..");

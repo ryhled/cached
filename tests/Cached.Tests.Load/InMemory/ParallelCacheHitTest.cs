@@ -3,11 +3,12 @@
     using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Cached.InMemory;
     using Caching;
 
     public static class ParallelCacheHitTest
     {
-        public static void RunParallelCacheHitTest(this ICacher cacher, int hits)
+        public static void RunParallelCacheHitTest(this ICacher<InMemory> cacher, int hits)
         {
             Console.WriteLine($"[PARALLEL HIT TEST] Running {hits} cache hits in parallel on same key..");
 

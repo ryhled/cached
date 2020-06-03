@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Caching;
+    using Locking;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -25,8 +26,10 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddCacher<IInMemoryCacher, InMemoryCacher>(
-                provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), options));
+            builder.AddCacher<ICacher<InMemory>, Cacher<InMemory>>(
+                provider => new Cacher<InMemory>(
+                    new KeyBasedLock(), 
+                    new InMemory(provider.GetService<IMemoryCache>(), options)));
         }
 
         /// <summary>
@@ -59,7 +62,7 @@
 
             options.AddCached<ICached<TResponse, TParam>, InMemoryCached<TResponse, TParam>, TResponse, TParam>(provider =>
                 new InMemoryCached<TResponse, TParam>(
-                    provider.GetService<IInMemoryCacher>(),
+                    provider.GetService<ICacher<InMemory>>(),
                     keyFactory,
                     (key, arg) => fetchFactory.Invoke(provider, key, arg)));
         }

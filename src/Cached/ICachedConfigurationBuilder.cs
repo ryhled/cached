@@ -16,7 +16,7 @@
         /// <param name="cacherFactory">The ServiceFactory that ultimately creates the instance.</param>
         void AddCacher<TFrom, TTo>(Func<IServiceProvider, TTo> cacherFactory)
             where TFrom : class
-            where TTo : class, TFrom, ICacher;
+            where TTo : class, TFrom;
 
         /// <summary>
         ///     Adds a cached service (in transient scope).
