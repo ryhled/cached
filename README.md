@@ -1,24 +1,28 @@
-# ![Cached](https://github.com/ryhled/cached/blob/master/logo.png?raw=true)
+# <img src="https://github.com/ryhled/cached/raw/master/logo.png?raw=true" alt="Cached" width="350" height="64">
 
-![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/ryhled/79d73c90-2ec7-4406-b466-b14dd3a54f24/3/master)
-![Azure DevOps tests (branch)](https://img.shields.io/azure-devops/tests/ryhled/cached/3/master)
-![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/ryhled/cached/3/master)
-![GitHub issues](https://img.shields.io/github/issues/ryhled/cached)
-![GitHub last commit](https://img.shields.io/github/last-commit/ryhled/cached)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ryhled/cached/blob/master/LICENSE.md?label=license)
-![GitHub tag (latest SemVer pre-release)](https://img.shields.io/github/v/tag/ryhled/cached?include_prereleases&label=latest%20release)
+[![Azure DevOps builds (branch)](https://img.shields.io/azure-devops/build/ryhled/79d73c90-2ec7-4406-b466-b14dd3a54f24/3/master?style=flat-square)](https://dev.azure.com/ryhled/Cached/_build?definitionId=3)
+[![Azure DevOps tests (branch)](https://img.shields.io/azure-devops/tests/ryhled/cached/3/master?style=flat-square)](https://dev.azure.com/ryhled/Cached/_build?definitionId=3)
+[![Azure DevOps coverage (branch)](https://img.shields.io/azure-devops/coverage/ryhled/cached/3/master?style=flat-square)](https://dev.azure.com/ryhled/Cached/_build?definitionId=3)
+[![GitHub issues](https://img.shields.io/github/issues/ryhled/cached?style=flat-square)](https://github.com/ryhled/cached/issues)
+[![GitHub last commit (branch)](https://img.shields.io/github/last-commit/ryhled/cached/master?style=flat-square)](https://github.com/ryhled/cached/commits/master)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/cached?color=informational&style=flat-square)](https://www.nuget.org/packages/Cached)
 
-The light-weight, stampede safe, unobtrusive C# / .NET Core cache library. 
 
-The aim is to be an 'as thin as possible' wrapper of the official providers, such as MemoryCache and DistributedCache (not reinventing the wheel). But at the same time provide ease of use and cache stampede safety / prevention amongst other things.
+The light-weight, fast, concurrency-safe and unobtrusive cache library for Net Core / Net 5. 
 
-#### Features
+#### What does Cached give me?
 
-- Uses the official cache providers under the hood (configuration is done the same way you are used to).
-- Does lazy fetch / repopulation of data on cache miss.
-- Cache stampede safe (in-process). Calls to populate cache are done only once.
-- Selective write locking, only the key being repopulated is locked.
-- Flexibility. For example: inject as service, or inject call directly as an 'ICached<>' instance.
+The goal of Cached is to be a **fast**, thin, wrapper around existing, official, cache libraries (Like MemoryCache and DistributedCache).
+
+Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use. Looking forward, the plan is to also implement distributed locking mitigation for distributed caching.
+
+#### Why should i use Cached?
+
+- Wrap your method and Cached caches it for you automatically, without risk of cache stampedes.
+- It does not prevent, or hide, official cache provider configuration, standard methods still applies.
+- Cached only applies locking as it is required to prevent stampedes (no global locks). 
+- Cached offers flexibility and ease-of-use.
+- Cached is thin. No need to create dependencies on huge caching frameworks.
 
 ## Getting started
 
@@ -65,21 +69,13 @@ public async Task OnGet()
 }
 ```
 
-More examples and information can be found in the **[wiki](https://github.com/ryhled/cached/wiki)** and in the **[demo](https://github.com/ryhled/cached/tree/master/demo/)** section.
+**More examples and information can be found in the [wiki](https://github.com/ryhled/cached/wiki) and in the [demo](https://github.com/ryhled/cached/tree/master/demo/) section**.
 
 
 ## Future plans
 
 * Add support for distributed caching (IDistributedCache) and optimal probabalistic stampede prevention.
 * Add support for cache warmup.
-
-## Owner(s)
-
-- [ryhled](https://github.com/ryhled)
-
-## Contributer(s)
-
-- [ryhled](https://github.com/ryhled)
 
 ## Social
 
