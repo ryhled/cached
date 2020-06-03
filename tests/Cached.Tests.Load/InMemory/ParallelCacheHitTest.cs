@@ -8,7 +8,7 @@
 
     public static class ParallelCacheHitTest
     {
-        public static void RunParallelCacheHitTest(this ICacher<InMemory> cacher, int hits)
+        public static void RunParallelCacheHitTest(this ICacher<IInMemory> cacher, int hits)
         {
             Console.WriteLine($"[PARALLEL HIT TEST] Running {hits} cache hits in parallel on same key..");
 

@@ -11,14 +11,14 @@ namespace Cached.Demo.Net.Pages
 
     public class CacherModel : PageModel
     {
-        private readonly ICacher<InMemory> _cached;
+        private readonly ICacher<IInMemory> _memoryCacher;
         private readonly IFakeService _fakeService;
 
         public CacherModel(
-            ICacher<InMemory> cached,
+            ICacher<IInMemory> cached,
             IFakeService fakeService)
         {
-            _cached = cached;
+            _memoryCacher = cached;
             _fakeService = fakeService;
         }
 
@@ -29,7 +29,7 @@ namespace Cached.Demo.Net.Pages
         {
             var watch = Stopwatch.StartNew();
 
-            CachedValue = await _cached.GetOrFetchAsync(key, _fakeService.Get);
+            CachedValue = await _memoryCacher.GetOrFetchAsync(key, _fakeService.Get);
 
             watch.Stop();
             TimeConsumed = watch.ElapsedMilliseconds + " ms";

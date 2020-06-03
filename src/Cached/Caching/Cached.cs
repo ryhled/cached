@@ -1,24 +1,23 @@
-﻿namespace Cached.InMemory
+﻿namespace Cached.Caching
 {
     using System;
     using System.Threading.Tasks;
-    using Caching;
 
     /// <inheritdoc cref="ICached{TResponse,TParam}" />
-    public sealed class InMemoryCached<TResponse, TParam> : ICached<TResponse, TParam>
+    public sealed class Cached<TResponse, TParam, TProvider> : ICached<TResponse, TParam> where TProvider: ICacheProvider
     {
         private readonly Func<string, TParam, Task<TResponse>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;
-        private readonly ICacher<InMemory> _cacher;
+        private readonly ICacher<TProvider> _cacher;
 
         /// <summary>
         ///     Creates a new Cached instance for a specific, predefined, fetch factory function.
         /// </summary>
-        /// <param name="cacher">The memory cache to be used.</param>
-        /// <param name="keyFactory">The key factory that will be used to generate cache key.</param>
+        /// <param name="cacher">The cacher instance.</param>
+        /// <param name="keyFactory">The key factory that will be used to generate the cache key.</param>
         /// <param name="fetchFactory">The fetch factory that is used to fetch new data.</param>
-        public InMemoryCached(
-            ICacher<InMemory> cacher,
+        internal Cached(
+            ICacher<TProvider> cacher,
             Func<TParam, string> keyFactory,
             Func<string, TParam, Task<TResponse>> fetchFactory)
         {

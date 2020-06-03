@@ -11,7 +11,7 @@
 
     public static class AsyncCacheHitTest
     {
-        public static async Task RunAsyncCacheHitTest(this ICacher<InMemory> cacher, int hits)
+        public static async Task RunAsyncCacheHitTest(this ICacher<IInMemory> cacher, int hits)
         {
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine($"[ASYNC HIT TEST] Running {hits} cache hits asynchronously on different keys..");

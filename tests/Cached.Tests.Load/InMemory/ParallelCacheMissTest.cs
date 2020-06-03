@@ -9,7 +9,7 @@
 
     public static class ParallelCacheMissTest
     {
-        public static void RunParallelCacheMissTest(this ICacher<InMemory> cacher, int hits)
+        public static void RunParallelCacheMissTest(this ICacher<IInMemory> cacher, int hits)
         {
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine($"[PARALLEL MISS TEST] Running {hits} cache misses in parallel on different keys..");

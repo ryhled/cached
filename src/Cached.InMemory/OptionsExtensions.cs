@@ -26,10 +26,12 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddCacher<ICacher<InMemory>, Cacher<InMemory>>(
-                provider => new Cacher<InMemory>(
+            builder.AddCacher<ICacher<IInMemory>, Cacher<IInMemory>>(
+                provider => new Cacher<IInMemory>(
                     new KeyBasedLock(), 
-                    new InMemory(provider.GetService<IMemoryCache>(), options)));
+                    new InMemoryProvider(
+                        provider.GetService<IMemoryCache>(), 
+                        options)));
         }
 
         /// <summary>
@@ -60,9 +62,9 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.AddCached<ICached<TResponse, TParam>, InMemoryCached<TResponse, TParam>, TResponse, TParam>(provider =>
-                new InMemoryCached<TResponse, TParam>(
-                    provider.GetService<ICacher<InMemory>>(),
+            options.AddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam, IInMemory>, TResponse, TParam>(provider =>
+                new Cached<TResponse, TParam, IInMemory>(
+                    provider.GetService<ICacher<IInMemory>>(),
                     keyFactory,
                     (key, arg) => fetchFactory.Invoke(provider, key, arg)));
         }

@@ -11,7 +11,7 @@
 
     public static class AsyncCacheMissTest
     {
-        public static async Task RunAsyncCacheMissTest(this ICacher<InMemory> cacher, int hits)
+        public static async Task RunAsyncCacheMissTest(this ICacher<IInMemory> cacher, int hits)
         {
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine($"[ASYNC MISS TEST] Running {hits} cache misses asynchronously on different keys..");

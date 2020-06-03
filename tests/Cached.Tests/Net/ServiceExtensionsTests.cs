@@ -45,14 +45,14 @@
 
                     // Act
                     services.AddCached(options =>
-                        options.AddCacher<ICacher<InMemory>, TestCacher>(provider => new TestCacher()));
+                        options.AddCacher<ICacher<InMemoryProvider>, TestCacher>(provider => new TestCacher()));
 
                     // Assert
                     Assert.True(services.Count == 1);
                 }
             }
 
-            private class TestCacher : ICacher<InMemory>
+            private class TestCacher : ICacher<InMemoryProvider>
             {
                 public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<string, Task<TResponse>> fetchFactory)
                 {
