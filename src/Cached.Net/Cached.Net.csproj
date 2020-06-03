@@ -12,14 +12,15 @@
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Integrates Net Core and Net 5 with Cached, the fast, easy, and concurrency safe cache library.
+			Integrates Net Core and Net 5 with Cached, the fast, easy, and concurrency-safe cache library.
+			Lets you easily setup Cached to be injected in a net core / net 5 applicaiton.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;IMemoryCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-		<PackageProjectUrl>$(PackageProjectUrlBase)Cached</PackageProjectUrl>
+		<PackageProjectUrl>$(PackageProjectUrlBase)Cached.Net</PackageProjectUrl>
 		<RepositoryUrl>$(RepositoryUrl)</RepositoryUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<IncludeReadMeMarkdown>true</IncludeReadMeMarkdown>

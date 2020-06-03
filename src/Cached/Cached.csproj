@@ -6,14 +6,15 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-		<PackageId>Cached.Distributed</PackageId>
-		<Title>Cached.Distributed</Title>
+		<PackageId>Cached</PackageId>
+		<Title>Cached</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Provides distributed, wrapping DistributedCache, caching support for Cached, the fast, easy, and concurrency safe cache library for Net Core / Net 5.
+			Fast, easy, unobtrusive, light-weight, and concurrency-safe cache library for net core and net 5.
+			Built to prevent cache stampedes but at the same time avoid the performance degradation caused by excessive locking.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>

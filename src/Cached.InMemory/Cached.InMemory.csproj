@@ -12,7 +12,9 @@
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Provides in-memory, wrapping MemoryCache, caching support for Cached, the easy and concurrency safe cache library for Net Core / Net 5.
+			Provides in-memory, caching support for Cached, the fast, easy and concurrency-safe cache library for Net Core / Net 5.
+			Enables quick implementation of caching without the risk of cache stampedes.
+			Uses MemoryCache under the hood for caching, and lets you configure it as you would vanilla MemoryCache.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
