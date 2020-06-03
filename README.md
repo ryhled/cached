@@ -16,9 +16,9 @@ The goal of Cached is to be a **fast**, thin, wrapper around existing, official,
 
 Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use. Looking forward, the plan is to also implement distributed locking mitigation for distributed caching.
 
-#### Why use i use Cached?
+#### Why use Cached?
 
-- Wraps your method and Cached caches it for you automatically, without risk of cache stampedes.
+- Cached wraps your methods and caches it for you automatically, without risk of cache stampedes.
 - It does not prevent, or hide, official cache provider configuration, standard methods still applies.
 - Cached only applies locking as it is required to prevent stampedes (no global locks). 
 - Cached offers flexibility and ease-of-use.
