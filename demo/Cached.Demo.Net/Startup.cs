@@ -8,21 +8,20 @@ namespace Cached.Demo.Net
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Services;
 
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IFakeService, FakeService>();
+
             services.AddCached(options =>
             {
                 options.AddInMemoryCaching();
-                options.AddInMemoryCachedFunction<string, string>(param =>
-                        param,
-                    async (provider, key, arg) =>
-                    {
-                        await Task.Delay(500);
-                        return DateTime.Now + $" [cached function for: {arg}]";
-                    });
+                options.AddInMemoryCachedFunction<string, int>(
+                    param => param.ToString(), // Generates cache key based on the argument used.
+                    (provider, key, arg) => provider.GetService<IFakeService>().FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
             });
             services.AddRazorPages();
         }

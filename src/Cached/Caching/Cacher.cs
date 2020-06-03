@@ -26,22 +26,23 @@
                 return cachedData;
             }
 
-            return await FetchAndAddToCache(prefixedCacheKey, fetchFactory).ConfigureAwait(false);
+            return await FetchAndAddToCache(prefixedCacheKey, key, fetchFactory).ConfigureAwait(false);
         }
 
         private async Task<TResponse> FetchAndAddToCache<TResponse>(
-            string key,
+            string prefixedCacheKey,
+            string sourceKey,
             Func<string, Task<TResponse>> fetchFactory)
         {
-            using (await _cacherLock.LockAsync(key).ConfigureAwait(false))
+            using (await _cacherLock.LockAsync(prefixedCacheKey).ConfigureAwait(false))
             {
-                if (await TryGetFromCache(key, out TResponse cachedData).ConfigureAwait(false))
+                if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
                 {
                     return cachedData;
                 }
 
-                TResponse data = await fetchFactory(key).ConfigureAwait(false);
-                await WriteToCache(key, data).ConfigureAwait(false);
+                TResponse data = await fetchFactory(sourceKey).ConfigureAwait(false);
+                await WriteToCache(prefixedCacheKey, data).ConfigureAwait(false);
                 return data;
             }
         }

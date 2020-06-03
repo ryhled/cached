@@ -7,14 +7,19 @@ namespace Cached.Demo.Net.Pages
     using InMemory;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Services;
 
     public class CacherModel : PageModel
     {
         private readonly IInMemoryCacher _cached;
+        private readonly IFakeService _fakeService;
 
-        public CacherModel(IInMemoryCacher cached)
+        public CacherModel(
+            IInMemoryCacher cached,
+            IFakeService fakeService)
         {
             _cached = cached;
+            _fakeService = fakeService;
         }
 
         [BindProperty] public string CachedValue { get; set; }
@@ -24,16 +29,10 @@ namespace Cached.Demo.Net.Pages
         {
             var watch = Stopwatch.StartNew();
 
-            CachedValue = await _cached.GetOrFetchAsync(key, _ => GetSlowDateTime(key));
+            CachedValue = await _cached.GetOrFetchAsync(key, _fakeService.Get);
 
             watch.Stop();
             TimeConsumed = watch.ElapsedMilliseconds + " ms";
-        }
-
-        private async Task<string> GetSlowDateTime(string key)
-        {
-            await Task.Delay(500);
-            return DateTime.Now.ToString(CultureInfo.InvariantCulture) + $" [{key}]";
         }
     }
 }

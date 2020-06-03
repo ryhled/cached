@@ -8,9 +8,9 @@ namespace Cached.Demo.Net.Pages
 
     public class CachedFunctionModel : PageModel
     {
-        private readonly ICached<string, string> _cached;
+        private readonly ICached<string, int> _cached;
 
-        public CachedFunctionModel(ICached<string, string> cached)
+        public CachedFunctionModel(ICached<string, int> cached)
         {
             _cached = cached;
         }
@@ -18,7 +18,7 @@ namespace Cached.Demo.Net.Pages
         [BindProperty] public string CachedValue { get; set; }
         [BindProperty] public string TimeConsumed { get; set; }
 
-        public async Task OnGet(string key = "_")
+        public async Task OnGet(int key = 0)
         {
             var watch = Stopwatch.StartNew();
 
