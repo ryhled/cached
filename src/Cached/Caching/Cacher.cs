@@ -5,19 +5,17 @@ namespace Cached.Caching
     using System.Threading.Tasks;
     using Locking;
 
-    /// <inheritdoc />
-    public class Cacher<TProvider> : ICacher<TProvider> where TProvider: ICacheProvider
+    internal class Cacher<TProvider> : ICacher<TProvider> where TProvider: ICacheProvider
     {
         private readonly ILock _cacherLock;
         private readonly TProvider _cacheProvider;
 
-        internal Cacher(ILock cacheLock, TProvider cacheProvider)
+        public Cacher(ILock cacheLock, TProvider cacheProvider)
         {
             _cacherLock = cacheLock ?? throw new ArgumentNullException(nameof(cacheLock));
             _cacheProvider = cacheProvider != null ? cacheProvider : throw new ArgumentNullException(nameof(cacheProvider));
         }
 
-        /// <inheritdoc />
         public async Task<TResponse> GetOrFetchAsync<TResponse>(
             string key,
             Func<string, Task<TResponse>> fetchFactory)
