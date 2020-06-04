@@ -1,7 +1,5 @@
 ﻿namespace Cached.InMemory
 {
-    using System;
-    using System.Collections.Concurrent;
     using Caching;
     using Locking;
     using Microsoft.Extensions.Caching.Memory;
