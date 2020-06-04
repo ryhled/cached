@@ -9,16 +9,16 @@
     using Cached.Locking;
     using Xunit;
 
-    public sealed class KeyBasedLockTests
+    public class KeyBasedLockTests
     {
-        public sealed class LockAsyncMethod
+        public class LockAsyncMethod
         {
             internal static Dictionary<object, Reservable<SemaphoreSlim>> GetReflectedLockList(KeyBasedLock lck) 
                 => (Dictionary<object, Reservable<SemaphoreSlim>>)typeof(KeyBasedLock)
                 .GetField("Reserved", BindingFlags.Static | BindingFlags.NonPublic)
                 ?.GetValue(lck);
 
-            public sealed class Throws
+            public class Throws
             {
                 [Fact]
                 public async Task When_Key_Is_Null()

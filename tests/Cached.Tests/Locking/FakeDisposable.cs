@@ -2,7 +2,7 @@
 {
     using System;
 
-    internal sealed class FakeDisposable : IDisposable
+    internal class FakeDisposable : IDisposable
     {
         public void Dispose()
         {

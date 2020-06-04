@@ -3,8 +3,8 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using Cached.Caching;
     using Cached.Net;
-    using Caching;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Xunit;

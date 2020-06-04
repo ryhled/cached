@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Cached.Caching;
 
-    public class FakeCacheProvider : ICacheProvider
+    internal class FakeCacheProvider : ICacheProvider
     {
         public int TriedToGet { get; private set; } = 0;
         public int TriedToSet { get; private set; } = 0;

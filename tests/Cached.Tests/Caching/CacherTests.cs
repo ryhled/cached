@@ -7,12 +7,12 @@
     using Moq;
     using Xunit;
 
-    public sealed class CacherTests
+    public class CacherTests
     {
         public static string GetInternalKey<TArgType>(string key)
             => $"{nameof(Cacher<FakeCacheProvider>)}|{typeof(TArgType).FullName}|{key}";
 
-        public sealed class Constructor
+        public class Constructor
         {
             public sealed class Throws
             {
@@ -32,7 +32,7 @@
             }
         }
 
-        public sealed class GetOrFetchAsyncMethod
+        public class GetOrFetchAsyncMethod
         {
             public sealed class Throws
             {
@@ -48,7 +48,7 @@
                 }
             }
 
-            public sealed class FetchValueFromSource
+            public class FetchValueFromSource
             {
                 [Fact]
                 public async Task Fetch_Item_From_Source_When_Not_Exist_In_Cache()
@@ -70,7 +70,7 @@
                 }
             }
 
-            public sealed class GetsValueFromCache
+            public class GetsValueFromCache
             {
                 [Fact]
                 public async Task Get_Item_From_Cache_When_It_Exist()
