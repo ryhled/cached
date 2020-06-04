@@ -1,6 +1,7 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Cached.Caching;
     using Cached.InMemory;
@@ -35,26 +36,34 @@
                 }
             }
 
-            public sealed class AddsCachedAndService
+            public class AddsCacher
             {
                 [Fact]
-                public void When_Service_Is_Configured()
+                public void As_ICacher_Interface()
                 {
                     // Arrange
                     var services = new ServiceCollection();
 
                     // Act
-                    services.AddCached(options =>
-                        options.AddCacher<ICacher<InMemoryProvider>, TestCacher>(provider => new TestCacher()));
+                    services.AddCached(options
+                        => options.AddCacher(provider => new TestCacher()));
+
 
                     // Assert
-                    Assert.True(services.Count == 1);
+                    ServiceProvider serviceProvider = services.BuildServiceProvider();
+                    var instance = serviceProvider.GetService<ICacher<IInMemory>>();
+                    Assert.NotNull(instance);
+                    Assert.IsType<TestCacher>(instance);
+
+                    // Teardown
+                    serviceProvider.Dispose();
                 }
             }
 
-            private class TestCacher : ICacher<InMemoryProvider>
+            private class TestCacher : ICacher<IInMemory>
             {
-                public Task<TResponse> GetOrFetchAsync<TResponse>(string key, Func<string, Task<TResponse>> fetchFactory)
+                public Task<TResponse> GetOrFetchAsync<TResponse>(string key,
+                    Func<string, Task<TResponse>> fetchFactory)
                 {
                     throw new NotImplementedException();
                 }

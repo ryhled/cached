@@ -1,6 +1,5 @@
 namespace Cached.Demo.Net.Pages
 {
-    using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Caching;

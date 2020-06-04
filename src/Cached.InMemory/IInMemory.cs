@@ -3,7 +3,7 @@
     using Caching;
 
     /// <summary>
-    /// Responsible for performing the operations required against MemoryCache cache store.
+    /// Provides support for caching items in-memory.
     /// </summary>
     public interface IInMemory : ICacheProvider
     {

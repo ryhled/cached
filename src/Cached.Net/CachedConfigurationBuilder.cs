@@ -11,11 +11,10 @@
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();
 
-        public void AddCacher<TFrom, TTo>(Func<IServiceProvider, TTo> cacherFactory)
-            where TFrom : class
-            where TTo : class, TFrom
+        public void AddCacher<TProvider>(Func<IServiceProvider, ICacher<TProvider>> cacherFactory)
+            where TProvider : ICacheProvider
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>(cacherFactory));
+            _serviceDescriptors.Add(ServiceDescriptor.Singleton(cacherFactory));
         }
 
         public void AddCached<TFrom, TTo, TResponse, TParam>(Func<IServiceProvider, TTo> cachedFactory)

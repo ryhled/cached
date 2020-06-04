@@ -11,12 +11,9 @@
         /// <summary>
         ///     Adds Cacher service (in singleton scope).
         /// </summary>
-        /// <typeparam name="TFrom">The type of object to be used for injection.</typeparam>
-        /// <typeparam name="TTo">The type of the concrete object meant to fill the injection.</typeparam>
+        /// <typeparam name="TProvider">The Type of provider that the cacher instance consumes.</typeparam>
         /// <param name="cacherFactory">The ServiceFactory that ultimately creates the instance.</param>
-        void AddCacher<TFrom, TTo>(Func<IServiceProvider, TTo> cacherFactory)
-            where TFrom : class
-            where TTo : class, TFrom;
+        void AddCacher<TProvider>(Func<IServiceProvider, ICacher<TProvider>> cacherFactory) where TProvider : ICacheProvider;
 
         /// <summary>
         ///     Adds a cached service (in transient scope).

@@ -18,7 +18,8 @@
         /// <param name="builder">The configurator object used during application startup.</param>
         /// <param name="options">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
-        public static void AddInMemoryCaching(this ICachedConfigurationBuilder builder,
+        public static void AddInMemoryCaching(
+            this ICachedConfigurationBuilder builder,
             MemoryCacheEntryOptions options = null)
         {
             if (builder == null)
@@ -26,12 +27,7 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddCacher<ICacher<IInMemory>, Cacher<IInMemory>>(
-                provider => new Cacher<IInMemory>(
-                    new KeyBasedLock(), 
-                    new InMemoryProvider(
-                        provider.GetService<IMemoryCache>(), 
-                        options)));
+            builder.AddCacher(provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), options));
         }
 
         /// <summary>
