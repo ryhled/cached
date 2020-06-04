@@ -12,11 +12,8 @@ namespace Cached.Tests.Benchmark
         static async Task Main(string[] args)
         {
             var simpleHitSummary = BenchmarkRunner.Run<CacheHitsTests>();
-            var simpleMissSummary = BenchmarkRunner.Run<CacheMissTests>();
-
-            Console.Write(simpleMissSummary.AllRuntimes);
-            Console.Write(simpleHitSummary.AllRuntimes);
-
+            //var simpleMissSummary = BenchmarkRunner.Run<CacheMissTests>();
+            
             Console.WriteLine("Press any key to quit..");
             Console.ReadKey();
         }

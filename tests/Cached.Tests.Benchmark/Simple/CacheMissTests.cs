@@ -3,11 +3,12 @@
     using System;
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Diagnostics.Windows.Configs;
     using Caching;
     using InMemory;
     using Microsoft.Extensions.Caching.Memory;
 
-    [SimpleJob, IterationTime(500)]
+    [SimpleJob, IterationTime(500), MemoryDiagnoser, EtwProfiler]
     public class CacheMissTests
     {
         public CacheMissTests()

@@ -3,13 +3,14 @@
     using System;
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Diagnostics.Windows.Configs;
     using BenchmarkDotNet.Engines;
     using BenchmarkDotNet.Jobs;
     using Caching;
     using InMemory;
     using Microsoft.Extensions.Caching.Memory;
 
-    [SimpleJob, IterationTime(500)]
+    [SimpleJob, IterationTime(500), MemoryDiagnoser, EtwProfiler]
     public class CacheHitsTests
     {
         public CacheHitsTests()
