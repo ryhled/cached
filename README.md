@@ -12,9 +12,9 @@ The light-weight, fast, concurrency-safe and unobtrusive cache library for Net C
 
 #### What is Cached?
 
-The goal of Cached is to be a **fast**, thin, wrapper around existing, official, cache libraries (Like MemoryCache and DistributedCache).
+The goal of Cached is to be a thin, fast, wrapper around existing, official, cache libraries (Like MemoryCache and DistributedCache).
 
-Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use. Looking forward, the plan is to also implement distributed locking mitigation for distributed caching.
+Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use.
 
 #### Why use Cached?
 
@@ -56,9 +56,9 @@ public void ConfigureServices(IServiceCollection services)
 Razor page
 
 ```
-private readonly IMemoryCacher _cacher;
+private readonly ICacher<IInMemory> _cacher;
 
-public IndexModel(IMemoryCacher cacher)
+public IndexModel(ICacher<IInMemory> cacher)
 {
     _cached = cached;
 }
