@@ -22,6 +22,11 @@ namespace Cached.Caching
             string key,
             Func<string, Task<TResponse>> fetchFactory)
         {
+            if (fetchFactory == null)
+            {
+                throw new ArgumentNullException(nameof(fetchFactory));
+            }
+
             var prefixedCacheKey = $"{nameof(Cacher<TProvider>)}|{typeof(TResponse).FullName}|{key}";
 
             if (await _cacheProvider.TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
