@@ -5,48 +5,44 @@
     using Cached.InMemory;
     using Caching;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.DependencyInjection;
+    using Net;
     using Xunit;
 
-    public sealed class InMemoryCachedIntegrationTests : IDisposable
+    public sealed class InMemoryCachedIntegrationTests
     {
-        //public InMemoryCachedIntegrationTests()
-        //{
-        //    var options = new MemoryCacheOptions();
-        //    _memoryCache = new MemoryCache(options);
-        //    IInMemoryCacher inMemoryCacher =
-        //        InMemoryCacher.New(_memoryCache,
-        //            new MemoryCacheEntryOptions {AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)});
-        //    _inMemoryCached = new InMemoryCached<string, int>(inMemoryCacher, i => i + "_key", async (key, arg) =>
-        //    {
-        //        await Task.Delay(10);
-        //        ++_hitCounter;
-        //        return arg + "_" + _hitCounter + "_fetch";
-        //    });
-        //}
-
-        public void Dispose()
+        public InMemoryCachedIntegrationTests()
         {
-        //    _memoryCache.Dispose();
+            var services = new ServiceCollection();
+            services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions()));
+            services.AddCached(options =>
+            {
+                options.AddInMemoryCaching();
+                options.AddInMemoryCachedFunction<string, int>(
+                    arg => arg.ToString(), 
+                    (provider, key, arg) => Task.FromResult("Value for key " + key));
+            });
+
+            var scope = services.BuildServiceProvider();
+            _inMemoryCached = scope.GetService<ICached<string, int>>();
         }
 
-        //private readonly IMemoryCache _memoryCache;
-        //private readonly ICached<string, int> _inMemoryCached;
-        //private int _hitCounter;
+        private readonly ICached<string, int> _inMemoryCached;
 
-        //[Fact]
-        //public async Task InMemoryCached_Will_Fetch_Or_Cache_Based_On_Key()
-        //{
-        //    // Arrange, Act
-        //    var result1 = await _inMemoryCached.GetOrFetchAsync(1);
-        //    var result2 = await _inMemoryCached.GetOrFetchAsync(2);
-        //    var result3 = await _inMemoryCached.GetOrFetchAsync(1);
-        //    var result4 = await _inMemoryCached.GetOrFetchAsync(2);
+        [Fact]
+        public async Task InMemoryCached_Will_Fetch_Or_Cache_Based_On_Key()
+        {
+            // Arrange, Act
+            var result1 = await _inMemoryCached.GetOrFetchAsync(1);
+            var result2 = await _inMemoryCached.GetOrFetchAsync(2);
+            var result3 = await _inMemoryCached.GetOrFetchAsync(1);
+            var result4 = await _inMemoryCached.GetOrFetchAsync(2);
 
-        //    // Assert
-        //    Assert.Equal("1_1_fetch", result1);
-        //    Assert.Equal("2_2_fetch", result2);
-        //    Assert.Equal("1_1_fetch", result3);
-        //    Assert.Equal("2_2_fetch", result4);
-        //}
+            // Assert
+            Assert.Equal("Value for key 1", result1);
+            Assert.Equal("Value for key 2", result2);
+            Assert.Equal("Value for key 1", result3);
+            Assert.Equal("Value for key 2", result4);
+        }
     }
 }
