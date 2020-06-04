@@ -9,9 +9,9 @@
     using Moq;
     using Xunit;
 
-    public sealed class CachedOptionsBuilderTests
+    public class CachedOptionsBuilderTests
     {
-        public sealed class BuildMethod
+        public class BuildMethod
         {
             public class TestClass : ICached<string, string>
             {
@@ -23,7 +23,7 @@
                 }
             }
 
-            public sealed class ThrowsException
+            public class ThrowsException
             {
                 [Fact]
                 public void When_No_Configurations_Are_Provided()
@@ -47,7 +47,7 @@
                 }
             }
 
-            public sealed class BuildsCorrectly
+            public class BuildsCorrectly
             {
                 [Fact]
                 public void When_Configuring_Singleton_Service()

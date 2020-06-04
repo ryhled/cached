@@ -1,7 +1,6 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
     using Cached.Caching;
     using Cached.InMemory;
@@ -10,11 +9,11 @@
     using Moq;
     using Xunit;
 
-    public sealed class ServiceExtensionsTests
+    public class ServiceExtensionsTests
     {
-        public sealed class AddCachedMethod
+        public class AddCachedMethod
         {
-            public sealed class Throws
+            public class Throws
             {
                 [Fact]
                 public void If_No_CacheService_Is_Configured()
