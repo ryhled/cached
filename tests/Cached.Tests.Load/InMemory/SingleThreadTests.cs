@@ -10,7 +10,7 @@
 
     public static class SingleThreadTests
     {
-        public static void RunSingleThreadTests(this Cacher<IInMemory> cacher, int iterations)
+        public static void RunSingleThreadTests(this ICacher<IInMemory> cacher, int iterations)
         {
             // Sequential miss test
             Console.WriteLine(Environment.NewLine);

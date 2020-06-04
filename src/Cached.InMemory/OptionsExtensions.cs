@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using Caching;
-    using Locking;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 
