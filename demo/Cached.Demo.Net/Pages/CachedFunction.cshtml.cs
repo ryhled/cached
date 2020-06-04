@@ -8,11 +8,11 @@ namespace Cached.Demo.Net.Pages
 
     public class CachedFunctionModel : PageModel
     {
-        private readonly ICached<string, int> _cached;
+        private readonly ICached<string, int> _fakeServiceDates;
 
-        public CachedFunctionModel(ICached<string, int> cached)
+        public CachedFunctionModel(ICached<string, int> fakeServiceDates)
         {
-            _cached = cached;
+            _fakeServiceDates = fakeServiceDates;
         }
 
         [BindProperty] public string CachedValue { get; set; }
@@ -22,7 +22,7 @@ namespace Cached.Demo.Net.Pages
         {
             var watch = Stopwatch.StartNew();
 
-            CachedValue = await _cached.GetOrFetchAsync(key);
+            CachedValue = await _fakeServiceDates.GetOrFetchAsync(key);
 
             watch.Stop();
             TimeConsumed = watch.ElapsedMilliseconds + " ms";
