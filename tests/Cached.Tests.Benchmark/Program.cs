@@ -2,14 +2,13 @@
 
 namespace Cached.Tests.Benchmark
 {
-    using System.Threading.Tasks;
     using BenchmarkDotNet.Running;
 
-    class Program
+    internal class Program
     {
-        static async Task Main(string[] args)
+        private static void Main()
         {
-            var simpleMissSummary = BenchmarkRunner.Run<SimpleCacheLoad>();
+            BenchmarkRunner.Run<SimpleCacheLoad>();
             
             Console.WriteLine("Press any key to quit..");
             Console.ReadKey();
