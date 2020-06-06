@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Caching;
+    using Configuration;
     using Microsoft.Extensions.Caching.Memory;
 
     /// <summary>

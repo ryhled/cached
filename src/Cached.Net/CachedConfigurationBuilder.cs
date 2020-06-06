@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Caching;
+    using Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 

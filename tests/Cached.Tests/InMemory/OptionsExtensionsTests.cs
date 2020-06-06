@@ -6,6 +6,7 @@
     using Cached.Caching;
     using Cached.InMemory;
     using Cached.Net;
+    using Configuration;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
     using Xunit;

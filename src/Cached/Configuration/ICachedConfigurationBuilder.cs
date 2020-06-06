@@ -1,4 +1,4 @@
-﻿namespace Cached
+﻿namespace Cached.Configuration
 {
     using System;
 

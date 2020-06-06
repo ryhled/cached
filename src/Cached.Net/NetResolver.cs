@@ -1,6 +1,7 @@
 ﻿namespace Cached.Net
 {
     using System;
+    using Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     internal class NetResolver : IResolver
