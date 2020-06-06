@@ -1,8 +1,8 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
     using System.Threading.Tasks;
-    using Memory;
     using Caching;
+    using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
     using Net;

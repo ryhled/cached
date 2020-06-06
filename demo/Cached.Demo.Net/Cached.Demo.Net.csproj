@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Cached.Distributed\Cached.Distributed.csproj" />
-    <ProjectReference Include="..\..\src\Cached.Memory\Cached.Memory.csproj" />
-    <ProjectReference Include="..\..\src\Cached.Net\Cached.Net.csproj" />
-    <ProjectReference Include="..\..\src\Cached\Cached.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Cached.Distributed\Cached.Distributed.csproj" />
+		<ProjectReference Include="..\..\src\Cached.Memory\Cached.Memory.csproj" />
+		<ProjectReference Include="..\..\src\Cached.Net\Cached.Net.csproj" />
+		<ProjectReference Include="..\..\src\Cached\Cached.csproj" />
+	</ItemGroup>
 
 </Project>

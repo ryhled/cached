@@ -1,10 +1,10 @@
-﻿namespace Cached.Tests.InMemory
+﻿namespace Cached.Tests.Memory
 {
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
     using Cached.Caching;
-    using Memory;
+    using Cached.Memory;
     using Cached.Net;
     using Configuration;
     using Microsoft.Extensions.Caching.Memory;

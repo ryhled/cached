@@ -4,18 +4,18 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Cached.Caching;
-    using Memory;
     using Cached.Locking;
+    using Cached.Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Primitives;
     using Moq;
     using Xunit;
 
-    public class InMemoryCacherTests : CacherTestsBase
+    public class MemoryCacherTests : CacherTestsBase
     {
         private readonly Mock<IMemoryCache> _memoryCacheMock;
 
-        public InMemoryCacherTests()
+        public MemoryCacherTests()
         {
             _memoryCacheMock = new Mock<IMemoryCache>();
             _memoryCacheMock.Setup(m => m.TryGetValue(It.IsAny<object>(), out It.Ref<object>.IsAny))
