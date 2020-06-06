@@ -1,8 +1,6 @@
 ﻿namespace Cached.Distributed
 {
     using System;
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading.Tasks;
     using Caching;
     using Locking;
@@ -13,6 +11,17 @@
     {
         private readonly IDistributedCache _distributedCache;
         private readonly DistributedCacheEntryOptions _options;
+
+        /// <summary>
+        /// Creates a new Cacher instance backed by provided DistributedCache instance.
+        /// </summary>
+        /// <param name="distributedCache">The DistributedCache instance to be used.</param>
+        /// <param name="options">(Optional) Entry options that overrides the DistributedCache configuration.</param>
+        /// <returns>The new cacher instance.</returns>
+        public static IDistributedCacher New(
+            IDistributedCache distributedCache,
+            DistributedCacheEntryOptions options = null)
+            => new DistributedCacher(new KeyBasedLock(), distributedCache, options);
 
         internal DistributedCacher(
             ILock cacheLock,
