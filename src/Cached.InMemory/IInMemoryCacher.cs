@@ -3,7 +3,7 @@
     using Caching;
 
     /// <summary>
-    /// Provides support for caching items in-memory.
+    ///     Provides support for caching items in-memory.
     /// </summary>
     public interface IInMemoryCacher : ICacher
     {

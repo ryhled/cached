@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Cached.Caching
+﻿namespace Cached.Caching
 {
+    using System;
     using System.Threading.Tasks;
     using Locking;
 
@@ -41,7 +40,7 @@ namespace Cached.Caching
             using (await _cacherLock.LockAsync(key).ConfigureAwait(false))
             {
                 var result = await TryGetFromCache<TResponse>(key).ConfigureAwait(false);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     return result.Value;
                 }
@@ -62,7 +61,7 @@ namespace Cached.Caching
         protected abstract Task WriteToCache<T>(string key, T item);
 
         /// <summary>
-        /// Tries to retrieve data from cache based on the provided key.
+        ///     Tries to retrieve data from cache based on the provided key.
         /// </summary>
         /// <typeparam name="T">The type of the item being searched for.</typeparam>
         /// <param name="key">The key to use when trying to locate data.</param>

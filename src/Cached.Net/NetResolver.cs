@@ -13,6 +13,9 @@
             _provider = provider;
         }
 
-        public T GetService<T>() => _provider.GetService<T>();
+        public T GetService<T>()
+        {
+            return _provider.GetService<T>();
+        }
     }
 }

@@ -19,7 +19,9 @@ namespace Cached.Demo.Net
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, int>(
                     param => param.ToString(), // Generates cache key based on the argument used.
-                    (resolver, key, arg) => resolver.GetService<IFakeService>().FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
+                    (resolver, key, arg) =>
+                        resolver.GetService<IFakeService>()
+                            .FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
             });
             services.AddRazorPages();
         }

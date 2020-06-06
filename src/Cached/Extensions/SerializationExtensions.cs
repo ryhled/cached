@@ -13,7 +13,7 @@
             }
 
             var formatter = new BinaryFormatter();
-            using(var stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 formatter.Serialize(stream, item);
                 return stream.ToArray();
@@ -25,7 +25,7 @@
             if (objectBytes != null)
             {
                 var formatter = new BinaryFormatter();
-                using(var stream = new MemoryStream(objectBytes))
+                using (var stream = new MemoryStream(objectBytes))
                 {
                     if (formatter.Deserialize(stream) is T castItem)
                     {
@@ -38,6 +38,5 @@
             item = default;
             return false;
         }
-
     }
 }

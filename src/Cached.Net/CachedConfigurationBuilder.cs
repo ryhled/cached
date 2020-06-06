@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using Caching;
     using Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -47,8 +46,10 @@
             _serviceDescriptors.ForEach(services.TryAdd);
         }
 
-        private static Func<IServiceProvider, TTo> ToNetFactory<TTo>(Func<IResolver, TTo> factory) 
-            => p
+        private static Func<IServiceProvider, TTo> ToNetFactory<TTo>(Func<IResolver, TTo> factory)
+        {
+            return p
                 => factory(new NetResolver(p));
+        }
     }
 }

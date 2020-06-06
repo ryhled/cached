@@ -4,7 +4,6 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Cached.InMemory;
-    using Caching;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
     using Net;
@@ -31,46 +30,17 @@
         private readonly IMemoryCache _memoryCache;
         private readonly IInMemoryCacher _injectedCacher;
 
-        [Fact] public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
+        [Fact]
+        public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
         {
             // Arrange
             IInMemoryCacher cacher = InMemoryCacher.New(_memoryCache);
 
             // Act
-            var result= await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
+            var result = await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
 
             // Assert
             Assert.Equal("sven", result);
-        }
-
-        [Fact]
-        public async Task Will_Fetch_Async_Function_Correctly()
-        {
-            // Arrange, Act
-            var result = await _injectedCacher.GetOrFetchAsync("a", async _ =>
-            {
-                await Task.Delay(1);
-                return "fetch";
-            });
-
-            // Assert
-            Assert.Equal("fetch", result);
-        }
-
-        [Fact]
-        public async Task Will_Fetch_Or_Cache_Based_On_Key()
-        {
-            // Arrange, Act
-            var result1 = await _injectedCacher.GetOrFetchAsync("a", _ => Task.FromResult("first_fetch"));
-            var result2 = await _injectedCacher.GetOrFetchAsync("aa", _ => Task.FromResult("second_fetch"));
-            var result3 = await _injectedCacher.GetOrFetchAsync("a", _ => Task.FromResult("third_fetch"));
-            var result4 = await _injectedCacher.GetOrFetchAsync("aa", _ => Task.FromResult("fourth_fetch"));
-
-            // Assert
-            Assert.Equal("first_fetch", result1);
-            Assert.Equal("second_fetch", result2);
-            Assert.Equal("first_fetch", result3);
-            Assert.Equal("second_fetch", result4);
         }
 
         [Fact]
@@ -105,6 +75,36 @@
             // Assert
             Assert.Equal(1, fetchCounter);
             Assert.Equal(taskCount, callCounter);
+        }
+
+        [Fact]
+        public async Task Will_Fetch_Async_Function_Correctly()
+        {
+            // Arrange, Act
+            var result = await _injectedCacher.GetOrFetchAsync("a", async _ =>
+            {
+                await Task.Delay(1);
+                return "fetch";
+            });
+
+            // Assert
+            Assert.Equal("fetch", result);
+        }
+
+        [Fact]
+        public async Task Will_Fetch_Or_Cache_Based_On_Key()
+        {
+            // Arrange, Act
+            var result1 = await _injectedCacher.GetOrFetchAsync("a", _ => Task.FromResult("first_fetch"));
+            var result2 = await _injectedCacher.GetOrFetchAsync("aa", _ => Task.FromResult("second_fetch"));
+            var result3 = await _injectedCacher.GetOrFetchAsync("a", _ => Task.FromResult("third_fetch"));
+            var result4 = await _injectedCacher.GetOrFetchAsync("aa", _ => Task.FromResult("fourth_fetch"));
+
+            // Assert
+            Assert.Equal("first_fetch", result1);
+            Assert.Equal("second_fetch", result2);
+            Assert.Equal("first_fetch", result3);
+            Assert.Equal("second_fetch", result4);
         }
     }
 }

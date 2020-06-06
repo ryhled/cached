@@ -12,7 +12,7 @@
         /// </summary>
         /// <typeparam name="TTo">The type of the concrete object meant to fill the injection.</typeparam>
         /// <param name="serviceFactory">The ServiceFactory that ultimately creates the instance.</param>
-        void TryAddSingleton<TTo>(Func<IResolver, TTo> serviceFactory) 
+        void TryAddSingleton<TTo>(Func<IResolver, TTo> serviceFactory)
             where TTo : class;
 
         /// <summary>
@@ -24,7 +24,7 @@
             where TTo : class;
 
         /// <summary>
-        /// Tries to add a singleton-scoped service.
+        ///     Tries to add a singleton-scoped service.
         /// </summary>
         /// <typeparam name="TFrom">The public type to inject from.</typeparam>
         /// <typeparam name="TTo">The concrete type that will fill the injection.</typeparam>

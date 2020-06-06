@@ -11,6 +11,9 @@
     /// </summary>
     public class InMemoryCacher : Cacher, IInMemoryCacher
     {
+        private static readonly Lazy<IMemoryCache> LazyMemoryCache =
+            new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
+
         private readonly IMemoryCache _memoryCache;
         private readonly MemoryCacheEntryOptions _options;
 
@@ -25,15 +28,15 @@
             _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
-        private static readonly Lazy<IMemoryCache> LazyMemoryCache = new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
-
         /// <summary>
         ///     Creates a new InMemory Cacher based on an internal, globally shared, default MemoryCache instance.
         /// </summary>
         /// <param name="options">(Optional) Provide cache options that will be applied to all entries for this cacher.</param>
         /// <returns>New InMemory Cacher instance.</returns>
         public static IInMemoryCacher Default(MemoryCacheEntryOptions options = null)
-            => New(LazyMemoryCache.Value, options);
+        {
+            return New(LazyMemoryCache.Value, options);
+        }
 
         /// <summary>
         ///     Creates a new InMemory Cacher based on the provided MemoryCache instance.
@@ -42,7 +45,9 @@
         /// <param name="options">(Optional) Provide cache options that will be applied to all entries for this cacher.</param>
         /// <returns>New InMemory Cacher instance.</returns>
         public static IInMemoryCacher New(IMemoryCache memoryCache, MemoryCacheEntryOptions options = null)
-            => new InMemoryCacher(new KeyBasedLock(), memoryCache, options);
+        {
+            return new InMemoryCacher(new KeyBasedLock(), memoryCache, options);
+        }
 
         /// <inheritdoc />
         protected override Task WriteToCache<T>(string key, T item)

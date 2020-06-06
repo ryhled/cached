@@ -5,9 +5,9 @@
 
     internal sealed class Cached<TResponse, TParam> : ICached<TResponse, TParam>
     {
+        private readonly ICacher _cacher;
         private readonly Func<string, TParam, Task<TResponse>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;
-        private readonly ICacher _cacher;
 
         public Cached(
             ICacher cacher,

@@ -36,8 +36,8 @@
             public void If_MemoryCache_Argument_Is_Null()
             {
                 Assert.Throws<ArgumentNullException>(
-                    ()=> InMemoryCacher.New(
-                        null, 
+                    () => InMemoryCacher.New(
+                        null,
                         new MemoryCacheEntryOptions()));
             }
         }
@@ -64,6 +64,25 @@
         public class DefaultMethod
         {
             [Fact]
+            public async Task Generates_Instances_That_Shares_MemoryCache()
+            {
+                // Arrange
+                IInMemoryCacher instance1 = InMemoryCacher.Default(new MemoryCacheEntryOptions
+                    {AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)});
+                IInMemoryCacher instance2 = InMemoryCacher.Default();
+
+                // Act
+                var value1 =
+                    await instance1.GetOrFetchAsync("default_share_instance_key", key => Task.FromResult("abc"));
+                var value2 =
+                    await instance2.GetOrFetchAsync("default_share_instance_key", key => Task.FromResult("cde"));
+
+                // Assert
+                Assert.Equal("abc", value1);
+                Assert.Equal("abc", value2);
+            }
+
+            [Fact]
             public void Returns_Valid_Instance()
             {
                 // Arrange, Act
@@ -71,22 +90,6 @@
 
                 // Assert
                 Assert.NotNull(instance);
-            }
-
-            [Fact]
-            public async Task Generates_Instances_That_Shares_MemoryCache()
-            {
-                // Arrange
-                IInMemoryCacher instance1 = InMemoryCacher.Default(new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1) });
-                IInMemoryCacher instance2 = InMemoryCacher.Default();
-
-                // Act
-                var value1 = await instance1.GetOrFetchAsync("default_share_instance_key", key => Task.FromResult("abc"));
-                var value2 = await instance2.GetOrFetchAsync("default_share_instance_key", key => Task.FromResult("cde"));
-
-                // Assert
-                Assert.Equal("abc", value1);
-                Assert.Equal("abc", value2);
             }
         }
     }
@@ -111,14 +114,16 @@
         public object Value
         {
             get => default;
-            set => _valueStore((string)Key, value);
+            set => _valueStore((string) Key, value);
         }
 
         public DateTimeOffset? AbsoluteExpiration { get; set; }
         public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
         public TimeSpan? SlidingExpiration { get; set; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty
         public IList<IChangeToken> ExpirationTokens { get; }
+
         // ReSharper disable once UnassignedGetOnlyAutoProperty
         public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; }
         public CacheItemPriority Priority { get; set; }

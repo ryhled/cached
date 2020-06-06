@@ -1,6 +1,5 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
-    using System;
     using System.Threading.Tasks;
     using Cached.InMemory;
     using Caching;
@@ -19,11 +18,11 @@
             {
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, int>(
-                    arg => arg.ToString(), 
+                    arg => arg.ToString(),
                     (provider, key, arg) => Task.FromResult("Value for key " + key));
             });
 
-            var scope = services.BuildServiceProvider();
+            ServiceProvider scope = services.BuildServiceProvider();
             _inMemoryCached = scope.GetService<ICached<string, int>>();
         }
 

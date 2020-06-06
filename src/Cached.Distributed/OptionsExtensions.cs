@@ -5,7 +5,6 @@
     using Caching;
     using Configuration;
     using Microsoft.Extensions.Caching.Distributed;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     ///     Provides the CachedConfigurator with an Distributed service instance.
@@ -27,7 +26,8 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.TryAddSingleton(provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
+            builder.TryAddSingleton(
+                provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
         }
 
         /// <summary>

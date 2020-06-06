@@ -21,7 +21,7 @@
                 public void When_Options_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(
-                        () => ((ICachedConfigurationBuilder)null).AddInMemoryCaching());
+                        () => ((ICachedConfigurationBuilder) null).AddInMemoryCaching());
                 }
             }
 
@@ -36,7 +36,8 @@
 
                 // Assert
                 optionsMock.Verify(m => m.TryAddSingleton<IMemoryCache, MemoryCache>(), Times.Once());
-                optionsMock.Verify(m => m.TryAddSingleton(It.IsNotNull<Func<IResolver,IInMemoryCacher>>()), Times.Once());
+                optionsMock.Verify(m => m.TryAddSingleton(It.IsNotNull<Func<IResolver, IInMemoryCacher>>()),
+                    Times.Once());
             }
         }
 
@@ -61,7 +62,7 @@
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder)null)
+                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null)
                         .AddInMemoryCachedFunction<string, string>(p => p, (_, __, ___) => Task.FromResult("")));
                 }
             }
@@ -74,12 +75,12 @@
 
                 // Act
                 optionsMock.Object.AddInMemoryCachedFunction<string, double>(
-                    arg => arg.ToString(CultureInfo.InvariantCulture), 
+                    arg => arg.ToString(CultureInfo.InvariantCulture),
                     (_, __, ___) => Task.FromResult("abc123"));
 
                 // Assert
                 optionsMock.Verify(
-                    m => m.TryAddTransient(It.IsNotNull<Func<IResolver, ICached<string, double>>>()), 
+                    m => m.TryAddTransient(It.IsNotNull<Func<IResolver, ICached<string, double>>>()),
                     Times.Once());
             }
         }

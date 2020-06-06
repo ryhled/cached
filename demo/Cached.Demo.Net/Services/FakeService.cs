@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Cached.Demo.Net.Services
+﻿namespace Cached.Demo.Net.Services
 {
+    using System;
+    using System.Threading.Tasks;
+
     public class FakeService : IFakeService
     {
         // Since function calls gets constructed keys during runtime,

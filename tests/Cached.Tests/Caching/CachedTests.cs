@@ -1,5 +1,4 @@
-﻿
-namespace Cached.Tests.Caching
+﻿namespace Cached.Tests.Caching
 {
     using System;
     using System.Threading.Tasks;
@@ -28,7 +27,7 @@ namespace Cached.Tests.Caching
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new Cached<object, object>(
-                            new Mock<ICacher>().Object, 
+                            new Mock<ICacher>().Object,
                             o => "",
                             null));
                 }
@@ -46,6 +45,32 @@ namespace Cached.Tests.Caching
 
             public sealed class GetOrFetchAsyncMethod
             {
+                [Fact]
+                public async Task Fetch_Value_From_Cacher()
+                {
+                    // Arrange
+                    var cacherMock = new Mock<ICacher>();
+                    cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
+                        .Returns((string key, Func<string, Task<string>> fetch) =>
+                            Task.FromResult(fetch(key).Result + key));
+
+                    var memoryCached = new Cached<string, int>(
+                        cacherMock.Object,
+                        arg => "key_" + arg,
+                        (key, arg) => Task.FromResult("fetch_" + arg));
+
+                    // Act
+                    var response = await memoryCached.GetOrFetchAsync(22);
+
+                    // Assert
+                    Assert.Equal("fetch_22key_22", response);
+                    cacherMock.Verify(
+                        c =>
+                            c.GetOrFetchAsync(It.IsAny<string>(),
+                                It.IsAny<Func<string, Task<string>>>()),
+                        Times.Once);
+                }
+
                 [Fact]
                 public async Task Passes_Key_To_FetchFactory()
                 {
@@ -70,31 +95,6 @@ namespace Cached.Tests.Caching
                     // Assert
                     Assert.Equal("221", response);
                     Assert.Equal("221", keyFromCachedCall);
-                }
-
-                [Fact]
-                public async Task Fetch_Value_From_Cacher()
-                {
-                    // Arrange
-                    var cacherMock = new Mock<ICacher>();
-                    cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
-                        .Returns((string key, Func<string, Task<string>> fetch) => Task.FromResult(fetch(key).Result + key));
-
-                    var memoryCached = new Cached<string, int>(
-                        cacherMock.Object,
-                        arg => "key_" + arg,
-                        (key, arg) => Task.FromResult("fetch_" + arg));
-
-                    // Act
-                    var response = await memoryCached.GetOrFetchAsync(22);
-
-                    // Assert
-                    Assert.Equal("fetch_22key_22", response);
-                    cacherMock.Verify(
-                        c => 
-                            c.GetOrFetchAsync(It.IsAny<string>(), 
-                                It.IsAny<Func<string, Task<string>>>()), 
-                        Times.Once);
                 }
             }
         }
