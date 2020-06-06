@@ -56,9 +56,9 @@ public void ConfigureServices(IServiceCollection services)
 Razor page
 
 ```
-private readonly ICacher<IInMemory> _cacher;
+private readonly IInMemoryCacher _cacher;
 
-public IndexModel(ICacher<IInMemory> cacher)
+public IndexModel(IInMemoryCacher cacher)
 {
     _cached = cached;
 }
