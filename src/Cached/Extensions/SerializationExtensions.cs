@@ -1,11 +1,11 @@
-﻿namespace Cached.Distributed
+﻿namespace Cached.Extensions
 {
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
 
-    internal static class FormatterHelper
+    internal static class SerializationExtensions
     {
-        public static byte[] ToByteArray(this object item)
+        internal static byte[] ToByteArray(this object item)
         {
             if (item == null)
             {
@@ -20,7 +20,7 @@
             }
         }
 
-        public static bool TryParseObject<T>(this byte[] objectBytes, out T item)
+        internal static bool TryParseObject<T>(this byte[] objectBytes, out T item)
         {
             if (objectBytes != null)
             {
