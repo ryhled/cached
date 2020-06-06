@@ -25,29 +25,29 @@ namespace Cached.Caching
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            var prefixedCacheKey = key; // = string.Concat(typeof(TResponse).GUID, key);
-
-            if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
+            if (await TryGetFromCache(key, out TResponse cachedData).ConfigureAwait(false))
             {
                 return cachedData;
             }
-
-            return await FetchAndAddToCache(prefixedCacheKey, () => fetchFactory(key)).ConfigureAwait(false);
+            else
+            {
+                return await FetchAndAddToCache(key, fetchFactory);
+            }
         }
 
         private async Task<TResponse> FetchAndAddToCache<TResponse>(
-            string prefixedCacheKey,
-            Func<Task<TResponse>> fetchFactory)
+            string key,
+            Func<string, Task<TResponse>> fetchFactory)
         {
-            using (await _cacherLock.LockAsync(prefixedCacheKey).ConfigureAwait(false))
+            using (await _cacherLock.LockAsync(key).ConfigureAwait(false))
             {
-                if (await TryGetFromCache(prefixedCacheKey, out TResponse cachedData).ConfigureAwait(false))
+                if (await TryGetFromCache(key, out TResponse cachedData).ConfigureAwait(false))
                 {
                     return cachedData;
                 }
 
-                TResponse data = await fetchFactory().ConfigureAwait(false);
-                await WriteToCache(prefixedCacheKey, data).ConfigureAwait(false);
+                TResponse data = await fetchFactory(key).ConfigureAwait(false);
+                await WriteToCache(key, data).ConfigureAwait(false);
                 return data;
             }
         }
