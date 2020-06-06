@@ -47,7 +47,7 @@
                 }
             }
 
-            public class BuildsCorrectly
+            public class Builds
             {
                 [Fact]
                 public void When_Configuring_Singleton_Service()
@@ -65,7 +65,7 @@
                     Assert.Single(serviceCollection);
                     Assert.Equal(nameof(TestClass), serviceCollection.First().ServiceType.Name);
 
-                    var fetchedObject = (TestClass) serviceCollection.First()
+                    var fetchedObject = (TestClass) serviceCollection.Single()
                         .ImplementationFactory(new Mock<IServiceProvider>().Object);
                     Assert.Equal("abc123", fetchedObject.MyProperty);
                 }

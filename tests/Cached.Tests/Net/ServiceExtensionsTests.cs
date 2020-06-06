@@ -1,8 +1,7 @@
 ﻿namespace Cached.Tests.Net
 {
     using System;
-    using System.Linq;
-    using Cached.InMemory;
+    using Cached.Caching;
     using Cached.Net;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
@@ -34,27 +33,24 @@
                 }
             }
 
-            public class AddsCacherService
+            [Fact]
+            public void Setup_Cached_Based_On_Provided_Services()
             {
-                [Fact]
-                public void And_Resolves_It_Using_Correct_Interface()
-                {
-                    // Arrange
-                    var services = new ServiceCollection();
+                // Arrange
+                var services = new ServiceCollection();
 
-                    // Act
-                    services.AddCached(options
-                        => options.TryAddSingleton(provider => new Mock<IInMemoryCacher>().Object));
-                    ServiceProvider serviceProvider = services.BuildServiceProvider();
-                    var instance = serviceProvider.GetService<IInMemoryCacher>();
+                // Act
+                services.AddCached(options
+                    => options.TryAddSingleton(provider => new Mock<ICacher>().Object));
+                ServiceProvider serviceProvider = services.BuildServiceProvider();
+                var instance = serviceProvider.GetService<ICacher>();
 
-                    // Assert
-                    Assert.Single(services);
-                    Assert.NotNull(instance);
+                // Assert
+                Assert.Single(services);
+                Assert.NotNull(instance);
 
-                    // Teardown
-                    serviceProvider.Dispose();
-                }
+                // Teardown
+                serviceProvider.Dispose();
             }
         }
     }

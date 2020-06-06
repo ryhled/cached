@@ -1,9 +1,13 @@
 ﻿namespace Cached.Tests.InMemory
 {
     using System;
+    using System.Globalization;
     using System.Threading.Tasks;
+    using Cached.Caching;
     using Cached.InMemory;
     using Cached.Net;
+    using Microsoft.Extensions.Caching.Memory;
+    using Moq;
     using Xunit;
 
     public sealed class OptionsExtensionsTests
@@ -20,30 +24,19 @@
                 }
             }
 
-            //public sealed class WillAddCacher
-            //{
-            //    [Fact]
-            //    public void When_Valid_Options_Argument_Is_Provided()
-            //    {
-            //        // Arrange
-            //        Func<IResolver, IInMemoryCacher> createdFactory = null;
-            //        var optionsMock = new Mock<ICachedConfigurationBuilder>();
-            //        optionsMock.Setup(o =>
-            //                o.TryAddSingleton(
-            //                    It.IsAny<Func<IResolver, IInMemoryCacher>>()))
-            //            .Callback(
-            //                (Func<IResolver, IInMemoryCacher> fetchFactory) => createdFactory = fetchFactory);
-            //        optionsMock.Setup(m => m.)
-            //        // Act
-            //        optionsMock.Object.AddInMemoryCaching();
+            [Fact]
+            public void Adds_Required_Services()
+            {
+                // Arrange
+                var optionsMock = new Mock<ICachedConfigurationBuilder>();
 
-            //        // Assert
-            //        optionsMock.Verify(
-            //            o => o.TryAddCacher(It.IsAny<Func<IResolver, IInMemoryCacher>>()),
-            //            Times.Once);
-            //        Assert.NotNull(createdFactory);
-            //    }
-            //}
+                // Act
+                optionsMock.Object.AddInMemoryCaching();
+
+                // Assert
+                optionsMock.Verify(m => m.TryAddSingleton<IMemoryCache, MemoryCache>(), Times.Once());
+                optionsMock.Verify(m => m.TryAddSingleton(It.IsNotNull<Func<IResolver,IInMemoryCacher>>()), Times.Once());
+            }
         }
 
         public sealed class AddInMemoryCachedFunctionMethod
@@ -72,31 +65,22 @@
                 }
             }
 
-            //public sealed class WillAddCached
-            //{
-            //    [Fact]
-            //    public void When_Key_And_Fetch_Factories_Are_Provided()
-            //    {
-            //        // Arrange
-            //        Func<IResolver, ICached<string, string>> createdFactory = null;
-            //        var optionsMock = new Mock<ICachedConfigurationBuilder>();
-            //        optionsMock.Setup(o =>
-            //                o.TryAddCached<ICached<string, string>, ICached<string, string>, string, string>(
-            //                    It.IsAny<Func<IResolver, ICached<string, string>>>()))
-            //            .Callback((Func<IResolver, ICached<string, string>> fetchFactory) =>
-            //                createdFactory = fetchFactory);
+            [Fact]
+            public void Adds_Required_Service()
+            {
+                // Arrange
+                var optionsMock = new Mock<ICachedConfigurationBuilder>();
 
-            //        // Act
-            //        optionsMock.Object.AddInMemoryCachedFunction<string, string>(arg => arg,
-            //            (_, __, ___) => Task.FromResult("abc123"));
+                // Act
+                optionsMock.Object.AddInMemoryCachedFunction<string, double>(
+                    arg => arg.ToString(CultureInfo.InvariantCulture), 
+                    (_, __, ___) => Task.FromResult("abc123"));
 
-            //        // Assert
-            //        optionsMock.Verify(
-            //            o => o.TryAddCached<ICached<string, string>, ICached<string, string>, string, string>(
-            //                It.IsAny<Func<IResolver, ICached<string, string>>>()), Times.Once);
-            //        Assert.NotNull(createdFactory);
-            //    }
-            //}
+                // Assert
+                optionsMock.Verify(
+                    m => m.TryAddTransient(It.IsNotNull<Func<IResolver, ICached<string, double>>>()), 
+                    Times.Once());
+            }
         }
     }
 }
