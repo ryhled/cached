@@ -30,7 +30,7 @@ To show the absolute most basic implementation, suitable for a console app for e
 
 1. Add the nuget package for InMemory caching.
 ```
-nuget install Cached.InMemory
+nuget install Cached.Memory
 ```
 
 2. Create a default instance and fetch data.
@@ -49,16 +49,16 @@ Startup.cs
 ```
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddCached(options => options.AddInMemoryCaching());
+    services.AddCached(options => options.AddMemoryCaching());
 }
 ```
 
 Razor page
 
 ```
-private readonly IInMemoryCacher _cacher;
+private readonly IMemoryCacher _cacher;
 
-public IndexModel(IInMemoryCacher cacher)
+public IndexModel(IMemoryCacher cacher)
 {
     _cached = cached;
 }
