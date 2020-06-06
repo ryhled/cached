@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Cached.Caching;
-    using Cached.InMemory;
+    using Memory;
     using Cached.Locking;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Primitives;
@@ -27,7 +27,7 @@
 
         protected override ICacher GetCacher(ILock cacheLock)
         {
-            return new InMemoryCacher(cacheLock, _memoryCacheMock.Object, null);
+            return new MemoryCacher(cacheLock, _memoryCacheMock.Object, null);
         }
 
         public class Throws
@@ -36,7 +36,7 @@
             public void If_MemoryCache_Argument_Is_Null()
             {
                 Assert.Throws<ArgumentNullException>(
-                    () => InMemoryCacher.New(
+                    () => MemoryCacher.New(
                         null,
                         new MemoryCacheEntryOptions()));
             }
@@ -51,7 +51,7 @@
                 var cache = new MemoryCache(new MemoryCacheOptions());
 
                 // Act
-                IInMemoryCacher instance = InMemoryCacher.New(cache);
+                IMemoryCacher instance = MemoryCacher.New(cache);
 
                 // Assert
                 Assert.NotNull(instance);
@@ -67,9 +67,9 @@
             public async Task Generates_Instances_That_Shares_MemoryCache()
             {
                 // Arrange
-                IInMemoryCacher instance1 = InMemoryCacher.Default(new MemoryCacheEntryOptions
+                IMemoryCacher instance1 = MemoryCacher.Default(new MemoryCacheEntryOptions
                     {AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)});
-                IInMemoryCacher instance2 = InMemoryCacher.Default();
+                IMemoryCacher instance2 = MemoryCacher.Default();
 
                 // Act
                 var value1 =
@@ -86,7 +86,7 @@
             public void Returns_Valid_Instance()
             {
                 // Arrange, Act
-                IInMemoryCacher instance = InMemoryCacher.Default();
+                IMemoryCacher instance = MemoryCacher.Default();
 
                 // Assert
                 Assert.NotNull(instance);

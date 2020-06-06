@@ -2,7 +2,7 @@ namespace Cached.Demo.Net.Pages
 {
     using System.Diagnostics;
     using System.Threading.Tasks;
-    using InMemory;
+    using Memory;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Services;
@@ -10,10 +10,10 @@ namespace Cached.Demo.Net.Pages
     public class CacherModel : PageModel
     {
         private readonly IFakeService _fakeService;
-        private readonly IInMemoryCacher _memoryCacher;
+        private readonly IMemoryCacher _memoryCacher;
 
         public CacherModel(
-            IInMemoryCacher cached,
+            IMemoryCacher cached,
             IFakeService fakeService)
         {
             _memoryCacher = cached;

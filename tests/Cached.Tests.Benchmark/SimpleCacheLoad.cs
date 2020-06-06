@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnostics.Windows.Configs;
-    using InMemory;
+    using Memory;
     using Microsoft.Extensions.Caching.Memory;
 
     [SimpleJob, IterationTime(200), MemoryDiagnoser, EtwProfiler, ConcurrencyVisualizerProfiler]
@@ -13,10 +13,10 @@
         public SimpleCacheLoad()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
-            _cacher = InMemoryCacher.New(_cache);
+            _cacher = MemoryCacher.New(_cache);
         }
 
-        private readonly IInMemoryCacher _cacher;
+        private readonly IMemoryCacher _cacher;
         private readonly IMemoryCache _cache;
 
         [Benchmark]

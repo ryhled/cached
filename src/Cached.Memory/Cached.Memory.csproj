@@ -5,8 +5,8 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-		<PackageId>Cached.InMemory</PackageId>
-		<Title>Cached.InMemory</Title>
+		<PackageId>Cached.Memory</PackageId>
+		<Title>Cached.Memory</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>

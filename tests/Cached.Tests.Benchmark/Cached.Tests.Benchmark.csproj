@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Cached.InMemory\Cached.InMemory.csproj" />
+    <ProjectReference Include="..\..\src\Cached.Distributed\Cached.Distributed.csproj" />
+    <ProjectReference Include="..\..\src\Cached.Memory\Cached.Memory.csproj" />
     <ProjectReference Include="..\..\src\Cached.Net\Cached.Net.csproj" />
     <ProjectReference Include="..\..\src\Cached\Cached.csproj" />
   </ItemGroup>

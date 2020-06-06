@@ -1,4 +1,4 @@
-﻿namespace Cached.InMemory
+﻿namespace Cached.Memory
 {
     using System;
     using System.Threading.Tasks;
@@ -17,7 +17,7 @@
         /// <param name="builder">The configurator object used during application startup.</param>
         /// <param name="options">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
-        public static void AddInMemoryCaching(
+        public static void AddMemoryCaching(
             this ICachedConfigurationBuilder builder,
             MemoryCacheEntryOptions options = null)
         {
@@ -27,7 +27,7 @@
             }
 
             builder.TryAddSingleton<IMemoryCache, MemoryCache>(); // Razor injects this by default.
-            builder.TryAddSingleton(resolver => InMemoryCacher.New(resolver.GetService<IMemoryCache>(), options));
+            builder.TryAddSingleton(resolver => MemoryCacher.New(resolver.GetService<IMemoryCache>(), options));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@
         /// <param name="options">The Cached OptionsBuilder, responsible for putting everything together.</param>
         /// <param name="keyFactory">A function that specifies how to construct the cache key out of the passed parameter.</param>
         /// <param name="fetchFactory">A function which specifies how to fetch the data if it does not exist in cache.</param>
-        public static void AddInMemoryCachedFunction<TResponse, TParam>(
+        public static void AddMemoryCachedFunction<TResponse, TParam>(
             this ICachedConfigurationBuilder options,
             Func<TParam, string> keyFactory,
             Func<IResolver, string, TParam, Task<TResponse>> fetchFactory)
@@ -59,7 +59,7 @@
             }
 
             options.TryAddTransient<ICached<TResponse, TParam>>(resolver => new Cached<TResponse, TParam>(
-                resolver.GetService<IInMemoryCacher>(),
+                resolver.GetService<IMemoryCacher>(),
                 keyFactory,
                 (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
         }

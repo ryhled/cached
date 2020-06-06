@@ -1,4 +1,4 @@
-﻿namespace Cached.InMemory
+﻿namespace Cached.Memory
 {
     using System;
     using System.Threading.Tasks;
@@ -9,7 +9,7 @@
     /// <summary>
     ///     Factory for creating InMemory Cacher instances.
     /// </summary>
-    public class InMemoryCacher : Cacher, IInMemoryCacher
+    public class MemoryCacher : Cacher, IMemoryCacher
     {
         private static readonly Lazy<IMemoryCache> LazyMemoryCache =
             new Lazy<IMemoryCache>(() => new MemoryCache(new MemoryCacheOptions()));
@@ -18,7 +18,7 @@
         private readonly MemoryCacheEntryOptions _options;
 
         /// <inheritdoc />
-        public InMemoryCacher(
+        public MemoryCacher(
             ILock cacheClock,
             IMemoryCache memoryCache,
             MemoryCacheEntryOptions options)
@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="options">(Optional) Provide cache options that will be applied to all entries for this cacher.</param>
         /// <returns>New InMemory Cacher instance.</returns>
-        public static IInMemoryCacher Default(MemoryCacheEntryOptions options = null)
+        public static IMemoryCacher Default(MemoryCacheEntryOptions options = null)
         {
             return New(LazyMemoryCache.Value, options);
         }
@@ -44,9 +44,9 @@
         /// <param name="memoryCache">The MemoryCache instance to be used with this cacher.</param>
         /// <param name="options">(Optional) Provide cache options that will be applied to all entries for this cacher.</param>
         /// <returns>New InMemory Cacher instance.</returns>
-        public static IInMemoryCacher New(IMemoryCache memoryCache, MemoryCacheEntryOptions options = null)
+        public static IMemoryCacher New(IMemoryCache memoryCache, MemoryCacheEntryOptions options = null)
         {
-            return new InMemoryCacher(new KeyBasedLock(), memoryCache, options);
+            return new MemoryCacher(new KeyBasedLock(), memoryCache, options);
         }
 
         /// <inheritdoc />

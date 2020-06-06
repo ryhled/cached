@@ -1,7 +1,7 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
     using System.Threading.Tasks;
-    using Cached.InMemory;
+    using Memory;
     using Caching;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +16,8 @@
             services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions()));
             services.AddCached(options =>
             {
-                options.AddInMemoryCaching();
-                options.AddInMemoryCachedFunction<string, int>(
+                options.AddMemoryCaching();
+                options.AddMemoryCachedFunction<string, int>(
                     arg => arg.ToString(),
                     (provider, key, arg) => Task.FromResult("Value for key " + key));
             });

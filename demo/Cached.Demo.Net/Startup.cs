@@ -1,7 +1,7 @@
 namespace Cached.Demo.Net
 {
     using Cached.Net;
-    using InMemory;
+    using Memory;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +16,8 @@ namespace Cached.Demo.Net
 
             services.AddCached(options =>
             {
-                options.AddInMemoryCaching();
-                options.AddInMemoryCachedFunction<string, int>(
+                options.AddMemoryCaching();
+                options.AddMemoryCachedFunction<string, int>(
                     param => param.ToString(), // Generates cache key based on the argument used.
                     (resolver, key, arg) =>
                         resolver.GetService<IFakeService>()

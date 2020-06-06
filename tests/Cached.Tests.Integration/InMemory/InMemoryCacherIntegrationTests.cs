@@ -3,7 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Cached.InMemory;
+    using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
     using Net;
@@ -16,10 +16,10 @@
             var services = new ServiceCollection();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
             services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions()));
-            services.AddCached(options => options.AddInMemoryCaching());
+            services.AddCached(options => options.AddMemoryCaching());
 
             ServiceProvider scope = services.BuildServiceProvider();
-            _injectedCacher = scope.GetService<IInMemoryCacher>();
+            _injectedCacher = scope.GetService<IMemoryCacher>();
         }
 
         public void Dispose()
@@ -28,13 +28,13 @@
         }
 
         private readonly IMemoryCache _memoryCache;
-        private readonly IInMemoryCacher _injectedCacher;
+        private readonly IMemoryCacher _injectedCacher;
 
         [Fact]
         public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
         {
             // Arrange
-            IInMemoryCacher cacher = InMemoryCacher.New(_memoryCache);
+            IMemoryCacher cacher = MemoryCacher.New(_memoryCache);
 
             // Act
             var result = await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
