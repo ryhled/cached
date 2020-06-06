@@ -9,7 +9,7 @@
     using Moq;
     using Xunit;
 
-    public class CachedOptionsBuilderTests
+    public class CachedConfigurationBuilderTests
     {
         public class BuildMethod
         {
