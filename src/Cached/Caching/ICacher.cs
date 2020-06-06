@@ -6,7 +6,7 @@
     /// <summary>
     ///     Applies caching to expensive operations.
     /// </summary>
-    public interface ICacher<TProvider> where TProvider: ICacheProvider
+    public interface ICacher
     {
         /// <summary>
         ///     Tries to get data from cache.

@@ -20,7 +20,7 @@
             services.AddCached(options => options.AddInMemoryCaching());
 
             ServiceProvider scope = services.BuildServiceProvider();
-            _injectedCacher = scope.GetService<ICacher<IInMemory>>();
+            _injectedCacher = scope.GetService<IInMemoryCacher>();
         }
 
         public void Dispose()
@@ -29,12 +29,12 @@
         }
 
         private readonly IMemoryCache _memoryCache;
-        private readonly ICacher<IInMemory> _injectedCacher;
+        private readonly IInMemoryCacher _injectedCacher;
 
         [Fact] public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
         {
             // Arrange
-            var cacher = InMemoryCacher.New(_memoryCache);
+            IInMemoryCacher cacher = InMemoryCacher.New(_memoryCache);
 
             // Act
             var result= await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));

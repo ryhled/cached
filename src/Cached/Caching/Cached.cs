@@ -3,14 +3,14 @@
     using System;
     using System.Threading.Tasks;
 
-    internal sealed class Cached<TResponse, TParam, TProvider> : ICached<TResponse, TParam> where TProvider: ICacheProvider
+    internal sealed class Cached<TResponse, TParam> : ICached<TResponse, TParam>
     {
         private readonly Func<string, TParam, Task<TResponse>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;
-        private readonly ICacher<TProvider> _cacher;
+        private readonly ICacher _cacher;
 
         public Cached(
-            ICacher<TProvider> cacher,
+            ICacher cacher,
             Func<TParam, string> keyFactory,
             Func<string, TParam, Task<TResponse>> fetchFactory)
         {

@@ -11,9 +11,10 @@
         /// <summary>
         ///     Adds Cacher service (in singleton scope).
         /// </summary>
-        /// <typeparam name="TProvider">The Type of provider that the cacher instance consumes.</typeparam>
+        /// <typeparam name="TCacher">The interface, from which to inject the cacher service.</typeparam>
         /// <param name="cacherFactory">The ServiceFactory that ultimately creates the instance.</param>
-        void AddCacher<TProvider>(Func<IServiceProvider, ICacher<TProvider>> cacherFactory) where TProvider : ICacheProvider;
+        void AddCacher<TCacher>(Func<IServiceProvider, TCacher> cacherFactory) 
+            where TCacher : class, ICacher;
 
         /// <summary>
         ///     Adds a cached service (in transient scope).

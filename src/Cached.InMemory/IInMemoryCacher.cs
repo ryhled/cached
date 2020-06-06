@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides support for caching items in-memory.
     /// </summary>
-    public interface IInMemory : ICacheProvider
+    public interface IInMemoryCacher : ICacher
     {
     }
 }

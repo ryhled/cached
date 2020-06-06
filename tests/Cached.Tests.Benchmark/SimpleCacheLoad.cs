@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnostics.Windows.Configs;
-    using Caching;
     using InMemory;
     using Microsoft.Extensions.Caching.Memory;
 
@@ -17,7 +16,7 @@
             _cacher = InMemoryCacher.New(_cache);
         }
 
-        private readonly ICacher<IInMemory> _cacher;
+        private readonly IInMemoryCacher _cacher;
         private readonly IMemoryCache _cache;
 
         [Benchmark]
@@ -30,16 +29,14 @@
             "CacheHitsTests_MemoryCache",
             _ => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
 
-        private static long counter = 0;
-
         [Benchmark]
         public async Task Cached_Miss() => await _cacher.GetOrFetchAsync(
-            (++counter).ToString(),
+            new Guid().ToString(),
             _ => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
 
         [Benchmark]
         public async Task MemoryCache_Miss() => await _cache.GetOrCreateAsync(
-            (++counter).ToString(),
+            new Guid().ToString(),
             _ => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
 
         

@@ -11,8 +11,8 @@
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();
 
-        public void AddCacher<TProvider>(Func<IServiceProvider, ICacher<TProvider>> cacherFactory)
-            where TProvider : ICacheProvider
+        public void AddCacher<TCacher>(Func<IServiceProvider, TCacher> cacherFactory)
+            where TCacher : class, ICacher
         {
             _serviceDescriptors.Add(ServiceDescriptor.Singleton(cacherFactory));
         }

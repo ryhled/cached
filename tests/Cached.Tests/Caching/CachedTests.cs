@@ -4,7 +4,6 @@ namespace Cached.Tests.Caching
     using System;
     using System.Threading.Tasks;
     using Cached.Caching;
-    using Cached.Locking;
     using Moq;
     using Xunit;
 
@@ -18,7 +17,7 @@ namespace Cached.Tests.Caching
                 public void If_Cacher_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
-                        new Cached<object, object, FakeCacheProvider>(
+                        new Cached<object, object>(
                             null,
                             o => "",
                             (s, o) => Task.FromResult(o)));
@@ -28,8 +27,8 @@ namespace Cached.Tests.Caching
                 public void If_FetchFactory_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
-                        new Cached<object, object, FakeCacheProvider>(
-                            new Cacher<FakeCacheProvider>(new Mock<ILock>().Object, new FakeCacheProvider()), 
+                        new Cached<object, object>(
+                            new Mock<ICacher>().Object, 
                             o => "",
                             null));
                 }
@@ -38,8 +37,8 @@ namespace Cached.Tests.Caching
                 public void If_KeyFactory_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(() =>
-                        new Cached<object, object, FakeCacheProvider>(
-                            new Cacher<FakeCacheProvider>(new Mock<ILock>().Object, new FakeCacheProvider()),
+                        new Cached<object, object>(
+                            new Mock<ICacher>().Object,
                             null,
                             (key, arg) => Task.FromResult(arg)));
                 }
@@ -51,7 +50,7 @@ namespace Cached.Tests.Caching
                 public async Task Passes_Key_To_FetchFactory()
                 {
                     // Arrange
-                    var cacherMock = new Mock<ICacher<ICacheProvider>>();
+                    var cacherMock = new Mock<ICacher>();
                     var keyFromCachedCall = string.Empty;
                     cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
                         .Returns((string key, Func<string, Task<string>> fetch) =>
@@ -60,7 +59,7 @@ namespace Cached.Tests.Caching
                             return Task.FromResult(key);
                         });
 
-                    var memoryCached = new Cached<string, int, ICacheProvider>(
+                    var memoryCached = new Cached<string, int>(
                         cacherMock.Object,
                         arg => arg.ToString(),
                         (key, arg) => Task.FromResult(key));
@@ -77,11 +76,11 @@ namespace Cached.Tests.Caching
                 public async Task Fetch_Value_From_Cacher()
                 {
                     // Arrange
-                    var cacherMock = new Mock<ICacher<ICacheProvider>>();
+                    var cacherMock = new Mock<ICacher>();
                     cacherMock.Setup(c => c.GetOrFetchAsync(It.IsAny<string>(), It.IsAny<Func<string, Task<string>>>()))
                         .Returns((string key, Func<string, Task<string>> fetch) => Task.FromResult(fetch(key).Result + key));
 
-                    var memoryCached = new Cached<string, int, ICacheProvider>(
+                    var memoryCached = new Cached<string, int>(
                         cacherMock.Object,
                         arg => "key_" + arg,
                         (key, arg) => Task.FromResult("fetch_" + arg));

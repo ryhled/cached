@@ -57,9 +57,9 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.AddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam, IInMemory>, TResponse, TParam>(provider =>
-                new Cached<TResponse, TParam, IInMemory>(
-                    provider.GetService<ICacher<IInMemory>>(),
+            options.AddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(provider =>
+                new Cached<TResponse, TParam>(
+                    provider.GetService<IInMemoryCacher>(),
                     keyFactory,
                     (key, arg) => fetchFactory.Invoke(provider, key, arg)));
         }
