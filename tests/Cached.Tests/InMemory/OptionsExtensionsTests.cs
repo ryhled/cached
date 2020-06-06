@@ -22,30 +22,30 @@
                 }
             }
 
-            //public sealed class WillAddCacher
-            //{
-            //    [Fact]
-            //    public void When_Valid_Options_Argument_Is_Provided()
-            //    {
-            //        // Arrange
-            //        Func<IServiceProvider, IInMemoryCacher> createdFactory = null;
-            //        var optionsMock = new Mock<ICachedConfigurationBuilder>();
-            //        optionsMock.Setup(o =>
-            //                o.TryAddCacher(
-            //                    It.IsAny<Func<IResolver, IInMemoryCacher>>()))
-            //            .Callback(
-            //                (Func<IServiceProvider,IInMemoryCacher> fetchFactory) => createdFactory = fetchFactory);
+            public sealed class WillAddCacher
+            {
+                [Fact]
+                public void When_Valid_Options_Argument_Is_Provided()
+                {
+                    // Arrange
+                    Func<IResolver, IInMemoryCacher> createdFactory = null;
+                    var optionsMock = new Mock<ICachedConfigurationBuilder>();
+                    optionsMock.Setup(o =>
+                            o.TryAddCacher(
+                                It.IsAny<Func<IResolver, IInMemoryCacher>>()))
+                        .Callback(
+                            (Func<IResolver, IInMemoryCacher> fetchFactory) => createdFactory = fetchFactory);
 
-            //        // Act
-            //        optionsMock.Object.AddInMemoryCaching();
+                    // Act
+                    optionsMock.Object.AddInMemoryCaching();
 
-            //        // Assert
-            //        optionsMock.Verify(
-            //            o => o.TryAddCacher(It.IsAny<Func<IResolver, IInMemoryCacher>>()),
-            //            Times.Once);
-            //        Assert.NotNull(createdFactory);
-            //    }
-            //}
+                    // Assert
+                    optionsMock.Verify(
+                        o => o.TryAddCacher(It.IsAny<Func<IResolver, IInMemoryCacher>>()),
+                        Times.Once);
+                    Assert.NotNull(createdFactory);
+                }
+            }
         }
 
         public sealed class AddInMemoryCachedFunctionMethod
