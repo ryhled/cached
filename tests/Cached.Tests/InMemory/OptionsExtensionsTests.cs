@@ -28,20 +28,20 @@
             //    public void When_Valid_Options_Argument_Is_Provided()
             //    {
             //        // Arrange
-            //        Func<IServiceProvider, ICacher<IInMemoryCacher>> createdFactory = null;
+            //        Func<IServiceProvider, IInMemoryCacher> createdFactory = null;
             //        var optionsMock = new Mock<ICachedConfigurationBuilder>();
             //        optionsMock.Setup(o =>
-            //                o.AddCacher(
-            //                    It.IsAny<Func<IServiceProvider, ICacher<IInMemoryCacher>>>()))
+            //                o.TryAddCacher(
+            //                    It.IsAny<Func<IResolver, IInMemoryCacher>>()))
             //            .Callback(
-            //                (Func<IServiceProvider, ICacher<IInMemoryCacher>> fetchFactory) => createdFactory = fetchFactory);
+            //                (Func<IServiceProvider,IInMemoryCacher> fetchFactory) => createdFactory = fetchFactory);
 
             //        // Act
             //        optionsMock.Object.AddInMemoryCaching();
 
             //        // Assert
             //        optionsMock.Verify(
-            //            o => o.AddCacher(It.IsAny<Func<IServiceProvider, ICacher<IInMemoryCacher>>>()),
+            //            o => o.TryAddCacher(It.IsAny<Func<IResolver, IInMemoryCacher>>()),
             //            Times.Once);
             //        Assert.NotNull(createdFactory);
             //    }
@@ -80,12 +80,12 @@
                 public void When_Key_And_Fetch_Factories_Are_Provided()
                 {
                     // Arrange
-                    Func<IServiceProvider, ICached<string, string>> createdFactory = null;
+                    Func<IResolver, ICached<string, string>> createdFactory = null;
                     var optionsMock = new Mock<ICachedConfigurationBuilder>();
                     optionsMock.Setup(o =>
-                            o.AddCached<ICached<string, string>, ICached<string, string>, string, string>(
-                                It.IsAny<Func<IServiceProvider, ICached<string, string>>>()))
-                        .Callback((Func<IServiceProvider, ICached<string, string>> fetchFactory) =>
+                            o.TryAddCached<ICached<string, string>, ICached<string, string>, string, string>(
+                                It.IsAny<Func<IResolver, ICached<string, string>>>()))
+                        .Callback((Func<IResolver, ICached<string, string>> fetchFactory) =>
                             createdFactory = fetchFactory);
 
                     // Act
@@ -94,8 +94,8 @@
 
                     // Assert
                     optionsMock.Verify(
-                        o => o.AddCached<ICached<string, string>, ICached<string, string>, string, string>(
-                            It.IsAny<Func<IServiceProvider, ICached<string, string>>>()), Times.Once);
+                        o => o.TryAddCached<ICached<string, string>, ICached<string, string>, string, string>(
+                            It.IsAny<Func<IResolver, ICached<string, string>>>()), Times.Once);
                     Assert.NotNull(createdFactory);
                 }
             }

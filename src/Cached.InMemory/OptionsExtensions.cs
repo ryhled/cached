@@ -4,7 +4,6 @@
     using System.Threading.Tasks;
     using Caching;
     using Microsoft.Extensions.Caching.Memory;
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     ///     Provides the CachedConfigurator with an InMemory service instance.
@@ -26,7 +25,8 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddCacher(provider => InMemoryCacher.New(provider.GetService<IMemoryCache>(), options));
+            builder.TryAddSingleton<IMemoryCache, MemoryCache>(); // Razor injects this by default.
+            builder.TryAddCacher(resolver => InMemoryCacher.New(resolver.GetService<IMemoryCache>(), options));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@
         public static void AddInMemoryCachedFunction<TResponse, TParam>(
             this ICachedConfigurationBuilder options,
             Func<TParam, string> keyFactory,
-            Func<IServiceProvider, string, TParam, Task<TResponse>> fetchFactory)
+            Func<IResolver, string, TParam, Task<TResponse>> fetchFactory)
         {
             if (options == null)
             {
@@ -57,11 +57,11 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.AddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(provider =>
+            options.TryAddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(resolver =>
                 new Cached<TResponse, TParam>(
-                    provider.GetService<IInMemoryCacher>(),
+                    resolver.GetService<IInMemoryCacher>(),
                     keyFactory,
-                    (key, arg) => fetchFactory.Invoke(provider, key, arg)));
+                    (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
         }
     }
 }

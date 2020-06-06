@@ -26,7 +26,7 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.AddCacher(provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
+            builder.TryAddCacher(provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
         }
 
         /// <summary>
@@ -40,7 +40,7 @@
         public static void AddDistributedCachedFunction<TResponse, TParam>(
             this ICachedConfigurationBuilder options,
             Func<TParam, string> keyFactory,
-            Func<IServiceProvider, string, TParam, Task<TResponse>> fetchFactory)
+            Func<IResolver, string, TParam, Task<TResponse>> fetchFactory)
         {
             if (options == null)
             {
@@ -57,11 +57,11 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.AddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(provider =>
+            options.TryAddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(resolver =>
                 new Cached<TResponse, TParam>(
-                    provider.GetService<IDistributedCacher>(),
+                    resolver.GetService<IDistributedCacher>(),
                     keyFactory,
-                    (key, arg) => fetchFactory.Invoke(provider, key, arg)));
+                    (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
         }
     }
 }

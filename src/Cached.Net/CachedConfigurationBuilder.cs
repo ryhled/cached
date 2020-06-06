@@ -11,17 +11,24 @@
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();
 
-        public void AddCacher<TCacher>(Func<IServiceProvider, TCacher> cacherFactory)
-            where TCacher : class, ICacher
+        public void TryAddSingleton<TFrom, TTo>()
+            where TFrom : class
+            where TTo : class, TFrom
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Singleton(cacherFactory));
+            _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>());
         }
 
-        public void AddCached<TFrom, TTo, TResponse, TParam>(Func<IServiceProvider, TTo> cachedFactory)
+        public void TryAddCacher<TCacher>(Func<IResolver, TCacher> cacherFactory)
+            where TCacher : class, ICacher
+        {
+            _serviceDescriptors.Add(ServiceDescriptor.Singleton(ToNetFactory(cacherFactory)));
+        }
+
+        public void TryAddCached<TFrom, TTo, TResponse, TParam>(Func<IResolver, TTo> cachedFactory)
             where TFrom : class
             where TTo : class, TFrom, ICached<TResponse, TParam>
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(cachedFactory));
+            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(ToNetFactory(cachedFactory)));
         }
 
         internal void Build(IServiceCollection services)
@@ -39,5 +46,9 @@
 
             _serviceDescriptors.ForEach(services.TryAdd);
         }
+
+        private static Func<IServiceProvider, TTo> ToNetFactory<TTo>(Func<IResolver, TTo> factory) 
+            => p
+                => factory(new NetResolver(p));
     }
 }

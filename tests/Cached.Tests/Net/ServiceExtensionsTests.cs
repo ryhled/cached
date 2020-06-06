@@ -44,7 +44,7 @@
 
                     // Act
                     services.AddCached(options
-                        => options.AddCacher(provider => new Mock<IInMemoryCacher>().Object));
+                        => options.TryAddCacher(provider => new Mock<IInMemoryCacher>().Object));
                     ServiceProvider serviceProvider = services.BuildServiceProvider();
                     var instance = serviceProvider.GetService<IInMemoryCacher>();
 
