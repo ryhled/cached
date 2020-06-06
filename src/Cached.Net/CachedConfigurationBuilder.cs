@@ -18,17 +18,16 @@
             _serviceDescriptors.Add(ServiceDescriptor.Singleton<TFrom, TTo>());
         }
 
-        public void TryAddCacher<TCacher>(Func<IResolver, TCacher> cacherFactory)
-            where TCacher : class, ICacher
+        public void TryAddSingleton<TTo>(Func<IResolver, TTo> cacherFactory)
+            where TTo : class
         {
             _serviceDescriptors.Add(ServiceDescriptor.Singleton(ToNetFactory(cacherFactory)));
         }
 
-        public void TryAddCached<TFrom, TTo, TResponse, TParam>(Func<IResolver, TTo> cachedFactory)
-            where TFrom : class
-            where TTo : class, TFrom, ICached<TResponse, TParam>
+        public void TryAddTransient<TTo>(Func<IResolver, TTo> cacherFactory)
+            where TTo : class
         {
-            _serviceDescriptors.Add(ServiceDescriptor.Transient<TFrom, TTo>(ToNetFactory(cachedFactory)));
+            _serviceDescriptors.Add(ServiceDescriptor.Transient(ToNetFactory(cacherFactory)));
         }
 
         internal void Build(IServiceCollection services)

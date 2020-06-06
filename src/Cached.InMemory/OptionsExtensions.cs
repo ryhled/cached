@@ -26,7 +26,7 @@
             }
 
             builder.TryAddSingleton<IMemoryCache, MemoryCache>(); // Razor injects this by default.
-            builder.TryAddCacher(resolver => InMemoryCacher.New(resolver.GetService<IMemoryCache>(), options));
+            builder.TryAddSingleton(resolver => InMemoryCacher.New(resolver.GetService<IMemoryCache>(), options));
         }
 
         /// <summary>
@@ -57,11 +57,10 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.TryAddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(resolver =>
-                new Cached<TResponse, TParam>(
-                    resolver.GetService<IInMemoryCacher>(),
-                    keyFactory,
-                    (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
+            options.TryAddTransient<ICached<TResponse, TParam>>(resolver => new Cached<TResponse, TParam>(
+                resolver.GetService<IInMemoryCacher>(),
+                keyFactory,
+                (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
         }
     }
 }

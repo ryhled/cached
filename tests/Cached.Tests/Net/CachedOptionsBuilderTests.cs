@@ -55,8 +55,8 @@
                     // Arrange
                     var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
-                    options.TryAddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "abc123"});
-                    options.TryAddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "cde321"});
+                    options.TryAddTransient(_ => new TestClass {MyProperty = "abc123"});
+                    options.TryAddTransient(_ => new TestClass {MyProperty = "cde321"});
 
                     // Act
                     options.Build(serviceCollection);
@@ -76,7 +76,7 @@
                     // Arrange
                     var options = new CachedConfigurationBuilder();
                     var serviceCollection = new ServiceCollection();
-                    options.TryAddCached<TestClass, TestClass, string, string>(_ => new TestClass {MyProperty = "abc123"});
+                    options.TryAddTransient(_ => new TestClass {MyProperty = "abc123"});
 
                     // Act
                     options.Build(serviceCollection);

@@ -1,7 +1,5 @@
 namespace Cached.Demo.Net
 {
-    using System;
-    using System.Threading.Tasks;
     using Cached.Net;
     using InMemory;
     using Microsoft.AspNetCore.Builder;
@@ -21,7 +19,7 @@ namespace Cached.Demo.Net
                 options.AddInMemoryCaching();
                 options.AddInMemoryCachedFunction<string, int>(
                     param => param.ToString(), // Generates cache key based on the argument used.
-                    (provider, key, arg) => provider.GetService<IFakeService>().FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
+                    (resolver, key, arg) => resolver.GetService<IFakeService>().FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
             });
             services.AddRazorPages();
         }

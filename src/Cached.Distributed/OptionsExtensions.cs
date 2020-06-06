@@ -26,7 +26,7 @@
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.TryAddCacher(provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
+            builder.TryAddSingleton(provider => DistributedCacher.New(provider.GetService<IDistributedCache>(), options));
         }
 
         /// <summary>
@@ -57,11 +57,10 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            options.TryAddCached<ICached<TResponse, TParam>, Cached<TResponse, TParam>, TResponse, TParam>(resolver =>
-                new Cached<TResponse, TParam>(
-                    resolver.GetService<IDistributedCacher>(),
-                    keyFactory,
-                    (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
+            options.TryAddTransient(resolver => new Cached<TResponse, TParam>(
+                resolver.GetService<IDistributedCacher>(),
+                keyFactory,
+                (key, arg) => fetchFactory.Invoke(resolver, key, arg)));
         }
     }
 }
