@@ -25,14 +25,13 @@ namespace Cached.Caching
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            if (await TryGetFromCache(key, out TResponse cachedData).ConfigureAwait(false))
+            var result = await TryGetFromCache<TResponse>(key).ConfigureAwait(false);
+            if (result.Succeeded)
             {
-                return cachedData;
+                return result.Value;
             }
-            else
-            {
-                return await FetchAndAddToCache(key, fetchFactory);
-            }
+
+            return await FetchAndAddToCache(key, fetchFactory);
         }
 
         private async Task<TResponse> FetchAndAddToCache<TResponse>(
@@ -41,9 +40,10 @@ namespace Cached.Caching
         {
             using (await _cacherLock.LockAsync(key).ConfigureAwait(false))
             {
-                if (await TryGetFromCache(key, out TResponse cachedData).ConfigureAwait(false))
+                var result = await TryGetFromCache<TResponse>(key).ConfigureAwait(false);
+                if(result.Succeeded)
                 {
-                    return cachedData;
+                    return result.Value;
                 }
 
                 TResponse data = await fetchFactory(key).ConfigureAwait(false);
@@ -66,8 +66,7 @@ namespace Cached.Caching
         /// </summary>
         /// <typeparam name="T">The type of the item being searched for.</typeparam>
         /// <param name="key">The key to use when trying to locate data.</param>
-        /// <param name="item">The item that was located from the cache.</param>
         /// <returns>True if item is found, otherwise false.</returns>
-        protected abstract Task<bool> TryGetFromCache<T>(string key, out T item);
+        protected abstract Task<CacheResult<T>> TryGetFromCache<T>(string key);
     }
 }

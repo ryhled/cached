@@ -52,16 +52,14 @@
         }
 
         /// <inheritdoc />
-        protected override Task<bool> TryGetFromCache<T>(string key, out T item)
+        protected override Task<CacheResult<T>> TryGetFromCache<T>(string key)
         {
             if (_memoryCache.TryGetValue(key, out object dataFromCache) && dataFromCache is T castItem)
             {
-                item = castItem;
-                return Task.FromResult(true);
+                return Task.FromResult(CacheResult<T>.Hit(castItem));
             }
 
-            item = default;
-            return Task.FromResult(false);
+            return Task.FromResult(CacheResult<T>.Miss);
         }
     }
 }
