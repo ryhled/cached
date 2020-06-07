@@ -21,7 +21,7 @@
                 public void When_Options_Argument_Is_Null()
                 {
                     Assert.Throws<ArgumentNullException>(
-                        () => ((ICachedConfigurationBuilder) null).AddMemoryCaching());
+                        () => ((ICachedOptions) null).AddMemoryCaching());
                 }
             }
 
@@ -29,7 +29,7 @@
             public void Adds_Required_Services()
             {
                 // Arrange
-                var optionsMock = new Mock<ICachedConfigurationBuilder>();
+                var optionsMock = new Mock<ICachedOptions>();
 
                 // Act
                 optionsMock.Object.AddMemoryCaching();
@@ -48,21 +48,21 @@
                 [Fact]
                 public void When_FetchFactory_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new CachedConfigurationBuilder()
+                    Assert.Throws<ArgumentNullException>(() => new CachedOptionsBuilder()
                         .AddMemoryCachedFunction<string, string>(p => p, null));
                 }
 
                 [Fact]
                 public void When_KeyFactory_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new CachedConfigurationBuilder()
+                    Assert.Throws<ArgumentNullException>(() => new CachedOptionsBuilder()
                         .AddMemoryCachedFunction<string, string>(null, (_, __, ___) => Task.FromResult("")));
                 }
 
                 [Fact]
                 public void When_Options_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => ((ICachedConfigurationBuilder) null)
+                    Assert.Throws<ArgumentNullException>(() => ((ICachedOptions) null)
                         .AddMemoryCachedFunction<string, string>(p => p, (_, __, ___) => Task.FromResult("")));
                 }
             }
@@ -71,7 +71,7 @@
             public void Adds_Required_Service()
             {
                 // Arrange
-                var optionsMock = new Mock<ICachedConfigurationBuilder>();
+                var optionsMock = new Mock<ICachedOptions>();
 
                 // Act
                 optionsMock.Object.AddMemoryCachedFunction<string, double>(

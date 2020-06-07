@@ -6,7 +6,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
 
-    internal sealed class CachedConfigurationBuilder : ICachedConfigurationBuilder
+    internal sealed class CachedOptionsBuilder : ICachedOptions
     {
         private readonly List<ServiceDescriptor> _serviceDescriptors
             = new List<ServiceDescriptor>();

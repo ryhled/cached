@@ -18,7 +18,7 @@
         /// <param name="options">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
         public static void AddMemoryCaching(
-            this ICachedConfigurationBuilder builder,
+            this ICachedOptions builder,
             MemoryCacheEntryOptions options = null)
         {
             if (builder == null)
@@ -39,7 +39,7 @@
         /// <param name="keyFactory">A function that specifies how to construct the cache key out of the passed parameter.</param>
         /// <param name="fetchFactory">A function which specifies how to fetch the data if it does not exist in cache.</param>
         public static void AddMemoryCachedFunction<TResponse, TParam>(
-            this ICachedConfigurationBuilder options,
+            this ICachedOptions options,
             Func<TParam, string> keyFactory,
             Func<IResolver, string, TParam, Task<TResponse>> fetchFactory)
         {

@@ -5,7 +5,7 @@
     /// <summary>
     ///     Configures cached for net core, and net 5+, integration.
     /// </summary>
-    public interface ICachedConfigurationBuilder
+    public interface ICachedOptions
     {
         /// <summary>
         ///     Adds Cacher service (in singleton scope).

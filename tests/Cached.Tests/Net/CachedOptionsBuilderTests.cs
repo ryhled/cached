@@ -9,7 +9,7 @@
     using Moq;
     using Xunit;
 
-    public class CachedConfigurationBuilderTests
+    public class CachedOptionsBuilderTests
     {
         public class BuildMethod
         {
@@ -23,14 +23,14 @@
                 }
             }
 
-            public class ThrowsException
+            public class Throws
             {
                 [Fact]
                 public void When_No_Configurations_Are_Provided()
                 {
                     // Arrange
                     var serviceCollectionMock = new Mock<IServiceCollection>();
-                    var config = new CachedConfigurationBuilder();
+                    var config = new CachedOptionsBuilder();
 
                     // Act, Assert
                     Assert.Throws<InvalidOperationException>(() => config.Build(serviceCollectionMock.Object));
@@ -40,7 +40,7 @@
                 public void When_No_Service_Collection_Is_Null()
                 {
                     // Arrange
-                    var config = new CachedConfigurationBuilder();
+                    var config = new CachedOptionsBuilder();
 
                     // Act, Assert
                     Assert.Throws<ArgumentNullException>(() => config.Build(null));
@@ -53,7 +53,7 @@
                 public void When_Configuring_Singleton_Service()
                 {
                     // Arrange
-                    var options = new CachedConfigurationBuilder();
+                    var options = new CachedOptionsBuilder();
                     var serviceCollection = new ServiceCollection();
                     options.TryAddTransient(_ => new TestClass {MyProperty = "abc123"});
                     options.TryAddTransient(_ => new TestClass {MyProperty = "cde321"});
@@ -74,7 +74,7 @@
                 public void When_Configuring_Transient_Service()
                 {
                     // Arrange
-                    var options = new CachedConfigurationBuilder();
+                    var options = new CachedOptionsBuilder();
                     var serviceCollection = new ServiceCollection();
                     options.TryAddTransient(_ => new TestClass {MyProperty = "abc123"});
 
