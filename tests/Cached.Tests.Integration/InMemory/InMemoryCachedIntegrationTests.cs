@@ -13,7 +13,7 @@
         public InMemoryCachedIntegrationTests()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions()));
+            services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions())); // TODO: Remove this, should work without it (but currently do not)
             services.AddCached(options =>
             {
                 options.AddMemoryCaching();
