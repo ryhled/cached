@@ -1,6 +1,5 @@
 namespace Cached.Demo.Net
 {
-    using Cached.Net;
     using Memory;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -17,11 +16,11 @@ namespace Cached.Demo.Net
             services.AddCached(options =>
             {
                 options.AddMemoryCaching();
-                options.AddMemoryCachedFunction<string, int>(
-                    param => param.ToString(), // Generates cache key based on the argument used.
-                    (resolver, key, arg) =>
-                        resolver.GetService<IFakeService>()
-                            .FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
+                //options.AddMemoryCachedFunction<string, int>(
+                //    param => param.ToString(), // Generates cache key based on the argument used.
+                //    (resolver, key, arg) =>
+                //        resolver.GetService<IFakeService>()
+                //            .FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
             });
             services.AddRazorPages();
         }

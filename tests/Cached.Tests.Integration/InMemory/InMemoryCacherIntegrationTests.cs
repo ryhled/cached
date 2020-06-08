@@ -6,7 +6,6 @@
     using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
-    using Net;
     using Xunit;
 
     public sealed class InMemoryCacherIntegrationTests : IDisposable

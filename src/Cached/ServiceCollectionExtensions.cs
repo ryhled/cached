@@ -1,4 +1,4 @@
-﻿namespace Cached.Net
+﻿namespace Cached
 {
     using System;
     using Configuration;
@@ -7,14 +7,14 @@
     /// <summary>
     ///     Cached net core and net 5+ service integration extensions.
     /// </summary>
-    public static class ServicesExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         ///     Adds support for caching using Cached.
         /// </summary>
         /// <param name="services">The target service collection.</param>
         /// <param name="options">Options for configuring cached.</param>
-        public static void AddCached(this IServiceCollection services, Action<ICachedOptions> options)
+        public static void AddCached(this IServiceCollection services, Action<CachedOptionsBuilder> options)
         {
             if (services == null)
             {

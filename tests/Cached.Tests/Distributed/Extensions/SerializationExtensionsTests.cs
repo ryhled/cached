@@ -1,7 +1,7 @@
-﻿namespace Cached.Tests.Caching.Extensions
+﻿namespace Cached.Tests.Distributed.Extensions
 {
     using System.Collections.Generic;
-    using Cached.Extensions;
+    using Cached.Distributed;
     using Xunit;
 
     public class SerializationExtensionsTests

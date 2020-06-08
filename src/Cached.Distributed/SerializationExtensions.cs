@@ -1,4 +1,4 @@
-﻿namespace Cached.Extensions
+﻿namespace Cached.Distributed
 {
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;

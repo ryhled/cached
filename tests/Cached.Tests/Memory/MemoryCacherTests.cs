@@ -1,4 +1,4 @@
-﻿namespace Cached.Tests.InMemory
+﻿namespace Cached.Tests.Memory
 {
     using System;
     using System.Collections.Generic;

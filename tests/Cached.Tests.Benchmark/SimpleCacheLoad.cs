@@ -8,7 +8,6 @@
     using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
-    using Net;
 
     [SimpleJob]
     [IterationTime(200)]
@@ -19,9 +18,9 @@
     {
         private readonly IMemoryCache _cache;
 
-        private readonly IMemoryCacher _cacher;
-
         private readonly ICached<string, string> _cached;
+
+        private readonly IMemoryCacher _cacher;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -31,13 +30,15 @@
             _cacher = MemoryCacher.New(_cache);
 
             var services = new ServiceCollection();
-            services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions())); // TODO: Remove this, should work without it (but currently do not)
+            services.AddSingleton<IMemoryCache>(_ =>
+                new MemoryCache(
+                    new MemoryCacheOptions())); // TODO: Remove this, should work without it (but currently do not)
             services.AddCached(options =>
             {
                 options.AddMemoryCaching();
-                options.AddMemoryCachedFunction<string, string>(
-                    arg => arg,
-                    (provider, key, arg) => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
+                //options.AddMemoryCachedFunction<string, string>(
+                //    arg => arg,
+                //    (provider, key, arg) => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
             });
 
             _serviceProvider = services.BuildServiceProvider();
