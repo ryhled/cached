@@ -13,14 +13,15 @@ namespace Cached.Demo.Net
         {
             services.AddTransient<IFakeService, FakeService>();
 
-            services.AddCached(options =>
+            services.AddCached(builder =>
             {
-                options.AddMemoryCaching();
-                //options.AddMemoryCachedFunction<string, int>(
-                //    param => param.ToString(), // Generates cache key based on the argument used.
-                //    (resolver, key, arg) =>
-                //        resolver.GetService<IFakeService>()
-                //            .FunctionGet(key, arg)); // creates the fetch logic for the cached entry.
+                builder.AddMemoryCaching(options =>
+                {
+                    options.AddFunction<string, int>(
+                        param => param.ToString(), // Generates cache key based on the argument used.
+                        (provider, key, arg) => provider.GetService<IFakeService>().FunctionGet(key, arg)
+                        ); // creates the fetch logic for the cached entry.));
+                }); 
             });
             services.AddRazorPages();
         }
