@@ -14,28 +14,28 @@
         /// <summary>
         ///     Creates a new CachedService object for use with the cached configurator.
         /// </summary>
-        /// <param name="builder">The configurator object used during application startup.</param>
+        /// <param name="configuration">The configurator object used during application startup.</param>
         /// <param name="memoryOptions">(Optional) Service specific settings (which overrides the global settings).</param>
         /// <returns>A new cached service instance.</returns>
         public static void AddMemoryCaching(
-            this CachedOptionsBuilder builder,
+            this CachedConfiguration configuration,
             Action<MemoryOptions> memoryOptions = null)
         {
-            if (builder == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(builder));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
             var options = new MemoryOptions();
             memoryOptions?.Invoke(options);
 
-            builder.AddService(services => services.AddMemoryCache());
+            configuration.Services.Add(services => services.AddMemoryCache());
 
-            builder.AddService(
+            configuration.Services.Add(
                 services => services.AddSingleton(
                     provider => MemoryCacher.New(provider.GetService<IMemoryCache>(), options.Options)));
 
-            options.Services.ForEach(builder.AddService);
+            options.Services.ForEach(configuration.Services.Add);
         }
     }
 }

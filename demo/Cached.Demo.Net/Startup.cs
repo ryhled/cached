@@ -13,9 +13,9 @@ namespace Cached.Demo.Net
         {
             services.AddTransient<IFakeService, FakeService>();
 
-            services.AddCached(builder =>
+            services.AddCached(config =>
             {
-                builder.AddMemoryCaching(options =>
+                config.AddMemoryCaching(options =>
                 {
                     options.AddFunction<string, int>(
                         param => param.ToString(), // Generates cache key based on the argument used.

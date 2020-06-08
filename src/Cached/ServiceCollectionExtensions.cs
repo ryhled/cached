@@ -13,22 +13,30 @@
         ///     Adds support for caching using Cached.
         /// </summary>
         /// <param name="services">The target service collection.</param>
-        /// <param name="cachedOptions">Options for configuring cached.</param>
-        public static void AddCached(this IServiceCollection services, Action<CachedOptionsBuilder> cachedOptions)
+        /// <param name="configuration">Configuration for initializing Cached.</param>
+        public static void AddCached(this IServiceCollection services, Action<CachedConfiguration> configuration)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            if (cachedOptions == null)
+            if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(cachedOptions));
+                throw new ArgumentNullException(nameof(configuration));
             }
 
-            var optionsBuilder = new CachedOptionsBuilder();
-            cachedOptions.Invoke(optionsBuilder);
-            optionsBuilder.Build(services);
+            var builtConfiguration = new CachedConfiguration();
+            configuration.Invoke(builtConfiguration);
+
+            if (builtConfiguration.Services.Count == 0)
+            {
+                throw new InvalidOperationException(
+                    "Cached configuration was empty. At least one cache service must be configured.");
+            }
+
+            builtConfiguration.Services
+                .ForEach(c => c(services));
         }
     }
 }
