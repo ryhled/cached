@@ -12,6 +12,10 @@
     /// <typeparam name="TCacher">The type of cacher relevant for the service.</typeparam>
     public abstract class ServiceOptions<TCacher> where TCacher : ICacher
     {
+        internal ServiceOptions()
+        {
+        }
+
         internal readonly List<Action<IServiceCollection>> Services = new List<Action<IServiceCollection>>();
 
         /// <summary>

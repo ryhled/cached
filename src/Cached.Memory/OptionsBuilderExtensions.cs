@@ -29,12 +29,13 @@
             var options = new MemoryOptions();
             memoryOptions?.Invoke(options);
 
-            options.Services.ForEach(builder.AddService);
-
             builder.AddService(services => services.AddMemoryCache());
+
             builder.AddService(
                 services => services.AddSingleton(
                     provider => MemoryCacher.New(provider.GetService<IMemoryCache>(), options.Options)));
+
+            options.Services.ForEach(builder.AddService);
         }
     }
 }

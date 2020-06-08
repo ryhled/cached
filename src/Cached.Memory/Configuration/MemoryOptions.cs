@@ -8,6 +8,10 @@
     /// </summary>
     public sealed class MemoryOptions : ServiceOptions<IMemoryCacher>
     {
+        internal MemoryOptions()
+        {
+        }
+
         /// <summary>
         /// MemoryCache entry options that overrides the global MemoryCAche settings.
         /// </summary>
