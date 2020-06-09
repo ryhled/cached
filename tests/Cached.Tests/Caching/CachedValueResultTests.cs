@@ -3,7 +3,7 @@
     using Cached.Caching;
     using Xunit;
 
-    public class ValueResultTests
+    public class CachedValueResultTests
     {
         public class Miss
         {
@@ -11,7 +11,7 @@
             public void Create_Failed_Result_Instance_With_Empty_Value()
             {
                 // Arrange, Act
-                var result = ValueResult<int>.Miss;
+                var result = CachedValueResult<int>.Miss;
 
                 // Assert
                 Assert.False(result.Succeeded);
@@ -29,7 +29,7 @@
                 const string value = "abc123";
 
                 // Act
-                var result = ValueResult<string>.Hit(value);
+                var result = CachedValueResult<string>.Hit(value);
 
                 // Assert
                 Assert.True(result.Succeeded);

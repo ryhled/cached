@@ -25,14 +25,14 @@ namespace Cached.Memory
             return Task.CompletedTask;
         }
 
-        public Task<ValueResult<T>> TryGet<T>(string key)
+        public Task<CachedValueResult<T>> TryGet<T>(string key)
         {
             if (_memoryCache.TryGetValue(key, out object dataFromCache) && dataFromCache is T castItem)
             {
-                return Task.FromResult(ValueResult<T>.Hit(castItem));
+                return Task.FromResult(CachedValueResult<T>.Hit(castItem));
             }
 
-            return Task.FromResult(ValueResult<T>.Miss);
+            return Task.FromResult(CachedValueResult<T>.Miss);
         }
 
         public Task Remove(string key)

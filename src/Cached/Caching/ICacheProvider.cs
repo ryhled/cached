@@ -22,7 +22,7 @@
         /// <typeparam name="TValue">The type of the item being retrieved.</typeparam>
         /// <param name="key">The key to use when trying to locate data.</param>
         /// <returns>True if item is found, otherwise false.</returns>
-        Task<ValueResult<TValue>> TryGet<TValue>(string key);
+        Task<CachedValueResult<TValue>> TryGet<TValue>(string key);
 
         /// <summary>
         /// Attempts to remove an item from the cache.

@@ -59,7 +59,7 @@
                 // Arrange
                 var providerMock = new Mock<ICacheProvider>();
                 providerMock.Setup(m => m.TryGet<string>("key"))
-                    .Returns(Task.FromResult(ValueResult<string>.Miss));
+                    .Returns(Task.FromResult(CachedValueResult<string>.Miss));
                 var lockMock = new Mock<ILock>();
                 var handler = new CacheHandler<ICacheProvider>(providerMock.Object, lockMock.Object);
 
@@ -90,10 +90,10 @@
                     {
                         if (hit)
                         {
-                            return Task.FromResult(ValueResult<string>.Hit("cached_value"));
+                            return Task.FromResult(CachedValueResult<string>.Hit("cached_value"));
                         }
                         hit = true;
-                        return Task.FromResult(ValueResult<string>.Miss);
+                        return Task.FromResult(CachedValueResult<string>.Miss);
                     });
 
                 var lockMock = new Mock<ILock>();
@@ -119,7 +119,7 @@
                 // Arrange
                 var providerMock = new Mock<ICacheProvider>();
                 providerMock.Setup(m => m.TryGet<string>("key"))
-                    .Returns(Task.FromResult(ValueResult<string>.Hit("cached_value")));
+                    .Returns(Task.FromResult(CachedValueResult<string>.Hit("cached_value")));
                 var lockMock = new Mock<ILock>();
                 var handler = new CacheHandler<ICacheProvider>(providerMock.Object, lockMock.Object);
 
