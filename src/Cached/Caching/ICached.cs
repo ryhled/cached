@@ -5,9 +5,9 @@
     /// <summary>
     ///     Abstracts a lazily cached service call.
     /// </summary>
-    /// <typeparam name="TResponse">The type of response expected.</typeparam>
+    /// <typeparam name="TValue">The type of the requested value.</typeparam>
     /// <typeparam name="TParam">The type of parameter that is needed.</typeparam>
-    public interface ICached<TResponse, in TParam>
+    public interface ICached<TValue, in TParam>
     {
         /// <summary>
         ///     Tries to get data from cached based on provided argument.
@@ -15,6 +15,6 @@
         /// </summary>
         /// <param name="arg">The argument that will be used for fetching the data.</param>
         /// <returns>The data fetched based on the provided argument.</returns>
-        Task<TResponse> GetOrFetchAsync(TParam arg);
+        Task<TValue> GetOrFetchAsync(TParam arg);
     }
 }

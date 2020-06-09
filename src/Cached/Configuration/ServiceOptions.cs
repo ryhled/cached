@@ -9,8 +9,8 @@
     /// <summary>
     /// Sets the configuration for the cached service.
     /// </summary>
-    /// <typeparam name="TCacher">The type of cacher relevant for the service.</typeparam>
-    public abstract class ServiceOptions<TCacher> where TCacher : ICacher
+    /// <typeparam name="TProvider">The type of cache-provider used for the service.</typeparam>
+    public abstract class ServiceOptions<TProvider> where TProvider : ICacheProvider
     {
         internal ServiceOptions()
         {
@@ -39,8 +39,8 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            Services.Add(services => services.AddTransient<ICached<TResponse, TArgument>>(provider => new Cached<TResponse, TArgument>(
-                provider.GetService<TCacher>(),
+            Services.Add(services => services.AddTransient<ICached<TResponse, TArgument>>(provider => new Cached<TResponse, TArgument, TProvider>(
+                provider.GetService<ICache<TProvider>>(),
                 keyFactory,
                 (key, arg) => fetchFactory.Invoke(provider, key, arg))));
         }

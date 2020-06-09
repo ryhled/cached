@@ -2,6 +2,7 @@ namespace Cached.Demo.Net.Pages
 {
     using System.Diagnostics;
     using System.Threading.Tasks;
+    using Caching;
     using Memory;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,13 +11,13 @@ namespace Cached.Demo.Net.Pages
     public class CacherModel : PageModel
     {
         private readonly IFakeService _fakeService;
-        private readonly IMemoryCacher _memoryCacher;
+        private readonly ICache<IMemory> _cache;
 
         public CacherModel(
-            IMemoryCacher cached,
+            ICache<IMemory> cache,
             IFakeService fakeService)
         {
-            _memoryCacher = cached;
+            _cache = cache;
             _fakeService = fakeService;
         }
 
@@ -27,7 +28,7 @@ namespace Cached.Demo.Net.Pages
         {
             var watch = Stopwatch.StartNew();
 
-            CachedValue = await _memoryCacher.GetOrFetchAsync(key, _fakeService.Get);
+            CachedValue = await _cache.GetOrFetchAsync(key, _fakeService.Get);
 
             watch.Stop();
             TimeConsumed = watch.ElapsedMilliseconds + " ms";

@@ -31,4 +31,8 @@
 		<ProjectReference Include="..\..\src\Cached.Memory\Cached.Memory.csproj" />
 		<ProjectReference Include="..\..\src\Cached\Cached.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Memory\" />
+	</ItemGroup>
 </Project>

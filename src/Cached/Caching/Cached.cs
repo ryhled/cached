@@ -3,25 +3,25 @@
     using System;
     using System.Threading.Tasks;
 
-    internal sealed class Cached<TResponse, TParam> : ICached<TResponse, TParam>
+    internal sealed class Cached<TValue, TParam, TProvider> : ICached<TValue, TParam> where TProvider : ICacheProvider
     {
-        private readonly ICacher _cacher;
-        private readonly Func<string, TParam, Task<TResponse>> _fetchFactory;
+        private readonly ICache<TProvider> _cache;
+        private readonly Func<string, TParam, Task<TValue>> _fetchFactory;
         private readonly Func<TParam, string> _keyFactory;
 
         public Cached(
-            ICacher cacher,
+            ICache<TProvider> cache,
             Func<TParam, string> keyFactory,
-            Func<string, TParam, Task<TResponse>> fetchFactory)
+            Func<string, TParam, Task<TValue>> fetchFactory)
         {
-            _cacher = cacher ?? throw new ArgumentNullException(nameof(cacher));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _fetchFactory = fetchFactory ?? throw new ArgumentNullException(nameof(fetchFactory));
             _keyFactory = keyFactory ?? throw new ArgumentNullException(nameof(keyFactory));
         }
 
-        public async Task<TResponse> GetOrFetchAsync(TParam arg)
+        public async Task<TValue> GetOrFetchAsync(TParam arg)
         {
-            return await _cacher.GetOrFetchAsync(_keyFactory(arg), key => _fetchFactory(key, arg));
+            return await _cache.GetOrFetchAsync(_keyFactory(arg), key => _fetchFactory(key, arg));
         }
     }
 }

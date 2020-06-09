@@ -3,16 +3,16 @@
     /// <summary>
     ///     Represents the result of an attempt to get a value from the cache.
     /// </summary>
-    /// <typeparam name="T">The type of the value.</typeparam>
-    public sealed class CacheResult<T>
+    /// <typeparam name="TValue">The type of the value.</typeparam>
+    public sealed class ValueResult<TValue>
     {
-        private CacheResult(bool success, T value)
+        private ValueResult(bool success, TValue value)
         {
             Value = value;
             Succeeded = success;
         }
 
-        internal static CacheResult<T> Miss => new CacheResult<T>(false, default);
+        internal static ValueResult<TValue> Miss => new ValueResult<TValue>(false, default);
 
         /// <summary>
         ///     If the attempt to get the value succeeded.
@@ -22,11 +22,11 @@
         /// <summary>
         ///     The retrieved value, or default.
         /// </summary>
-        public T Value { get; }
+        public TValue Value { get; }
 
-        internal static CacheResult<T> Hit(T value)
+        internal static ValueResult<TValue> Hit(TValue value)
         {
-            return new CacheResult<T>(true, value);
+            return new ValueResult<TValue>(true, value);
         }
     }
 }

@@ -20,14 +20,14 @@
 
         private readonly ICached<string, string> _cached;
 
-        private readonly IMemoryCacher _cacher;
+        private readonly ICache<IMemory> _cacher;
 
         private readonly IServiceProvider _serviceProvider;
 
         public SimpleCacheLoad()
         {
             _cache = new MemoryCache(new MemoryCacheOptions());
-            _cacher = MemoryCacher.New(_cache);
+            _cacher = MemoryCacheHandler.New(_cache);
 
             var services = new ServiceCollection();
             services.AddSingleton<IMemoryCache>(_ =>
