@@ -1,10 +1,10 @@
-﻿namespace Cached.Tests.Integration.InMemory
+﻿namespace Cached.Tests.Integration.Memory
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Cached.Memory;
     using Caching;
-    using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
@@ -15,7 +15,6 @@
         {
             var services = new ServiceCollection();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
-            services.AddSingleton<IMemoryCache>(_ => new MemoryCache(new MemoryCacheOptions()));
             services.AddCached(options => options.AddMemoryCaching());
 
             ServiceProvider scope = services.BuildServiceProvider();
