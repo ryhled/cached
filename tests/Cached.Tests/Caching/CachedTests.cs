@@ -31,7 +31,7 @@
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new Cached<object, object, IFakeCacheProvider>(
-                            new Mock<ICache<IFakeCacheProvider>>().Object, 
+                            new Mock<ICache<IFakeCacheProvider>>().Object,
                             o => "",
                             null));
                 }
@@ -41,7 +41,7 @@
                 {
                     Assert.Throws<ArgumentNullException>(() =>
                         new Cached<object, object, IFakeCacheProvider>(
-                            new Mock<ICache<IFakeCacheProvider>>().Object, 
+                            new Mock<ICache<IFakeCacheProvider>>().Object,
                             null,
                             (key, arg) => Task.FromResult(arg)));
                 }

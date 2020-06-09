@@ -1,11 +1,5 @@
 ﻿namespace Cached.Distributed
 {
-    using System;
-    using System.Threading.Tasks;
-    using Caching;
-    using Locking;
-    using Microsoft.Extensions.Caching.Distributed;
-
     //public sealed class DistributedCacher : Cacher, IDistributedCacher
     //{
     //    private readonly IDistributedCache _distributedCache;

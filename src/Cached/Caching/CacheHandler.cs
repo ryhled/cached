@@ -9,7 +9,7 @@
         private readonly ILock _cacheLock;
 
         public CacheHandler(
-            TProvider cacheProvider, 
+            TProvider cacheProvider,
             ILock cacheLock)
         {
             Provider = cacheProvider != null ? cacheProvider : throw new ArgumentNullException(nameof(cacheProvider));

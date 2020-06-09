@@ -10,8 +10,8 @@ namespace Cached.Demo.Net.Pages
 
     public class CacherModel : PageModel
     {
-        private readonly IFakeService _fakeService;
         private readonly ICache<IMemory> _cache;
+        private readonly IFakeService _fakeService;
 
         public CacherModel(
             ICache<IMemory> cache,

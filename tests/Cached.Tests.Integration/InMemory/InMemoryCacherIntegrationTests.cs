@@ -34,7 +34,7 @@
         public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
         {
             // Arrange
-            ICache<IMemory> cacher = MemoryCacheHandler.New(_memoryCache);
+            var cacher = MemoryCacheHandler.New(_memoryCache);
 
             // Act
             var result = await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));

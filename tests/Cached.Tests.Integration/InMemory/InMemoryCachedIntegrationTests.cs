@@ -1,14 +1,14 @@
 ﻿namespace Cached.Tests.Integration.InMemory
 {
-    using System.Threading.Tasks;
     using Caching;
     using Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
-    using Xunit;
 
     public sealed class InMemoryCachedIntegrationTests
     {
+        private readonly ICached<string, int> _inMemoryCached;
+
         public InMemoryCachedIntegrationTests()
         {
             var services = new ServiceCollection();
@@ -26,8 +26,6 @@
             ServiceProvider scope = services.BuildServiceProvider();
             _inMemoryCached = scope.GetService<ICached<string, int>>();
         }
-
-        private readonly ICached<string, int> _inMemoryCached;
 
         //[Fact]
         //public async Task InMemoryCached_Will_Fetch_Or_Cache_Based_On_Key()

@@ -20,8 +20,8 @@ namespace Cached.Demo.Net
                     options.AddFunction<string, int>(
                         param => param.ToString(), // Generates cache key based on the argument used.
                         (provider, key, arg) => provider.GetService<IFakeService>().FunctionGet(key, arg)
-                        ); // creates the fetch logic for the cached entry.));
-                }); 
+                    ); // creates the fetch logic for the cached entry.));
+                });
             });
             services.AddRazorPages();
         }

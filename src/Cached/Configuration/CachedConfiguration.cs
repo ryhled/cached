@@ -5,7 +5,7 @@
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// Configuration for setting up Cached support. 
+    ///     Configuration for setting up Cached support.
     /// </summary>
     public sealed class CachedConfiguration
     {

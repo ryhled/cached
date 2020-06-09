@@ -3,7 +3,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Implements a caching scheme for use with a cache handler.
+    ///     Implements a caching scheme for use with a cache handler.
     /// </summary>
     public interface ICacheProvider
     {
@@ -25,7 +25,7 @@
         Task<CachedValueResult<TValue>> TryGet<TValue>(string key);
 
         /// <summary>
-        /// Attempts to remove an item from the cache.
+        ///     Attempts to remove an item from the cache.
         /// </summary>
         /// <param name="key">The key that represents the item to be removed.</param>
         /// <returns></returns>

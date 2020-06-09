@@ -1,9 +1,8 @@
-﻿using Cached.Caching;
-using System.Threading.Tasks;
-
-namespace Cached.Memory
+﻿namespace Cached.Memory
 {
     using System;
+    using System.Threading.Tasks;
+    using Caching;
     using Microsoft.Extensions.Caching.Memory;
 
     internal sealed class MemoryCacheProvider : IMemory

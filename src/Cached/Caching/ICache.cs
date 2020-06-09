@@ -1,5 +1,4 @@
-﻿
-namespace Cached.Caching
+﻿namespace Cached.Caching
 {
     using System;
     using System.Threading.Tasks;
@@ -10,8 +9,8 @@ namespace Cached.Caching
     public interface ICache<out TProvider> where TProvider : ICacheProvider
     {
         /// <summary>
-        /// Provides access to the active cache provider.
-        /// Calls directly to provider are NOT, i repeat NOT concurrency-safe.
+        ///     Provides access to the active cache provider.
+        ///     Calls directly to provider are NOT, i repeat NOT concurrency-safe.
         /// </summary>
         TProvider Provider { get; }
 
