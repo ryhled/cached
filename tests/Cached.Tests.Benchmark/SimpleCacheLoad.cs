@@ -30,15 +30,14 @@
             _cacher = MemoryCacheHandler.New(_cache);
 
             var services = new ServiceCollection();
-            services.AddSingleton<IMemoryCache>(_ =>
-                new MemoryCache(
-                    new MemoryCacheOptions())); // TODO: Remove this, should work without it (but currently do not)
-            services.AddCached(options =>
+            services.AddCached(config =>
             {
-                options.AddMemoryCaching();
-                //options.AddMemoryCachedFunction<string, string>(
-                //    arg => arg,
-                //    (provider, key, arg) => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
+                config.AddMemoryCaching(options =>
+                {
+                    options.AddFunction<string, string>(
+                        arg => arg,
+                        (provider, key, arg) => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
+                });
             });
 
             _serviceProvider = services.BuildServiceProvider();
