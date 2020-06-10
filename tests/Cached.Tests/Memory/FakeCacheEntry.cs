@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Cached.Tests.Memory
+{
+    using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Primitives;
+
+    public class FakeCacheEntry : ICacheEntry
+    {
+        public void Dispose()
+        {
+        }
+
+        public object Key { get; }
+        public object Value { get; set; }
+        public DateTimeOffset? AbsoluteExpiration { get; set; }
+        public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
+        public TimeSpan? SlidingExpiration { get; set; }
+        public IList<IChangeToken> ExpirationTokens { get; }
+        public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; }
+        public CacheItemPriority Priority { get; set; }
+        public long? Size { get; set; }
+    }
+}
