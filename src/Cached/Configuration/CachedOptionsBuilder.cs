@@ -11,7 +11,6 @@
         private readonly List<Action<IServiceCollection>> _serviceBuilder
             = new List<Action<IServiceCollection>>();
 
-
         /// <inheritdoc />
         public void AddService<TProvider>(ServiceBuilder<TProvider> builder) where TProvider : ICacheProvider
             => _serviceBuilder.Add(builder.Build);

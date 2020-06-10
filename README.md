@@ -26,24 +26,6 @@ Cached wraps these libraries and makes them concurrency-safe, **with a minimal a
 
 ## Getting started
 
-To show the absolute most basic implementation, suitable for a console app for example, this is what is required:
-
-1. Add the nuget package for InMemory caching.
-```
-nuget install Cached.Memory
-```
-
-2. Create a default instance and fetch data.
-
-```
-var cacher = MemoryCacher.Default();
-var value = await cacher.GetOrFetchAsync("key", key => service.GetData(key));
-```
-
-The 'service.GetData' calls is where you place your asynchronous service that fetches the actual data (may it be from database, REST/SOAP service or which ever).
-
-### Adding cached to a net core application
-
 Startup.cs
 
 ```
@@ -56,16 +38,16 @@ public void ConfigureServices(IServiceCollection services)
 Razor page
 
 ```
-private readonly IMemoryCacher _cacher;
+private readonly ICache<IMemory> _cache;
 
-public IndexModel(IMemoryCacher cacher)
+public IndexModel(ICache<IMemory> cache)
 {
-    _cached = cached;
+    _cache = cache;
 }
 
 public async Task OnGet()
 {
-    var value = await _cacher.GetOrFetchAsync("key", async key => { ... });
+    var value = await _cache.GetOrFetchAsync("key", async key => { ... });
 }
 ```
 
