@@ -12,9 +12,8 @@ The light-weight, fast, concurrency-safe and unobtrusive cache library for Net C
 
 #### What is Cached?
 
-The goal of Cached is to be a thin, fast, wrapper around existing, official, cache libraries (Like MemoryCache and DistributedCache).
-
-Cached wraps these libraries and makes them concurrency-safe, **with a minimal amount of locking**. It also provides flexibility and ease-of-use.
+The goal of Cached is to be a thin, fast, wrapper around existing cache providers (like MemoryCache).
+Cached wraps these providers and makes them concurrency-safe **with a minimal amount of locking**. It also provides flexibility and ease-of-use.
 
 #### Why use Cached?
 
