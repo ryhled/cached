@@ -7,16 +7,21 @@
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    ///     Sets the configuration for the cached service.
+    ///     Builds the configuration for cached services.
     /// </summary>
-    /// <typeparam name="TProvider">The type of cache-provider used for the service.</typeparam>
-    public abstract class ServiceOptions<TProvider> where TProvider : ICacheProvider
+    /// <typeparam name="TProvider">The type of cache provider used for the service.</typeparam>
+    public abstract class ServiceBuilder<TProvider> where TProvider : ICacheProvider
     {
-        internal readonly List<Action<IServiceCollection>> Services = new List<Action<IServiceCollection>>();
+        /// <summary>
+        ///     Contains the user-provides service descriptors for a specific cache provider.
+        /// </summary>
+        protected readonly List<ServiceDescriptor> Descriptors = new List<ServiceDescriptor>();
 
-        internal ServiceOptions()
+        internal ServiceBuilder()
         {
         }
+
+        internal abstract void Build(IServiceCollection services);
 
         /// <summary>
         ///     Adds a new cached function based on the provided types and functions.
@@ -42,11 +47,13 @@
                 throw new ArgumentNullException(nameof(fetchFactory));
             }
 
-            Services.Add(services => services.AddTransient<ICached<TResponse, TArgument>>(provider =>
+            ServiceDescriptor descriptor = ServiceDescriptor.Transient<ICached<TResponse, TArgument>>(provider =>
                 new Cached<TResponse, TArgument, TProvider>(
                     provider.GetService<ICache<TProvider>>(),
                     keyFactory,
-                    (key, arg) => fetchFactory.Invoke(provider, key, arg))));
+                    (key, arg) => fetchFactory.Invoke(provider, key, arg)));
+
+            Descriptors.Add(descriptor);
         }
     }
 }
