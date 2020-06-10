@@ -10,7 +10,7 @@
     {
         /// <summary>
         ///     Provides access to the active cache provider.
-        ///     Calls directly to provider are NOT, i repeat NOT concurrency-safe.
+        ///     Calls directly to provider are NOT guaranteed to be concurrency-safe.
         /// </summary>
         TProvider Provider { get; }
 
