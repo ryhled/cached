@@ -1,5 +1,6 @@
 ﻿namespace Cached.Memory.Configuration
 {
+    using System;
     using Cached.Configuration;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,12 +20,15 @@
         /// </summary>
         public MemoryCacheEntryOptions Options { get; set; }
 
-        internal override void Build(IServiceCollection services)
+        internal override Action<IServiceCollection> GetBuild()
         {
-            services.AddMemoryCache();
-            services.AddSingleton(provider => MemoryCacheHandler.New(provider.GetService<IMemoryCache>(), Options));
+            return services =>
+            {
+                services.AddMemoryCache();
+                services.AddSingleton(provider => MemoryCacheHandler.New(provider.GetService<IMemoryCache>(), Options));
 
-            Descriptors.ForEach(services.TryAdd);
+                Descriptors.ForEach(services.TryAdd);
+            };
         }
     }
 }

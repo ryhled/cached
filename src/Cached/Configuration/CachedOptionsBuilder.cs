@@ -5,15 +5,14 @@
     using Caching;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <inheritdoc />
-    public sealed class CachedOptionsBuilder : ICachedOptions
+    internal sealed class CachedOptionsBuilder : ICachedOptions
     {
-        private readonly List<Action<IServiceCollection>> _serviceBuilder
+        private readonly List<Action<IServiceCollection>> _serviceBuilders
             = new List<Action<IServiceCollection>>();
 
-        /// <inheritdoc />
-        public void AddService<TProvider>(ServiceBuilder<TProvider> builder) where TProvider : ICacheProvider
-            => _serviceBuilder.Add(builder.Build);
+        public void AddService<TProvider>(ServiceBuilder<TProvider> builder)
+            where TProvider : ICacheProvider
+            => _serviceBuilders.Add(builder.GetBuild());
 
         internal void Build(IServiceCollection services)
         {
@@ -22,13 +21,13 @@
                 throw new ArgumentNullException(nameof(services));
             }
 
-            if (_serviceBuilder.Count == 0)
+            if (_serviceBuilders.Count == 0)
             {
                 throw new InvalidOperationException(
                     "Cached configuration was empty. At least one cache service must be configured.");
             }
 
-            _serviceBuilder.ForEach(configuration => configuration(services));
+            _serviceBuilders.ForEach(builder => builder(services));
         }
     }
 }

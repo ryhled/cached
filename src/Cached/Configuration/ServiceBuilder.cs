@@ -21,7 +21,7 @@
         {
         }
 
-        internal abstract void Build(IServiceCollection services);
+        internal abstract Action<IServiceCollection> GetBuild();
 
         /// <summary>
         ///     Adds a new cached function based on the provided types and functions.
