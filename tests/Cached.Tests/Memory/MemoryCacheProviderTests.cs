@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.Threading.Tasks;
     using Cached.Memory;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
@@ -72,12 +73,101 @@
 
         public class TryGetMethod
         {
+            private delegate bool TryGetValueReturns(object key, out object item);
 
+            [Fact]
+            public async Task Returns_False_When_Item_Is_Not_Cached()
+            {
+                // Arrange
+                var cacheMock = new Mock<IMemoryCache>();
+                cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
+                    .Returns(new TryGetValueReturns((object key, out object item) => {
+                    item = default;
+                    return false;
+                }));
+
+                var provider = new MemoryCacheProvider(cacheMock.Object, null);
+
+                // Act
+                var result = await provider.TryGet<string>("key1");
+
+                // Assert
+                Assert.False(result.Succeeded);
+                Assert.Null(result.Value);
+            }
+
+            [Fact]
+            public async Task Returns_False_When_Item_Is_Of_Wrong_Type()
+            {
+                // Arrange
+                var cacheMock = new Mock<IMemoryCache>();
+                cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
+                    .Returns(new TryGetValueReturns((object key, out object item) => {
+                        item = 1.0;
+                        return true;
+                    }));
+
+                var provider = new MemoryCacheProvider(cacheMock.Object, null);
+
+                // Act
+                var result = await provider.TryGet<string>("key1");
+
+                // Assert
+                Assert.False(result.Succeeded);
+                Assert.Null(result.Value);
+            }
+
+            [Fact]
+            public async Task Returns_True_When_Item_Of_Correct_Type_Is_In_Cache()
+            {
+                // Arrange
+                var cacheMock = new Mock<IMemoryCache>();
+                cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
+                    .Returns(new TryGetValueReturns((object key, out object item) => {
+                        item = "abc321";
+                        return true;
+                    }));
+
+                var provider = new MemoryCacheProvider(cacheMock.Object, null);
+
+                // Act
+                var result = await provider.TryGet<string>("key1");
+
+                // Assert
+                Assert.True(result.Succeeded);
+                Assert.Equal("abc321", result.Value);
+            }
         }
 
         public class RemoveMethod
         {
+            [Fact]
+            public void Will_Remove_Item_When_Such_Exist()
+            {
+                // Arrange
+                var cacheMock = new Mock<IMemoryCache>();
+                var provider = new MemoryCacheProvider(cacheMock.Object, null);
 
+                // Act
+                provider.Remove("key1");
+
+                // Assert
+                cacheMock.Verify(m => m.Remove("key1"), Times.Once);
+            }
+
+            [Fact]
+            public void Will_Not_Throw_When_Item_Does_Not_Exist()
+            {
+                // Arrange
+                var cache = new MemoryCache(new MemoryCacheOptions());
+                var provider = new MemoryCacheProvider(cache, null);
+
+                // Act
+                provider.Remove("key1");
+
+                // Teardown
+                cache.Dispose();
+            }
         }
     }
 }
