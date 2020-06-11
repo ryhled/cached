@@ -27,7 +27,7 @@
             }
 
             var builder = new CachedOptionsBuilder();
-            options.Invoke(builder);
+            options?.Invoke(builder);
             builder.Build(services);
         }
     }
