@@ -12,12 +12,11 @@
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Fast, easy, unobtrusive, light-weight, and concurrency-safe cache library for net core and net 5.
-			Built to prevent cache stampedes but at the same time avoid the performance degradation caused by excessive locking.
+			Fast, easy, unobtrusive, light-weight, and concurrency-safe cache library for NetCore and Net 5. Prevents cache stampedes and makes it easy to implement application caching.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes></PackageReleaseNotes>
-		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;IMemoryCache;InMemory;Fast;Performance;CacheService;ApplicationCache;NetCore;Net5</PackageTags>
+		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;DistributedCache;Fast;Performance;CacheService;NetCore;Net5</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<PackageProjectUrl>$(PackageProjectUrlBase)Cached</PackageProjectUrl>
