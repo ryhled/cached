@@ -53,5 +53,10 @@
                 return value;
             }
         }
+
+        public void Dispose()
+        {
+            Provider.Dispose();
+        }
     }
 }

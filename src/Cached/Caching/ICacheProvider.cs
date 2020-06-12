@@ -1,11 +1,12 @@
 ﻿namespace Cached.Caching
 {
+    using System;
     using System.Threading.Tasks;
 
     /// <summary>
     ///     Implements a caching scheme for use with a cache handler.
     /// </summary>
-    public interface ICacheProvider
+    public interface ICacheProvider : IDisposable
     {
         /// <summary>
         ///     Writes the data to cache.

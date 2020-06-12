@@ -5,8 +5,11 @@
 
     /// <summary>
     ///     Applies caching to expensive operations.
+    ///
+    ///     Do not dispose handler when used with dependency injection.
+    ///     IOC container will managed that for you.
     /// </summary>
-    public interface ICache<out TProvider> where TProvider : ICacheProvider
+    public interface ICache<out TProvider> : IDisposable where TProvider : ICacheProvider
     {
         /// <summary>
         ///     Provides access to the active cache provider.
