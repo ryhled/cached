@@ -1,12 +1,13 @@
-﻿namespace Cached.Demo.NetCore.Console
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Cached.Demo.NetCore.Cmd
 {
-    using System;
-    using System.Threading.Tasks;
     using Memory;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             using var cache = MemoryCacheHandler.New();
 
@@ -20,10 +21,9 @@
                     break;
                 }
 
-                var result = cache.GetOrFetchAsync(
+                var result = await cache.GetOrFetchAsync(
                     key.Key.ToString(),
-                    provider => Task.FromResult(DateTimeOffset.UtcNow.ToString()))
-                    .Result;
+                    provider => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
 
                 Console.WriteLine($"Value is: {result}");
             }
