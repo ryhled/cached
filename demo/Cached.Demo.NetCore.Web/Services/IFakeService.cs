@@ -1,4 +1,4 @@
-﻿namespace Cached.Demo.Net.Services
+﻿namespace Cached.Demo.NetCore.Web.Services
 {
     using System.Threading.Tasks;
 

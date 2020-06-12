@@ -1,4 +1,4 @@
-namespace Cached.Demo.Net.Pages
+namespace Cached.Demo.NetCore.Web.Pages
 {
     using System.Diagnostics;
     using System.Threading.Tasks;

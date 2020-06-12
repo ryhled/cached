@@ -1,4 +1,4 @@
-namespace Cached.Demo.Net
+namespace Cached.Demo.NetCore.Web
 {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;

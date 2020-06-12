@@ -1,4 +1,4 @@
-namespace Cached.Demo.Net
+namespace Cached.Demo.NetCore.Web
 {
     using System;
     using Memory;
