@@ -25,7 +25,15 @@ Cached wraps these providers and makes them concurrency-safe **with a minimal am
 
 ## Getting started
 
-Startup.cs
+Install Cached In-Memory nuget package.
+
+```
+nuget install Cached.Memory
+```
+
+Then in your project, add the following in your net core  application:
+
+*Startup.cs*
 
 ```
 public void ConfigureServices(IServiceCollection services)
@@ -34,7 +42,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-Razor page
+*Razor page*
 
 ```
 private readonly ICache<IMemory> _cache;
@@ -53,10 +61,12 @@ public async Task OnGet()
 **More examples and information can be found in the [wiki](https://github.com/ryhled/cached/wiki) and in the [demo](https://github.com/ryhled/cached/tree/master/demo/) section**.
 
 
-## Future plans
+## Planned features
 
-* Add support for distributed caching (IDistributedCache) and optimal probabalistic stampede prevention.
-* Add support for cache warmup.
+* [ ] Support for distributed caching (IDistributedCache).
+* [ ]  Support for optimal probabalistic stampede prevention.
+* [ ] Support for cache warmup.
+* [ ] New optional key strategies for cache key prefixes.
 
 ## Social
 
