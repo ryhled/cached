@@ -19,7 +19,8 @@ namespace Cached.Demo.Net
             {
                 options.AddMemoryCaching(builder =>
                 {
-                    builder.Options = new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12) };
+                    builder.Options = new MemoryCacheEntryOptions
+                        {AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(12)};
                     builder.AddFunction<string, int>(
                         param => param.ToString(), // Generates cache key based on the argument used.
                         (provider, key, arg) => provider.GetService<IFakeService>().FunctionGet(key, arg)

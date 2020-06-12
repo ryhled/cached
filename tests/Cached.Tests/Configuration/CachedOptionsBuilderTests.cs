@@ -14,17 +14,6 @@
             public class Throws
             {
                 [Fact]
-                public void If_Services_Argument_Is_Null()
-                {
-                    // Arrange
-                    var builder = new CachedOptionsBuilder();
-                    
-                    // Act, Assert
-                    Assert.Throws<ArgumentNullException>(
-                        () => builder.Build(null));
-                }
-
-                [Fact]
                 public void If_No_Cached_Services_Are_Configured()
                 {
                     // Arrange
@@ -33,6 +22,17 @@
                     // Act, Assert
                     Assert.Throws<InvalidOperationException>(
                         () => builder.Build(new Mock<IServiceCollection>().Object));
+                }
+
+                [Fact]
+                public void If_Services_Argument_Is_Null()
+                {
+                    // Arrange
+                    var builder = new CachedOptionsBuilder();
+
+                    // Act, Assert
+                    Assert.Throws<ArgumentNullException>(
+                        () => builder.Build(null));
                 }
             }
 
@@ -51,7 +51,7 @@
                     ServiceProvider provider = services.BuildServiceProvider();
 
                     // Assert
-                    Assert.Equal("cached service", (string)provider.GetService<object>());
+                    Assert.Equal("cached service", (string) provider.GetService<object>());
                 }
 
                 [Fact]

@@ -1,6 +1,5 @@
 ﻿namespace Cached.Tests.Memory
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using Cached.Caching;
     using Cached.Memory;

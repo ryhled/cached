@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Cached.Tests.Memory
+﻿namespace Cached.Tests.Memory
 {
+    using System;
+    using System.Collections.Generic;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Primitives;
 

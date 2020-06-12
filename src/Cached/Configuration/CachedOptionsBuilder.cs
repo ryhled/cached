@@ -12,7 +12,9 @@
 
         public void AddService<TProvider>(ServiceBuilder<TProvider> builder)
             where TProvider : ICacheProvider
-            => _serviceBuilders.Add(builder.GetBuild());
+        {
+            _serviceBuilders.Add(builder.GetBuild());
+        }
 
         internal void Build(IServiceCollection services)
         {

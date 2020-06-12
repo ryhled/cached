@@ -14,10 +14,10 @@
             public class Throws
             {
                 [Fact]
-                public void If_Services_Argument_Is_Null()
+                public void If_No_Services_Are_Configured()
                 {
-                    Assert.Throws<ArgumentNullException>(
-                        () => ((IServiceCollection) null).AddCached(options => {}));
+                    Assert.Throws<InvalidOperationException>(() =>
+                        new Mock<IServiceCollection>().Object.AddCached(options => { }));
                 }
 
                 [Fact]
@@ -28,10 +28,10 @@
                 }
 
                 [Fact]
-                public void If_No_Services_Are_Configured()
+                public void If_Services_Argument_Is_Null()
                 {
-                    Assert.Throws<InvalidOperationException>(() =>
-                        new Mock<IServiceCollection>().Object.AddCached(options => { }));
+                    Assert.Throws<ArgumentNullException>(
+                        () => ((IServiceCollection) null).AddCached(options => { }));
                 }
             }
 
@@ -55,6 +55,8 @@
     public class FakeServiceBuilder : ServiceBuilder<ICacheProvider>
     {
         internal override Action<IServiceCollection> GetBuild()
-            => services => { services.AddTransient(provider => ""); };
+        {
+            return services => { services.AddTransient(provider => ""); };
+        }
     }
 }

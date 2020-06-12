@@ -10,6 +10,8 @@
         private readonly IMemoryCache _memoryCache;
         private readonly MemoryCacheEntryOptions _options;
 
+        private bool _disposed;
+
         public MemoryCacheProvider(
             IMemoryCache memoryCache,
             MemoryCacheEntryOptions options)
@@ -46,22 +48,20 @@
             return Task.CompletedTask;
         }
 
-        private bool _disposed;
-
-        private void EnsureNotDisposed()
-        {
-            if (_disposed)
-            {
-                throw new ObjectDisposedException(nameof(_memoryCache));
-            }
-        }
-
         public void Dispose()
         {
             if (!_disposed)
             {
                 _memoryCache.Dispose();
                 _disposed = true;
+            }
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(nameof(_memoryCache));
             }
         }
     }

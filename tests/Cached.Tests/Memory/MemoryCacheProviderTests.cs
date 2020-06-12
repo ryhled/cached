@@ -17,7 +17,8 @@
                 [Fact]
                 public void If_MemoryCache_Argument_Is_Null()
                 {
-                    Assert.Throws<ArgumentNullException>(() => new MemoryCacheProvider(null, new MemoryCacheEntryOptions()));
+                    Assert.Throws<ArgumentNullException>(() =>
+                        new MemoryCacheProvider(null, new MemoryCacheEntryOptions()));
                 }
             }
         }
@@ -45,24 +46,6 @@
             }
 
             [Fact]
-            public void Sets_Value_Using_Underlying_Provider()
-            {
-                // Arrange
-                var cache = new MemoryCache(new MemoryCacheOptions());
-                var provider = new MemoryCacheProvider(cache, null);
-
-                // Act
-                provider.Set("key1", "value1");
-
-                // Assert
-                Assert.Equal("value1", cache.Get<string>("key1"));
-
-                // Teardown
-                cache.Dispose();
-
-            }
-
-            [Fact]
             public void Sets_Provided_Configuration_Using_Underlying_Provider()
             {
                 // Arrange
@@ -72,7 +55,7 @@
                     CultureInfo.InvariantCulture);
 
                 var cacheMock = new Mock<IMemoryCache>();
-                var config = new MemoryCacheEntryOptions { AbsoluteExpiration = absoluteExpiration };
+                var config = new MemoryCacheEntryOptions {AbsoluteExpiration = absoluteExpiration};
                 FakeCacheEntry insertedEntry = null;
                 cacheMock.Setup(m => m.CreateEntry(It.IsAny<object>()))
                     .Returns((string key) =>
@@ -88,6 +71,23 @@
                 // Assert
                 Assert.Equal(absoluteExpiration, insertedEntry.AbsoluteExpiration);
                 cacheMock.Verify(m => m.CreateEntry(It.IsAny<object>()), Times.Once);
+            }
+
+            [Fact]
+            public void Sets_Value_Using_Underlying_Provider()
+            {
+                // Arrange
+                var cache = new MemoryCache(new MemoryCacheOptions());
+                var provider = new MemoryCacheProvider(cache, null);
+
+                // Act
+                provider.Set("key1", "value1");
+
+                // Assert
+                Assert.Equal("value1", cache.Get<string>("key1"));
+
+                // Teardown
+                cache.Dispose();
             }
         }
 
@@ -119,10 +119,11 @@
                 // Arrange
                 var cacheMock = new Mock<IMemoryCache>();
                 cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
-                    .Returns(new TryGetValueReturns((object key, out object item) => {
-                    item = default;
-                    return false;
-                }));
+                    .Returns(new TryGetValueReturns((object key, out object item) =>
+                    {
+                        item = default;
+                        return false;
+                    }));
 
                 var provider = new MemoryCacheProvider(cacheMock.Object, null);
 
@@ -140,7 +141,8 @@
                 // Arrange
                 var cacheMock = new Mock<IMemoryCache>();
                 cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
-                    .Returns(new TryGetValueReturns((object key, out object item) => {
+                    .Returns(new TryGetValueReturns((object key, out object item) =>
+                    {
                         item = 1.0;
                         return true;
                     }));
@@ -161,7 +163,8 @@
                 // Arrange
                 var cacheMock = new Mock<IMemoryCache>();
                 cacheMock.Setup(m => m.TryGetValue("key1", out It.Ref<object>.IsAny))
-                    .Returns(new TryGetValueReturns((object key, out object item) => {
+                    .Returns(new TryGetValueReturns((object key, out object item) =>
+                    {
                         item = "abc321";
                         return true;
                     }));
@@ -198,20 +201,6 @@
             }
 
             [Fact]
-            public void Will_Remove_Item_When_Such_Exist()
-            {
-                // Arrange
-                var cacheMock = new Mock<IMemoryCache>();
-                var provider = new MemoryCacheProvider(cacheMock.Object, null);
-
-                // Act
-                provider.Remove("key1").Wait();
-
-                // Assert
-                cacheMock.Verify(m => m.Remove("key1"), Times.Once);
-            }
-
-            [Fact]
             public async Task Will_Not_Throw_When_Item_Does_Not_Exist()
             {
                 // Arrange
@@ -223,6 +212,20 @@
 
                 // Teardown
                 cache.Dispose();
+            }
+
+            [Fact]
+            public void Will_Remove_Item_When_Such_Exist()
+            {
+                // Arrange
+                var cacheMock = new Mock<IMemoryCache>();
+                var provider = new MemoryCacheProvider(cacheMock.Object, null);
+
+                // Act
+                provider.Remove("key1").Wait();
+
+                // Assert
+                cacheMock.Verify(m => m.Remove("key1"), Times.Once);
             }
         }
     }

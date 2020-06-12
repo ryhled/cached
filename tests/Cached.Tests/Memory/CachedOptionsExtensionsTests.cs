@@ -48,7 +48,7 @@
                 // Act
                 optionsMock.Object.AddMemoryCaching(
                     builder => builder.AddFunction<string, double>(
-                        _ => "", 
+                        _ => "",
                         (_, __, ___) => Task.FromResult("")));
                 ServiceProvider provider = services.BuildServiceProvider();
 

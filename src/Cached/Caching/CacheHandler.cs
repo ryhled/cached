@@ -36,6 +36,11 @@
             return await FetchAndAddToCache(key, fetchFactory);
         }
 
+        public void Dispose()
+        {
+            Provider.Dispose();
+        }
+
         private async Task<TValue> FetchAndAddToCache<TValue>(
             string key,
             Func<string, Task<TValue>> fetchFactory)
@@ -52,11 +57,6 @@
                 await Provider.Set(key, value).ConfigureAwait(false);
                 return value;
             }
-        }
-
-        public void Dispose()
-        {
-            Provider.Dispose();
         }
     }
 }

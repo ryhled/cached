@@ -5,7 +5,6 @@
 
     /// <summary>
     ///     Applies caching to expensive operations.
-    ///
     ///     Do not dispose handler when used with dependency injection.
     ///     IOC container will managed that for you.
     /// </summary>

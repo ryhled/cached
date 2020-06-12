@@ -11,14 +11,15 @@
     {
         /// <summary>
         ///     Creates a new CacheHandler, with a new MemoryCache instance.
-        /// 
         ///     You need to keep this instance alive for as long as you need the cache.
         ///     I.E You need to manage lifetime and disposal yourself.
         ///     If you discard the cache instance, the cached data is lost as well.
         /// </summary>
         /// <param name="options">(Optional) override default MemoryCache entry options.</param>
-        public static ICache<IMemory> New(MemoryCacheEntryOptions options = null) =>
-            New(new MemoryCache(new MemoryCacheOptions()), options);
+        public static ICache<IMemory> New(MemoryCacheEntryOptions options = null)
+        {
+            return New(new MemoryCache(new MemoryCacheOptions()), options);
+        }
 
         /// <summary>
         ///     Creates a new CacheHandler, based on the provided MemoryCache instance.
@@ -27,6 +28,8 @@
         /// <param name="options">(Optional) override default MemoryCache entry options.</param>
         /// <returns></returns>
         public static ICache<IMemory> New(IMemoryCache memoryCache, MemoryCacheEntryOptions options = null)
-            => new CacheHandler<IMemory>(new MemoryCacheProvider(memoryCache, options), new KeyBasedLock());
+        {
+            return new CacheHandler<IMemory>(new MemoryCacheProvider(memoryCache, options), new KeyBasedLock());
+        }
     }
 }
