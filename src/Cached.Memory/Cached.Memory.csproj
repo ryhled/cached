@@ -40,22 +40,14 @@
 	  <ProjectReference Include="..\Cached\Cached.csproj" />
 	</ItemGroup>
 
-	<!-- ReSharper disable once UnknownProperty -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.0.0" />
 	</ItemGroup>
 
-	<!-- ReSharper disable once UnknownProperty -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.1.0" />
-	</ItemGroup>
-
-	<!-- ReSharper disable once UnknownProperty -->
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.4" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.4" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
