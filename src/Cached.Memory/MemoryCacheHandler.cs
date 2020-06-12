@@ -15,8 +15,19 @@
         ///     I.E You need to manage lifetime and disposal yourself.
         ///     If you discard the cache instance, the cached data is lost as well.
         /// </summary>
+        public static ICache<IMemory> New()
+        {
+            return New(new MemoryCache(new MemoryCacheOptions()));
+        }
+
+        /// <summary>
+        ///     Creates a new CacheHandler, with a new MemoryCache instance.
+        ///     You need to keep this instance alive for as long as you need the cache.
+        ///     I.E You need to manage lifetime and disposal yourself.
+        ///     If you discard the cache instance, the cached data is lost as well.
+        /// </summary>
         /// <param name="options">(Optional) override default MemoryCache entry options.</param>
-        public static ICache<IMemory> New(MemoryCacheEntryOptions options = null)
+        public static ICache<IMemory> New(MemoryCacheEntryOptions options)
         {
             return New(new MemoryCache(new MemoryCacheOptions()), options);
         }
