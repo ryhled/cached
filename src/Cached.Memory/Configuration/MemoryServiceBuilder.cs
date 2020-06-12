@@ -18,7 +18,7 @@
         /// <summary>
         ///     MemoryCache entry options that overrides the global MemoryCAche settings.
         /// </summary>
-        public MemoryCacheEntryOptions Options { get; set; }
+        public MemoryCacheEntryOptions Options { get; } = new MemoryCacheEntryOptions();
 
         internal override Action<IServiceCollection> GetBuild()
         {
