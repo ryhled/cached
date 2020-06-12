@@ -28,6 +28,7 @@ Cached wraps these providers and makes them concurrency-safe **with a minimal am
 Install Cached In-Memory nuget package.
 
 ```
+nuget install Cached
 nuget install Cached.Memory
 ```
 
