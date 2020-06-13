@@ -7,8 +7,8 @@
     {
         private static void Main()
         {
-            BenchmarkRunner.Run<SimpleCacheLoad>();
-
+            //BenchmarkRunner.Run<SimpleCacheLoad>();
+            BenchmarkRunner.Run<ComplexCacheLoad>();
             Console.WriteLine("Press any key to quit..");
             Console.ReadKey();
         }
