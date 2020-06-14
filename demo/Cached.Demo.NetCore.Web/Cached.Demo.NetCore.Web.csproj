@@ -5,7 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Cached.Memory\Cached.MemoryCache.csproj" />
+		<ProjectReference Include="..\..\src\Cached.DistributedCache\Cached.DistributedCache.csproj" />
+		<ProjectReference Include="..\..\src\Cached.MemoryCache\Cached.MemoryCache.csproj" />
 		<ProjectReference Include="..\..\src\Cached\Cached.csproj" />
 	</ItemGroup>
 
