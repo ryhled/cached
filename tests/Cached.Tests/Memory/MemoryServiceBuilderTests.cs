@@ -2,15 +2,15 @@
 {
     using System.Threading.Tasks;
     using Cached.Caching;
-    using Cached.Memory;
-    using Cached.Memory.Configuration;
     using Configuration;
+    using MemoryCache;
+    using MemoryCache.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
     public class MemoryServiceBuilderTests : ServiceBuilderTestsBase<IMemory>
     {
-        public MemoryServiceBuilderTests() : base(new MemoryServiceBuilder())
+        public MemoryServiceBuilderTests() : base(new MemoryCacheServiceBuilder())
         {
         }
 

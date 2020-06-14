@@ -1,7 +1,7 @@
 namespace Cached.Demo.NetCore.Web
 {
     using System;
-    using Memory;
+    using MemoryCache;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;

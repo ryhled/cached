@@ -54,6 +54,21 @@
             }
 
             [Fact]
+            public void Disposes_Provider_When_Dispose_Is_Called()
+            {
+                // Arrange
+                var lockMock = new Mock<ILock>();
+                var cacheMock = new Mock<ICacheProvider>();
+                var handler = new CacheHandler<ICacheProvider>(cacheMock.Object, lockMock.Object);
+
+                // Act
+                handler.Dispose();
+
+                // Assert
+                cacheMock.Verify(m => m.Dispose(), Times.Once);
+            }
+
+            [Fact]
             public async Task Get_From_Cache_If_Cache_Miss_But_Queued_Late()
             {
                 // Arrange
@@ -135,21 +150,6 @@
                 providerMock.Verify(m => m.TryGet<It.IsAnyType>(It.IsAny<string>()), Times.Once);
                 providerMock.Verify(m => m.TryGet<string>("key"), Times.Once);
                 providerMock.Verify(m => m.Set(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
-            }
-
-            [Fact]
-            public void Disposes_Provider_When_Dispose_Is_Called()
-            {
-                // Arrange
-                var lockMock = new Mock<ILock>();
-                var cacheMock = new Mock<ICacheProvider>();
-                var handler = new CacheHandler<ICacheProvider>(cacheMock.Object, lockMock.Object);
-
-                // Act
-                handler.Dispose();
-
-                // Assert
-                cacheMock.Verify(m => m.Dispose(), Times.Once);
             }
         }
     }

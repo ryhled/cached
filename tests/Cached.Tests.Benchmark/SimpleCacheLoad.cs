@@ -5,7 +5,7 @@
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnostics.Windows.Configs;
     using Caching;
-    using Memory;
+    using MemoryCache;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 

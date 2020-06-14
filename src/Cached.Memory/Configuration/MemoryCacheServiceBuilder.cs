@@ -1,4 +1,4 @@
-﻿namespace Cached.Memory.Configuration
+﻿namespace Cached.MemoryCache.Configuration
 {
     using System;
     using Cached.Configuration;
@@ -9,9 +9,9 @@
     /// <summary>
     ///     Handles configuration of Memory based Cached service.
     /// </summary>
-    public sealed class MemoryServiceBuilder : ServiceBuilder<IMemory>
+    public sealed class MemoryCacheServiceBuilder : ServiceBuilder<IMemory>
     {
-        internal MemoryServiceBuilder()
+        internal MemoryCacheServiceBuilder()
         {
         }
 

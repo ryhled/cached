@@ -1,9 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Cached.Demo.NetCore.Cmd
+﻿namespace Cached.Demo.NetCore.Cmd
 {
-    using Memory;
+    using System;
+    using System.Threading.Tasks;
+    using MemoryCache;
 
     internal class Program
     {

@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Cached.Memory;
     using Caching;
+    using MemoryCache;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
@@ -32,17 +32,10 @@
         private readonly IMemoryCache _memoryCache;
         private readonly ICache<IMemory> _injectedCacher;
 
-        [Fact]
-        public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
+        private static async Task<string> Only_Does_Fetch_Once_During_Stampede__Async_FetchTask(string key)
         {
-            // Arrange
-            var cacher = MemoryCacheHandler.New(_memoryCache);
-
-            // Act
-            var result = await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
-
-            // Assert
-            Assert.Equal("sven", result);
+            await Task.Delay(50);
+            return DateTimeOffset.UtcNow.ToString();
         }
 
         [Fact]
@@ -62,6 +55,41 @@
 
             //Assert
             Assert.True(taskResults.GroupBy(v => v).All(g => g.Count() == 1));
+        }
+
+        [Fact]
+        public async Task Instance_Created_Through_MemoryCacher_New_Runs_With_Provided_Cache()
+        {
+            // Arrange
+            var cacher = MemoryCacheHandler.New(_memoryCache);
+
+            // Act
+            var result = await cacher.GetOrFetchAsync("name", _ => Task.FromResult("sven"));
+
+            // Assert
+            Assert.Equal("sven", result);
+        }
+
+        [Fact]
+        public async Task Only_Does_Fetch_Once_During_Stampede__Async()
+        {
+            // Arrange
+            const int taskCount = 100;
+
+            async Task<string> StampedeTask() => await _injectedCacher.GetOrFetchAsync(
+                "Only_Fetch_Once_During_Stampede_Key",
+                Only_Does_Fetch_Once_During_Stampede__Async_FetchTask);
+
+            var tasks = Enumerable.Repeat(StampedeTask(), taskCount);
+
+            // Act
+            var watch = Stopwatch.StartNew();
+            var tasksResult = await Task.WhenAll(tasks);
+            watch.Stop();
+
+            // Assert
+            Assert.All(tasksResult, value => tasksResult[0].Equals(value));
+            Assert.True(watch.ElapsedMilliseconds < 100);
         }
 
         [Fact]
@@ -96,32 +124,6 @@
             // Assert
             Assert.Equal(1, fetchCounter);
             Assert.Equal(taskCount, callCounter);
-        }
-
-        [Fact]
-        public async Task Only_Does_Fetch_Once_During_Stampede__Async()
-        {
-            // Arrange
-            const int taskCount = 100;
-            async Task<string> StampedeTask() => await _injectedCacher.GetOrFetchAsync(
-                "Only_Fetch_Once_During_Stampede_Key", 
-                Only_Does_Fetch_Once_During_Stampede__Async_FetchTask);
-            var tasks = Enumerable.Repeat(StampedeTask(), taskCount);
-
-            // Act
-            var watch = Stopwatch.StartNew();
-            var tasksResult = await Task.WhenAll(tasks);
-            watch.Stop();
-
-            // Assert
-            Assert.All(tasksResult, value => tasksResult[0].Equals(value));
-            Assert.True(watch.ElapsedMilliseconds < 100);
-        }
-
-        private static async Task<string> Only_Does_Fetch_Once_During_Stampede__Async_FetchTask(string key)
-        {
-            await Task.Delay(50);
-            return DateTimeOffset.UtcNow.ToString();
         }
 
         [Fact]

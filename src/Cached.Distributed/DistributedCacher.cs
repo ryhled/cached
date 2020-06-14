@@ -1,4 +1,4 @@
-﻿namespace Cached.Distributed
+﻿namespace Cached.DistributedCache
 {
     //public sealed class DistributedCacher : Cacher, IDistributedCacher
     //{

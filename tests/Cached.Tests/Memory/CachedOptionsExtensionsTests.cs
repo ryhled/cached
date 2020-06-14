@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
     using Cached.Caching;
     using Cached.Configuration;
-    using Cached.Memory;
+    using MemoryCache;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Xunit;

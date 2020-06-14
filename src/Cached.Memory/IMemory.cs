@@ -1,4 +1,4 @@
-﻿namespace Cached.Memory
+﻿namespace Cached.MemoryCache
 {
     using Caching;
 

@@ -5,8 +5,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>Cached.Distributed</PackageId>
-		<Title>Cached.Distributed</Title>
+		<PackageId>Cached.DistributedCache</PackageId>
+		<Title>Cached.DistributedCache</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>

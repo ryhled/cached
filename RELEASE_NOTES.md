@@ -3,7 +3,7 @@
 #### Packages
 
 * Cached
-* Cached.Memory
+* Cached.MemoryCache
 
 #### New features
 

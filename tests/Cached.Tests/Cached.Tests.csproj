@@ -27,8 +27,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Cached.Distributed\Cached.Distributed.csproj" />
-		<ProjectReference Include="..\..\src\Cached.Memory\Cached.Memory.csproj" />
+		<ProjectReference Include="..\..\src\Cached.Distributed\Cached.DistributedCache.csproj" />
+		<ProjectReference Include="..\..\src\Cached.Memory\Cached.MemoryCache.csproj" />
 		<ProjectReference Include="..\..\src\Cached\Cached.csproj" />
 	</ItemGroup>
 </Project>

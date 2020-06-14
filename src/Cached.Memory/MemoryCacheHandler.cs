@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-
-namespace Cached.Memory
+﻿namespace Cached.MemoryCache
 {
     using Caching;
     using Locking;
+    using Microsoft.Extensions.Caching.Memory;
 
     /// <summary>
     ///     Handles memory-caching using Cached.

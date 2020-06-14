@@ -1,4 +1,4 @@
-﻿namespace Cached.Memory
+﻿namespace Cached.MemoryCache
 {
     using System;
     using Cached.Configuration;
@@ -16,14 +16,14 @@
         /// <param name="builder">(Optional) Service builder, used to configure different aspects of the Cached service.</param>
         public static void AddMemoryCaching(
             this ICachedOptions options,
-            Action<MemoryServiceBuilder> builder = null)
+            Action<MemoryCacheServiceBuilder> builder = null)
         {
             if (options == null)
             {
                 throw new ArgumentNullException(nameof(options));
             }
 
-            var builtConfiguration = new MemoryServiceBuilder();
+            var builtConfiguration = new MemoryCacheServiceBuilder();
             builder?.Invoke(builtConfiguration);
             options.AddService(builtConfiguration);
         }

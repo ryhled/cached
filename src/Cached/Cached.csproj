@@ -56,13 +56,10 @@
 			<_Parameter1>Cached.Tests.Load</_Parameter1>
 		</AssemblyAttribute>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>Cached.Memory</_Parameter1>
+			<_Parameter1>Cached.MemoryCache</_Parameter1>
 		</AssemblyAttribute>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>Cached.Net</_Parameter1>
-		</AssemblyAttribute>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-			<_Parameter1>Cached.Distributed</_Parameter1>
+			<_Parameter1>Cached.DistributedCache</_Parameter1>
 		</AssemblyAttribute>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>

@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Cached.Demo.NetCore21.Web.Controllers
+﻿namespace Cached.Demo.NetCore21.Web.Controllers
 {
     using System;
     using System.Threading.Tasks;
     using Caching;
-    using Memory;
+    using MemoryCache;
+    using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller
     {
@@ -18,7 +17,8 @@ namespace Cached.Demo.NetCore21.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Value = await _cache.GetOrFetchAsync("key1", provider => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
+            ViewBag.Value =
+                await _cache.GetOrFetchAsync("key1", provider => Task.FromResult(DateTimeOffset.UtcNow.ToString()));
             return View();
         }
     }

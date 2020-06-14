@@ -1,14 +1,12 @@
-﻿
-namespace Cached.Tests.Benchmark
+﻿namespace Cached.Tests.Benchmark
 {
     using System;
-    using System.Collections;
     using System.Linq;
     using System.Threading.Tasks;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnostics.Windows.Configs;
     using Caching;
-    using Memory;
+    using MemoryCache;
     using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -61,7 +59,7 @@ namespace Cached.Tests.Benchmark
         public async Task Cached_Cacher_Miss()
         {
             var tasks = Enumerable.Repeat(FetchTask(
-                Guid.NewGuid().ToString(), 
+                Guid.NewGuid().ToString(),
                 key => _cacher.GetOrFetchAsync(key, k => Task.FromResult(DateTimeOffset.UtcNow + k))), 100);
 
             await Task.WhenAll(tasks);
@@ -74,6 +72,7 @@ namespace Cached.Tests.Benchmark
                 await getFunc(key);
                 await Task.Delay(3);
             }
+
             return DateTimeOffset.UtcNow.ToString();
         }
     }

@@ -1,7 +1,7 @@
 ﻿namespace Cached.Tests.Memory
 {
     using System;
-    using Cached.Memory;
+    using MemoryCache;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
     using Xunit;

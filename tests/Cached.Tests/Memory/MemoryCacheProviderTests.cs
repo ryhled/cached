@@ -3,7 +3,7 @@
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
-    using Cached.Memory;
+    using MemoryCache;
     using Microsoft.Extensions.Caching.Memory;
     using Moq;
     using Xunit;

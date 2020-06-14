@@ -4,14 +4,14 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<PackageId>Cached.Memory</PackageId>
-		<Title>Cached.Memory</Title>
+		<PackageId>Cached.MemoryCache</PackageId>
+		<Title>Cached.MemoryCache</Title>
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
 		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
 		<PackageDescription>
-			Provides in-memory, caching support for Cached, the fast, easy and concurrency-safe cache library for NetCore and Net 5. Utilizes Microsoft.Extensions.Caching.Memory MemoryCache as underlying cache provider.
+			Provides in-memory, caching support for Cached, the fast, easy and concurrency-safe cache library for NetCore and Net 5. Utilizes Microsoft.Extensions.Caching.Memory.MemoryCache as underlying cache provider.
 		</PackageDescription>
 		<Language>$(Language)</Language>
 		<PackageReleaseNotes>RELEASE_NOTES.md</PackageReleaseNotes>

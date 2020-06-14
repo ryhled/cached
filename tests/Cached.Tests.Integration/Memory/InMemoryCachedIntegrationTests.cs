@@ -1,8 +1,8 @@
 ﻿namespace Cached.Tests.Integration.Memory
 {
     using System.Threading.Tasks;
-    using Cached.Memory;
     using Caching;
+    using MemoryCache;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 

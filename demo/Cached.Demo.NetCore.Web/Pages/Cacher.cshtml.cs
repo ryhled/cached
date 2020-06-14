@@ -3,7 +3,7 @@ namespace Cached.Demo.NetCore.Web.Pages
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Caching;
-    using Memory;
+    using MemoryCache;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Services;
