@@ -29,7 +29,7 @@ Install Cached In-Memory nuget package.
 
 ```
 nuget install Cached
-nuget install Cached.Memory
+nuget install Cached.MemoryCache
 ```
 
 Then in your project, add the following in your net core  application:
