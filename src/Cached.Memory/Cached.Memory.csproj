@@ -14,7 +14,7 @@
 			Provides in-memory, caching support for Cached, the fast, easy and concurrency-safe cache library for NetCore and Net 5. Utilizes Microsoft.Extensions.Caching.Memory MemoryCache as underlying cache provider.
 		</PackageDescription>
 		<Language>$(Language)</Language>
-		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReleaseNotes>RELEASE_NOTES.md</PackageReleaseNotes>
 		<PackageTags>Caching;Cache;Cached;ThreadSafe;Stampede;MissStorm;ConcurrencySafe;MemoryCache;Fast;Performance;CacheService;NetCore;Net5</PackageTags>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
@@ -51,6 +51,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="..\..\RELEASE_NOTES.md" Pack="true" PackagePath="" />
 		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
 		<None Include="..\..\icon.png" Pack="true" PackagePath="" />
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
