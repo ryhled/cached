@@ -1,6 +1,9 @@
 ﻿namespace Cached.Tests.Integration.Memory
 {
     using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Cached.Memory;
@@ -43,12 +46,31 @@
         }
 
         [Fact]
-        public async Task Only_Does_Fetch_Once_During_Stampede()
+        public async Task Always_Fetch_On_Cache_Miss()
+        {
+            // Arrange
+            var tasks = new List<Task<string>>();
+            for (var i = 0; i < 50; i++)
+            {
+                tasks.Add(_injectedCacher.GetOrFetchAsync(
+                    i.ToString(),
+                    provider => Task.FromResult(Guid.NewGuid().ToString())));
+            }
+
+            // Act
+            var taskResults = await Task.WhenAll(tasks);
+
+            //Assert
+            Assert.True(taskResults.GroupBy(v => v).All(g => g.Count() == 1));
+        }
+
+        [Fact]
+        public async Task Only_Does_Fetch_Once_During_Stampede__Parallel()
         {
             // Arrange
             var fetchCounter = 0;
             var callCounter = 0;
-            const int taskCount = 100; // the number of clients trying to access same cache entry simultaneously.
+            const int taskCount = 100;
 
             async Task<int> FetchTask(string key)
             {
@@ -74,6 +96,32 @@
             // Assert
             Assert.Equal(1, fetchCounter);
             Assert.Equal(taskCount, callCounter);
+        }
+
+        [Fact]
+        public async Task Only_Does_Fetch_Once_During_Stampede__Async()
+        {
+            // Arrange
+            const int taskCount = 100;
+            async Task<string> StampedeTask() => await _injectedCacher.GetOrFetchAsync(
+                "Only_Fetch_Once_During_Stampede_Key", 
+                Only_Does_Fetch_Once_During_Stampede__Async_FetchTask);
+            var tasks = Enumerable.Repeat(StampedeTask(), taskCount);
+
+            // Act
+            var watch = Stopwatch.StartNew();
+            var tasksResult = await Task.WhenAll(tasks);
+            watch.Stop();
+
+            // Assert
+            Assert.All(tasksResult, value => tasksResult[0].Equals(value));
+            Assert.True(watch.ElapsedMilliseconds < 100);
+        }
+
+        private static async Task<string> Only_Does_Fetch_Once_During_Stampede__Async_FetchTask(string key)
+        {
+            await Task.Delay(50);
+            return DateTimeOffset.UtcNow.ToString();
         }
 
         [Fact]
