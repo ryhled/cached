@@ -68,6 +68,7 @@
 
             // Assert
             Assert.Equal("sven", result);
+            Assert.Equal("sven", _memoryCache.Get<string>("name"));
         }
 
         [Fact]
