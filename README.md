@@ -17,20 +17,41 @@ Cached wraps these providers and makes them concurrency-safe **with a minimal am
 
 #### Why use Cached?
 
-- Cached wraps your methods and caches it for you automatically, without risk of cache stampedes.
-- It does not prevent, or hide, official cache provider configuration, standard methods still applies.
-- Cached only applies locking as it is required to prevent stampedes (no global locks). 
-- Cached offers flexibility and ease-of-use.
-- Cached is thin. No need to create dependencies on huge caching frameworks.
+- Built-in cache stampede prevention.
+- Does not abstract away cache provider configuration.
+- Minimal locking, based on the cache key. 
+- Flexible and easy to use.
+- Thin(ish). Aim is to be an thin abstraction, retaining control over the provider for the user.
 
 ## Getting started
 
-Install Cached In-Memory nuget package.
+First, install Cached In-Memory nuget packages.
 
 ```
 nuget install Cached
 nuget install Cached.MemoryCache
 ```
+
+#### Example: Console app.
+
+Either instantiate handler as static field, or with using, as below. See [wiki](https://github.com/ryhled/cached/wiki/Memory-Caching) for more details on instantiating a handler manually.
+
+```
+internal class Program
+{
+    private static async Task Main(string[] args)
+    {
+        using(var cache = MemoryCacheHandler.New())
+        {
+            ...
+            var cachedValue = await cache.GetOrFetchAsync("key", key => { ... }); // long running fetch operation
+            ...
+        }
+    }
+{
+```
+
+#### Example: Net Core dependency injection
 
 Then in your project, add the following in your net core  application:
 
