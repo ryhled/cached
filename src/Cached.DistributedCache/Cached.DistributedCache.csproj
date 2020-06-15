@@ -26,6 +26,15 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
+	<Target Name="LoadReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
+		<ReadLinesFromFile File="..\..\CHANGELOG.md" >
+			<Output TaskParameter="Lines" ItemName="ReleaseNoteLines"/>
+		</ReadLinesFromFile>
+		<PropertyGroup>
+			<PackageReleaseNotes>@(ReleaseNoteLines, '%0a')</PackageReleaseNotes>
+		</PropertyGroup>
+	</Target>
+
 	<PropertyGroup>
 		<GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -46,7 +55,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\RELEASE_NOTES.md" Pack="true" PackagePath="" />
 		<None Include="..\..\LICENSE.md" Pack="true" PackagePath="" />
 		<None Include="..\..\icon.png" Pack="true" PackagePath="" />
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
