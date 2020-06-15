@@ -10,7 +10,7 @@
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
-		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
+		<Copyright>© $([System.DateTime]::Now.Year), Daniel Ryhle</Copyright>
 		<PackageDescription>
 			Fast, easy, unobtrusive, light-weight, and concurrency-safe cache library for NetCore and Net 5. Prevents cache stampedes and makes it easy to implement application caching.
 		</PackageDescription>

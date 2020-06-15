@@ -9,7 +9,7 @@
 		<Authors>$(Authors)</Authors>
 		<Owners>$(Authors)</Owners>
 		<Company>$(Company)</Company>
-		<Copyright>Copyright $(CurrentYear) Daniel Ryhle</Copyright>
+		<Copyright>© $([System.DateTime]::Now.Year), Daniel Ryhle</Copyright>
 		<PackageDescription>
 			Provides in-memory, caching support for Cached, the fast, easy and concurrency-safe cache library for NetCore and Net 5. Utilizes Microsoft.Extensions.Caching.Memory.MemoryCache as underlying cache provider.
 		</PackageDescription>
